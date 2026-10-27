@@ -21,4 +21,5 @@ body:text {
 assert {
   res.status: eq 400
   res.body.message: isString
+  res.body.code: eq INVALID_JSON
 }
