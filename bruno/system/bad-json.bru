@@ -1,0 +1,24 @@
+meta {
+  name: Malformed JSON (400)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/health
+  body: text
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:text {
+  { "name": 
+}
+
+assert {
+  res.status: eq 400
+  res.body.message: isString
+}

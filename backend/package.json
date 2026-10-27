@@ -1,0 +1,36 @@
+{
+  "name": "comanda-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "REST API for the Comanda restaurant app",
+  "homepage": "https://github.com/devHP-source/comanda#readme",
+  "bugs": {
+    "url": "https://github.com/devHP-source/comanda/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devHP-source/comanda.git"
+  },
+  "license": "ISC",
+  "author": "Paulo Del Poso",
+  "type": "module",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "helmet": "^8.3.0",
+    "mongoose": "^9.11.4",
+    "morgan": "^1.12.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
