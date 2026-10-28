@@ -1,5 +1,7 @@
-// Resets the demo data: deletes all categories and dishes, then inserts them from the JSON files.
-// Run from backend/: npm run seed
+/*
+* Run from backend/ by:
+* npm run seed 
+*/
 import "dotenv/config"
 import { readFile } from "node:fs/promises"
 import mongoose from "mongoose"
@@ -25,8 +27,7 @@ async function seed() {
   const categories = await Category.insertMany(categoriesData)
   console.log(`Inserted ${categories.length} categories`)
 
-  // dishes.json links each dish to its category by Italian name → swap the name for the _id
-  const categoryIds = {}
+  const categoryIds = {}  // dishes.json links each dish to its category by Italian name --> swap the name for the _id
   for (const category of categories) {
     categoryIds[category.name.it] = category._id
   }
@@ -36,7 +37,7 @@ async function seed() {
     if (!categoryId) {
       throw new Error(`Dish ${dish.code}: unknown category "${dish.category}"`)
     }
-    return { ...dish, category: categoryId }
+    return { ...dish, price: Math.round(dish.price * 100), category: categoryId } // dishes.json holds euros (8.5), the DB stores cents (850)
   })
 
   const insertedDishes = await Dish.insertMany(dishes)

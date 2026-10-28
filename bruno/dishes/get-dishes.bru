@@ -14,3 +14,9 @@ assert {
   res.status: eq 200
   res.body: isArray
 }
+
+tests {
+  test("dishes sorted by code with numeric ordering (1, 1a, ...)", function () {
+    expect(res.body[1].code).to.equal("1a");
+  });
+}

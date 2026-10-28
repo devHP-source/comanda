@@ -20,12 +20,12 @@ export const ALLERGENS = [
 
 const dishSchema = new mongoose.Schema(
   {
-    code: { // number printed on the menu, es: 47
-      type: Number, 
-      required: true, 
-      unique: true, 
-      min: 1 
-    }, 
+    code: { // number printed on the menu, es: 47 (String: also "1a", "15g", "P12")
+      type: String,
+      required: true,
+      unique: true,
+      trim: true
+    },
 
     name: {
       it: { 
