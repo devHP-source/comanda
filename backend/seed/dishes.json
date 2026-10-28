@@ -1,0 +1,3781 @@
+[
+  {
+    "code": "1",
+    "name": {
+      "it": "Involtini primavera",
+      "en": "Spring rolls"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "1a",
+    "name": {
+      "it": "Involtini freschi con germogli di soia",
+      "en": "Fresh rolls with bean sprouts"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.5,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "1b",
+    "name": {
+      "it": "Involtini freschi con pollo",
+      "en": "Fresh rolls with chicken"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.5,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "1c",
+    "name": {
+      "it": "Involtini freschi con gamberi",
+      "en": "Fresh rolls with shrimp"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.5,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "3",
+    "name": {
+      "it": "Nuvolette di drago",
+      "en": "Prawn crackers"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "3a",
+    "name": {
+      "it": "Alghe fritte",
+      "en": "Fried seaweed"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 3.5,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "A",
+    "name": {
+      "it": "Patatine fritte",
+      "en": "French fries"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 3.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "4",
+    "name": {
+      "it": "Ravioli alla griglia",
+      "en": "Grilled dumplings"
+    },
+    "description": {
+      "it": "Carne macinata e zenzero",
+      "en": "Minced meat and ginger"
+    },
+    "price": 4.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "4a",
+    "name": {
+      "it": "Ravioli con verdure",
+      "en": "Vegetable dumplings"
+    },
+    "description": {
+      "it": "Germogli di soia, funghi e bambù",
+      "en": "Bean sprouts, mushrooms and bamboo shoots"
+    },
+    "price": 4.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "5",
+    "name": {
+      "it": "Ravioli al vapore con carne",
+      "en": "Steamed meat dumplings"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 3.5,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "5a",
+    "name": {
+      "it": "Xiao Mai di gamberi",
+      "en": "Shrimp siu mai"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "6",
+    "name": {
+      "it": "Insalata di pollo con germogli di soia",
+      "en": "Chicken salad with bean sprouts"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "7",
+    "name": {
+      "it": "Verdure miste fritte",
+      "en": "Mixed fried vegetables"
+    },
+    "description": {
+      "it": "Zucchine e carote",
+      "en": "Zucchini and carrots"
+    },
+    "price": 4.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "8",
+    "name": {
+      "it": "Toast di gamberi",
+      "en": "Shrimp toast"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "9",
+    "name": {
+      "it": "Insalata di gamberi con germogli di soia",
+      "en": "Shrimp salad with bean sprouts"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "12",
+    "name": {
+      "it": "Pane cinese",
+      "en": "Chinese bread"
+    },
+    "description": {
+      "it": "Fritto o al vapore",
+      "en": "Fried or steamed"
+    },
+    "price": 2.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "13",
+    "name": {
+      "it": "Ravioli con gamberi e farina di riso",
+      "en": "Shrimp dumplings with rice flour"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "14",
+    "name": {
+      "it": "Chele di granchio",
+      "en": "Crab claws"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "96",
+    "name": {
+      "it": "Omelette con gamberi",
+      "en": "Shrimp omelette"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Omelette",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "97",
+    "name": {
+      "it": "Omelette con prosciutto",
+      "en": "Ham omelette"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Omelette",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "15",
+    "name": {
+      "it": "Zuppa agro piccante",
+      "en": "Hot and sour soup"
+    },
+    "description": {
+      "it": "Carote, tofu e funghi",
+      "en": "Carrots, tofu and mushrooms"
+    },
+    "price": 3.5,
+    "category": "Zuppe",
+    "allergens": [],
+    "spiceLevel": 1,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "15g",
+    "name": {
+      "it": "Zuppa di miso",
+      "en": "Miso soup"
+    },
+    "description": {
+      "it": "Zuppa di miso con alghe e tofu",
+      "en": "Miso soup with seaweed and tofu"
+    },
+    "price": 3.5,
+    "category": "Zuppe",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "16",
+    "name": {
+      "it": "Zuppa di mais con pollo",
+      "en": "Chicken and sweetcorn soup"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 3.5,
+    "category": "Zuppe",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "16g",
+    "name": {
+      "it": "Zuppa di mare",
+      "en": "Seafood soup"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Zuppe",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "17",
+    "name": {
+      "it": "Zuppa wan ton",
+      "en": "Wonton soup"
+    },
+    "description": {
+      "it": "Lattuga, carne e zha cai",
+      "en": "Lettuce, meat and pickled mustard greens (zha cai)"
+    },
+    "price": 3.5,
+    "category": "Zuppe",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "18",
+    "name": {
+      "it": "Zuppa con gamberi e pasta",
+      "en": "Shrimp noodle soup"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 3.5,
+    "category": "Zuppe",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "19",
+    "name": {
+      "it": "Zuppa di granchio con asparagi",
+      "en": "Crab and asparagus soup"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 3.5,
+    "category": "Zuppe",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "108",
+    "name": {
+      "it": "Riso alla cantonese",
+      "en": "Cantonese fried rice"
+    },
+    "description": {
+      "it": "Riso con uovo, piselli e prosciutto",
+      "en": "Rice with egg, peas and ham"
+    },
+    "price": 4.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "108a",
+    "name": {
+      "it": "Riso all'ananas",
+      "en": "Pineapple fried rice"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "109",
+    "name": {
+      "it": "Riso con gamberetti",
+      "en": "Fried rice with shrimp"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.5,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "110",
+    "name": {
+      "it": "Riso speciale",
+      "en": "Special fried rice"
+    },
+    "description": {
+      "it": "Riso con carne, gamberi e verdura",
+      "en": "Rice with meat, shrimp and vegetables"
+    },
+    "price": 5.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "110a",
+    "name": {
+      "it": "Riso nero con verdure",
+      "en": "Black rice with vegetables"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "110b",
+    "name": {
+      "it": "Riso nero con gamberi e verdure",
+      "en": "Black rice with shrimp and vegetables"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 7.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "111",
+    "name": {
+      "it": "Riso con verdure",
+      "en": "Fried rice with vegetables"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "112",
+    "name": {
+      "it": "Riso al curry",
+      "en": "Curry fried rice"
+    },
+    "description": {
+      "it": "Uovo e piselli",
+      "en": "Egg and peas"
+    },
+    "price": 4.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "112a",
+    "name": {
+      "it": "Riso in bianco",
+      "en": "Plain steamed rice"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "113",
+    "name": {
+      "it": "Spaghetti di riso con verdure",
+      "en": "Rice noodles with vegetables"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "113a",
+    "name": {
+      "it": "Gnocchi di riso con verdure",
+      "en": "Rice gnocchi with vegetables"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "114",
+    "name": {
+      "it": "Spaghetti di soia con carne piccante",
+      "en": "Glass noodles with spicy meat"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 1,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "114a",
+    "name": {
+      "it": "Spaghetti di soia con verdure",
+      "en": "Glass noodles with vegetables"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "115",
+    "name": {
+      "it": "Spaghetti alla piastra con verdure",
+      "en": "Stir-fried noodles with vegetables"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "116",
+    "name": {
+      "it": "Spaghetti alla piastra con carne e verdure",
+      "en": "Stir-fried noodles with meat and vegetables"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "118",
+    "name": {
+      "it": "Spaghetti alla piastra con gamberi e verdure",
+      "en": "Stir-fried noodles with shrimp and vegetables"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "119",
+    "name": {
+      "it": "Fettuccine alla piastra con frutti di mare",
+      "en": "Stir-fried flat noodles with seafood"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.5,
+    "category": "Primi Piatti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "91",
+    "name": {
+      "it": "Tofu con funghi e bambù",
+      "en": "Tofu with mushrooms and bamboo shoots"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Tofu",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "92",
+    "name": {
+      "it": "Tofu in salsa piccante",
+      "en": "Tofu in spicy sauce"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Tofu",
+    "allergens": [],
+    "spiceLevel": 1,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "102",
+    "name": {
+      "it": "Germogli di soia",
+      "en": "Stir-fried bean sprouts"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Verdure",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "103",
+    "name": {
+      "it": "Verdure miste",
+      "en": "Mixed vegetables"
+    },
+    "description": {
+      "it": "Al vapore o alla piastra",
+      "en": "Steamed or stir-fried"
+    },
+    "price": 4.0,
+    "category": "Verdure",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "104",
+    "name": {
+      "it": "Melanzane stufate",
+      "en": "Braised aubergine"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Verdure",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "44",
+    "name": {
+      "it": "Anatra in salsa agrodolce",
+      "en": "Duck in sweet and sour sauce"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Anatra",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "45",
+    "name": {
+      "it": "Anatra con funghi e bambù",
+      "en": "Duck with mushrooms and bamboo shoots"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Anatra",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "46",
+    "name": {
+      "it": "Anatra arrosto",
+      "en": "Roast duck"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Anatra",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "47",
+    "name": {
+      "it": "Anatra in salsa pechinese",
+      "en": "Peking-style duck"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 8.0,
+    "category": "Anatra",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "48",
+    "name": {
+      "it": "Anatra all'arancia",
+      "en": "Duck with orange"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Anatra",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "48a",
+    "name": {
+      "it": "Anatra all'ananas",
+      "en": "Duck with pineapple"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Anatra",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "48b",
+    "name": {
+      "it": "Anatra alla piastra",
+      "en": "Griddled duck"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 7.0,
+    "category": "Anatra",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "49",
+    "name": {
+      "it": "Maiale in salsa agrodolce",
+      "en": "Sweet and sour pork"
+    },
+    "description": {
+      "it": "Fritto o non fritto",
+      "en": "Fried or not fried"
+    },
+    "price": 6.0,
+    "category": "Maiale",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "50",
+    "name": {
+      "it": "Maiale con funghi e bambù",
+      "en": "Pork with mushrooms and bamboo shoots"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Maiale",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "51",
+    "name": {
+      "it": "Maiale in salsa piccante",
+      "en": "Pork in spicy sauce"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Maiale",
+    "allergens": [],
+    "spiceLevel": 1,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "52",
+    "name": {
+      "it": "Maiale zacai",
+      "en": "Pork with pickled mustard greens (zha cai)"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.5,
+    "category": "Maiale",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "53",
+    "name": {
+      "it": "Maiale al curry con latte di cocco piccante",
+      "en": "Spicy pork curry with coconut milk"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 7.0,
+    "category": "Maiale",
+    "allergens": [],
+    "spiceLevel": 1,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "55",
+    "name": {
+      "it": "Spuntature di maiale in salsa agrodolce",
+      "en": "Sweet and sour pork ribs"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Maiale",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "56",
+    "name": {
+      "it": "Spuntature fritte di maiale",
+      "en": "Fried pork ribs"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Maiale",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "61",
+    "name": {
+      "it": "Manzo con funghi e bambù",
+      "en": "Beef with mushrooms and bamboo shoots"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Manzo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "62",
+    "name": {
+      "it": "Manzo al curry",
+      "en": "Beef curry"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Manzo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "63",
+    "name": {
+      "it": "Manzo in salsa d'ostriche",
+      "en": "Beef in oyster sauce"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Manzo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "64",
+    "name": {
+      "it": "Manzo con patate e verdure",
+      "en": "Beef with potatoes and vegetables"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Manzo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "65",
+    "name": {
+      "it": "Manzo con sedano",
+      "en": "Beef with celery"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Manzo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "66",
+    "name": {
+      "it": "Manzo al curry con latte di cocco piccante",
+      "en": "Spicy beef curry with coconut milk"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 7.5,
+    "category": "Manzo",
+    "allergens": [],
+    "spiceLevel": 1,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "67",
+    "name": {
+      "it": "Manzo con cipolle",
+      "en": "Beef with onions"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Manzo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "71",
+    "name": {
+      "it": "Manzo con porri",
+      "en": "Beef with leeks"
+    },
+    "description": {
+      "it": "Piccante o non piccante",
+      "en": "Spicy or not spicy"
+    },
+    "price": 6.0,
+    "category": "Manzo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "70",
+    "name": {
+      "it": "Vitello speciale croccante e piccante",
+      "en": "Special crispy spicy veal"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Vitello",
+    "allergens": [],
+    "spiceLevel": 1,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "28",
+    "name": {
+      "it": "Pollo alle mandorle",
+      "en": "Chicken with almonds"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Pollo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "29",
+    "name": {
+      "it": "Pollo con patate e verdure",
+      "en": "Chicken with potatoes and vegetables"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Pollo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "30",
+    "name": {
+      "it": "Pollo in salsa piccante",
+      "en": "Chicken in spicy sauce"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Pollo",
+    "allergens": [],
+    "spiceLevel": 1,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "31",
+    "name": {
+      "it": "Pollo con otto sapori",
+      "en": "Eight-flavour chicken"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Pollo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "32",
+    "name": {
+      "it": "Pollo con anacardi",
+      "en": "Chicken with cashews"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Pollo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "33",
+    "name": {
+      "it": "Pollo con funghi e bambù",
+      "en": "Chicken with mushrooms and bamboo shoots"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Pollo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "34",
+    "name": {
+      "it": "Pollo con ananas",
+      "en": "Chicken with pineapple"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Pollo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "35",
+    "name": {
+      "it": "Pollo in salsa agrodolce",
+      "en": "Sweet and sour chicken"
+    },
+    "description": {
+      "it": "Fritto o non fritto",
+      "en": "Fried or not fried"
+    },
+    "price": 5.0,
+    "category": "Pollo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "36",
+    "name": {
+      "it": "Pollo con germogli di soia",
+      "en": "Chicken with bean sprouts"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Pollo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "38",
+    "name": {
+      "it": "Spiedini di pollo",
+      "en": "Chicken skewers"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Pollo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "39",
+    "name": {
+      "it": "Pollo al limone",
+      "en": "Lemon chicken"
+    },
+    "description": {
+      "it": "Fritto o non fritto",
+      "en": "Fried or not fried"
+    },
+    "price": 5.0,
+    "category": "Pollo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "40",
+    "name": {
+      "it": "Pollo speciale croccante e piccante",
+      "en": "Special crispy spicy chicken"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Pollo",
+    "allergens": [],
+    "spiceLevel": 1,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "41",
+    "name": {
+      "it": "Pollo fritto",
+      "en": "Fried chicken"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Pollo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "43",
+    "name": {
+      "it": "Pollo al curry",
+      "en": "Chicken curry"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Pollo",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "73",
+    "name": {
+      "it": "Gamberetti al curry",
+      "en": "Shrimp curry"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Pesce",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "74",
+    "name": {
+      "it": "Gamberetti in salsa agrodolce",
+      "en": "Sweet and sour shrimp"
+    },
+    "description": {
+      "it": "Fritto o non fritto",
+      "en": "Fried or not fried"
+    },
+    "price": 6.0,
+    "category": "Pesce",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "75",
+    "name": {
+      "it": "Gamberetti con verdure",
+      "en": "Shrimp with vegetables"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Pesce",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "76",
+    "name": {
+      "it": "Gamberetti fritti",
+      "en": "Fried shrimp"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Pesce",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "77",
+    "name": {
+      "it": "Gamberetti con mandorle",
+      "en": "Shrimp with almonds"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Pesce",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "80",
+    "name": {
+      "it": "Gamberetti in salsa piccante alla piastra",
+      "en": "Griddled shrimp in spicy sauce"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Pesce",
+    "allergens": [],
+    "spiceLevel": 1,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "81",
+    "name": {
+      "it": "Gamberetti con sale e pepe",
+      "en": "Salt and pepper shrimp"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 7.0,
+    "category": "Pesce",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "86",
+    "name": {
+      "it": "Cosce di rana fritte",
+      "en": "Fried frog legs"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Pesce",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "87",
+    "name": {
+      "it": "Cosce di rana alla piastra",
+      "en": "Griddled frog legs"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Pesce",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "89a",
+    "name": {
+      "it": "Calamari fritti",
+      "en": "Fried squid"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 7.0,
+    "category": "Pesce",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "90",
+    "name": {
+      "it": "Spigola alla griglia",
+      "en": "Grilled sea bass"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 12.0,
+    "category": "Pesce",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "90a",
+    "name": {
+      "it": "Spiedini di gamberetti",
+      "en": "Shrimp skewers"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 7.0,
+    "category": "Pesce",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "F1",
+    "name": {
+      "it": "Supplì",
+      "en": "Supplì (fried rice ball)"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 1.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "F2",
+    "name": {
+      "it": "Crocchetta di patate",
+      "en": "Potato croquette"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 1.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "F3",
+    "name": {
+      "it": "Mozzarelline fritte",
+      "en": "Fried mozzarella bites"
+    },
+    "description": {
+      "it": "5 pezzi",
+      "en": "5 pieces"
+    },
+    "price": 3.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "F4",
+    "name": {
+      "it": "Fiore di zucca",
+      "en": "Fried courgette flower"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "F5",
+    "name": {
+      "it": "Crostino con prosciutto crudo",
+      "en": "Crostino with prosciutto"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 3.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "F6",
+    "name": {
+      "it": "Crostino con alici",
+      "en": "Crostino with anchovies"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 3.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "F7",
+    "name": {
+      "it": "Crostino con funghi",
+      "en": "Crostino with mushrooms"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 3.0,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "F8",
+    "name": {
+      "it": "Bruschetta al pomodoro",
+      "en": "Tomato bruschetta"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 1.5,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "F9",
+    "name": {
+      "it": "Bruschetta con prosciutto crudo",
+      "en": "Bruschetta with prosciutto"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 1.5,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "F10",
+    "name": {
+      "it": "Bruschetta ai carciofini",
+      "en": "Bruschetta with artichokes"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 1.5,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "F11",
+    "name": {
+      "it": "Bruschetta con olive",
+      "en": "Bruschetta with olives"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 1.5,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "F12",
+    "name": {
+      "it": "Bruschetta con funghi porcini",
+      "en": "Bruschetta with porcini mushrooms"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 1.5,
+    "category": "Antipasti",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P1",
+    "name": {
+      "it": "Vecchia Napoli",
+      "en": "Vecchia Napoli"
+    },
+    "description": {
+      "it": "Pomodoro, mozzarella, pachino, alici e capperi",
+      "en": "Tomato, mozzarella, cherry tomatoes, anchovies and capers"
+    },
+    "price": 8.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P2",
+    "name": {
+      "it": "Mari e Monti",
+      "en": "Mari e Monti"
+    },
+    "description": {
+      "it": "Pomodoro, mozzarella, funghi porcini, gamberi, olive e basilico",
+      "en": "Tomato, mozzarella, porcini mushrooms, shrimp, olives and basil"
+    },
+    "price": 8.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P3",
+    "name": {
+      "it": "Olivia",
+      "en": "Olivia"
+    },
+    "description": {
+      "it": "Pomodoro, mozzarella e crema di olive",
+      "en": "Tomato, mozzarella and olive cream"
+    },
+    "price": 7.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P4",
+    "name": {
+      "it": "Salmone",
+      "en": "Salmon"
+    },
+    "description": {
+      "it": "Mozzarella e salmone",
+      "en": "Mozzarella and salmon"
+    },
+    "price": 8.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P5",
+    "name": {
+      "it": "Tonno e pomodoro",
+      "en": "Tuna and tomato"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 7.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P6",
+    "name": {
+      "it": "Patate",
+      "en": "Potato"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 6.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P7",
+    "name": {
+      "it": "Bufala bianca",
+      "en": "White buffalo mozzarella"
+    },
+    "description": {
+      "it": "Mozzarella, bufala e pachino",
+      "en": "Mozzarella, buffalo mozzarella and cherry tomatoes"
+    },
+    "price": 8.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P8",
+    "name": {
+      "it": "Carciofino",
+      "en": "Artichoke"
+    },
+    "description": {
+      "it": "Mozzarella, prosciutto cotto e carciofini",
+      "en": "Mozzarella, ham and artichokes"
+    },
+    "price": 7.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P9",
+    "name": {
+      "it": "Rossa",
+      "en": "Rossa"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P10",
+    "name": {
+      "it": "Piccante",
+      "en": "Spicy"
+    },
+    "description": {
+      "it": "Pomodoro, mozzarella, funghi, peperoncino e rucola",
+      "en": "Tomato, mozzarella, mushrooms, chilli and rocket"
+    },
+    "price": 7.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 1,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P11",
+    "name": {
+      "it": "Fiori di zucca e alici",
+      "en": "Courgette flowers and anchovies"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 8.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P12",
+    "name": {
+      "it": "Marinara",
+      "en": "Marinara"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 5.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P13",
+    "name": {
+      "it": "Boscaiola",
+      "en": "Boscaiola"
+    },
+    "description": {
+      "it": "Pomodoro, mozzarella, funghi e salsiccia",
+      "en": "Tomato, mozzarella, mushrooms and sausage"
+    },
+    "price": 7.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P14",
+    "name": {
+      "it": "Margherita",
+      "en": "Margherita"
+    },
+    "description": {
+      "it": "Pomodoro e mozzarella",
+      "en": "Tomato and mozzarella"
+    },
+    "price": 6.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P15",
+    "name": {
+      "it": "Comanda",
+      "en": "Comanda"
+    },
+    "description": {
+      "it": "Pomodoro, mozzarella, pachino e bufala",
+      "en": "Tomato, mozzarella, cherry tomatoes and buffalo mozzarella"
+    },
+    "price": 8.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P16",
+    "name": {
+      "it": "Napoli",
+      "en": "Napoli"
+    },
+    "description": {
+      "it": "Pomodoro, mozzarella e alici",
+      "en": "Tomato, mozzarella and anchovies"
+    },
+    "price": 6.5,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P17",
+    "name": {
+      "it": "Bresaola",
+      "en": "Bresaola"
+    },
+    "description": {
+      "it": "Mozzarella, rucola, bresaola e parmigiano",
+      "en": "Mozzarella, rocket, bresaola and parmesan"
+    },
+    "price": 8.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P18",
+    "name": {
+      "it": "Prosciutto cotto",
+      "en": "Ham"
+    },
+    "description": {
+      "it": "Mozzarella e prosciutto cotto",
+      "en": "Mozzarella and ham"
+    },
+    "price": 6.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P19",
+    "name": {
+      "it": "Primavera",
+      "en": "Primavera"
+    },
+    "description": {
+      "it": "Mozzarella, pachino e rucola",
+      "en": "Mozzarella, cherry tomatoes and rocket"
+    },
+    "price": 7.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": true,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P20",
+    "name": {
+      "it": "Diavola",
+      "en": "Diavola"
+    },
+    "description": {
+      "it": "Salame piccante, mozzarella, pomodoro e olive",
+      "en": "Spicy salami, mozzarella, tomato and olives"
+    },
+    "price": 7.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 1,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P21",
+    "name": {
+      "it": "4 Formaggi",
+      "en": "Four cheese"
+    },
+    "description": {
+      "it": "Mozzarella, gorgonzola, parmigiano e scamorza",
+      "en": "Mozzarella, gorgonzola, parmesan and scamorza"
+    },
+    "price": 7.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P22",
+    "name": {
+      "it": "Broccoletti",
+      "en": "Broccoli rabe"
+    },
+    "description": {
+      "it": "Mozzarella, salsiccia e broccoletti",
+      "en": "Mozzarella, sausage and broccoli rabe"
+    },
+    "price": 7.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P23",
+    "name": {
+      "it": "Capricciosa",
+      "en": "Capricciosa"
+    },
+    "description": {
+      "it": "Pomodoro, mozzarella, funghi, prosciutto, uovo, carciofini e olive",
+      "en": "Tomato, mozzarella, mushrooms, ham, egg, artichokes and olives"
+    },
+    "price": 7.5,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P24",
+    "name": {
+      "it": "Calzone con mozzarella, funghi e prosciutto cotto",
+      "en": "Calzone with mozzarella, mushrooms and ham"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 7.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P25",
+    "name": {
+      "it": "Calzone con mozzarella, uovo e würstel",
+      "en": "Calzone with mozzarella, egg and frankfurter"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 7.0,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "P26",
+    "name": {
+      "it": "Calzone con mozzarella e alici",
+      "en": "Calzone with mozzarella and anchovies"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 7.5,
+    "category": "Pizza",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "D1",
+    "name": {
+      "it": "Macedonia mista cinese",
+      "en": "Chinese mixed fruit salad"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Dolci",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "D2",
+    "name": {
+      "it": "Nutella fritta",
+      "en": "Fried Nutella"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Dolci",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "D3",
+    "name": {
+      "it": "Frutta caramellata mista",
+      "en": "Mixed caramelised fruit"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Dolci",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "D4",
+    "name": {
+      "it": "Dolce di cocco",
+      "en": "Coconut dessert"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Dolci",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "D5",
+    "name": {
+      "it": "Gelato fritto",
+      "en": "Fried ice cream"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Dolci",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "D6",
+    "name": {
+      "it": "Sorbetto al limone",
+      "en": "Lemon sorbet"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Dolci",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "D7",
+    "name": {
+      "it": "Tartufo",
+      "en": "Tartufo (ice cream truffle)"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Dolci",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "D8",
+    "name": {
+      "it": "Crème caramel",
+      "en": "Crème caramel"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Dolci",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "D9",
+    "name": {
+      "it": "Panna cotta",
+      "en": "Panna cotta"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Dolci",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "D10",
+    "name": {
+      "it": "Tiramisù",
+      "en": "Tiramisù"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Dolci",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "D11",
+    "name": {
+      "it": "Gelato misto",
+      "en": "Mixed ice cream"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Dolci",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "D12",
+    "name": {
+      "it": "Ravioli con Nutella",
+      "en": "Nutella dumplings"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Dolci",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B1",
+    "name": {
+      "it": "Acqua 1 L",
+      "en": "Water 1 L"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B2",
+    "name": {
+      "it": "Acqua 0,5 L",
+      "en": "Water 0.5 L"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B3",
+    "name": {
+      "it": "Coca-Cola 1,5 L",
+      "en": "Coca-Cola 1.5 L"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 3.5,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B4",
+    "name": {
+      "it": "Coca-Cola 33 cl",
+      "en": "Coca-Cola 33 cl"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B5",
+    "name": {
+      "it": "Fanta 33 cl",
+      "en": "Fanta 33 cl"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B6",
+    "name": {
+      "it": "Sprite 33 cl",
+      "en": "Sprite 33 cl"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B7",
+    "name": {
+      "it": "Coca-Cola Zero 33 cl",
+      "en": "Coca-Cola Zero 33 cl"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B8",
+    "name": {
+      "it": "Birra Asahi 66 cl",
+      "en": "Asahi beer 66 cl"
+    },
+    "description": {
+      "it": "Birra giapponese",
+      "en": "Japanese beer"
+    },
+    "price": 4.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B9",
+    "name": {
+      "it": "Birra Tsingtao 66 cl",
+      "en": "Tsingtao beer 66 cl"
+    },
+    "description": {
+      "it": "Birra cinese",
+      "en": "Chinese beer"
+    },
+    "price": 4.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B10",
+    "name": {
+      "it": "Birra Peroni 66 cl",
+      "en": "Peroni beer 66 cl"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B11",
+    "name": {
+      "it": "Birra Heineken 66 cl",
+      "en": "Heineken beer 66 cl"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B12",
+    "name": {
+      "it": "Birra Nastro Azzurro 66 cl",
+      "en": "Nastro Azzurro beer 66 cl"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B13",
+    "name": {
+      "it": "Birra Moretti 66 cl",
+      "en": "Moretti beer 66 cl"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 4.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B14",
+    "name": {
+      "it": "Castelli Romani bianco 750 ml",
+      "en": "Castelli Romani white 750 ml"
+    },
+    "description": {
+      "it": "Vino bianco",
+      "en": "White wine"
+    },
+    "price": 6.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B15",
+    "name": {
+      "it": "Cuvée Pinot 750 ml",
+      "en": "Cuvée Pinot 750 ml"
+    },
+    "description": {
+      "it": "Vino bianco",
+      "en": "White wine"
+    },
+    "price": 10.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B16",
+    "name": {
+      "it": "Vermentino 750 ml",
+      "en": "Vermentino 750 ml"
+    },
+    "description": {
+      "it": "Vino bianco",
+      "en": "White wine"
+    },
+    "price": 10.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B17",
+    "name": {
+      "it": "Capsula Viola 750 ml",
+      "en": "Capsula Viola 750 ml"
+    },
+    "description": {
+      "it": "Vino bianco",
+      "en": "White wine"
+    },
+    "price": 10.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B18",
+    "name": {
+      "it": "Chardonnay 750 ml",
+      "en": "Chardonnay 750 ml"
+    },
+    "description": {
+      "it": "Vino bianco",
+      "en": "White wine"
+    },
+    "price": 15.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B19",
+    "name": {
+      "it": "Sauvignon 750 ml",
+      "en": "Sauvignon 750 ml"
+    },
+    "description": {
+      "it": "Vino bianco",
+      "en": "White wine"
+    },
+    "price": 15.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B20",
+    "name": {
+      "it": "Falanghina 750 ml",
+      "en": "Falanghina 750 ml"
+    },
+    "description": {
+      "it": "Vino bianco",
+      "en": "White wine"
+    },
+    "price": 16.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B21",
+    "name": {
+      "it": "Falanghina 375 ml",
+      "en": "Falanghina 375 ml"
+    },
+    "description": {
+      "it": "Vino bianco",
+      "en": "White wine"
+    },
+    "price": 5.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B22",
+    "name": {
+      "it": "Castelli Romani rosso 750 ml",
+      "en": "Castelli Romani red 750 ml"
+    },
+    "description": {
+      "it": "Vino rosso",
+      "en": "Red wine"
+    },
+    "price": 6.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B23",
+    "name": {
+      "it": "Montepulciano 750 ml",
+      "en": "Montepulciano 750 ml"
+    },
+    "description": {
+      "it": "Vino rosso",
+      "en": "Red wine"
+    },
+    "price": 10.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B24",
+    "name": {
+      "it": "Chianti 750 ml",
+      "en": "Chianti 750 ml"
+    },
+    "description": {
+      "it": "Vino rosso",
+      "en": "Red wine"
+    },
+    "price": 15.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B25",
+    "name": {
+      "it": "Mateus rosé 750 ml",
+      "en": "Mateus rosé 750 ml"
+    },
+    "description": {
+      "it": "Vino rosé",
+      "en": "Rosé wine"
+    },
+    "price": 15.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B26",
+    "name": {
+      "it": "Lancers rosé 750 ml",
+      "en": "Lancers rosé 750 ml"
+    },
+    "description": {
+      "it": "Vino rosé",
+      "en": "Rosé wine"
+    },
+    "price": 15.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B27",
+    "name": {
+      "it": "Sambuca",
+      "en": "Sambuca"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 3.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B28",
+    "name": {
+      "it": "Limoncello",
+      "en": "Limoncello"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 3.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B29",
+    "name": {
+      "it": "Whisky",
+      "en": "Whisky"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 3.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B30",
+    "name": {
+      "it": "Vodka",
+      "en": "Vodka"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 3.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B31",
+    "name": {
+      "it": "Grappa cinese",
+      "en": "Chinese grappa"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  },
+
+  {
+    "code": "B32",
+    "name": {
+      "it": "Grappa italiana",
+      "en": "Italian grappa"
+    },
+    "description": {
+      "it": "",
+      "en": ""
+    },
+    "price": 2.0,
+    "category": "Bevande",
+    "allergens": [],
+    "spiceLevel": 0,
+    "isVegetarian": false,
+    "isFrozen": false,
+    "isAvailable": true,
+    "isPublished": true,
+    "isFeatured": false
+  }
+]

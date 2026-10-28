@@ -20,7 +20,8 @@
   },
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed": "node seed/seed.js"
   },
   "dependencies": {
     "cors": "^2.8.6",

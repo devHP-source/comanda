@@ -1,0 +1,91 @@
+[
+  {
+    "name": {
+      "it": "Antipasti",
+      "en": "Appetizers"
+    }, "order": 1 },
+    
+  {
+    "name": {
+      "it": "Omelette",
+      "en": "Omelettes"
+    }, "order": 2 },
+    
+  {
+    "name": {
+      "it": "Zuppe",
+      "en": "Soups"
+    }, "order": 3 },
+    
+  {
+    "name": {
+      "it": "Primi Piatti",
+      "en": "Rice & Noodles"
+    }, "order": 4 },
+    
+  {
+    "name": {
+      "it": "Tofu",
+      "en": "Tofu"
+    }, "order": 5 },
+    
+  {
+    "name": {
+      "it": "Verdure",
+      "en": "Vegetables"
+    }, "order": 6 },
+    
+  {
+    "name": {
+      "it": "Anatra",
+      "en": "Duck"
+    }, "order": 7 },
+    
+  {
+    "name": {
+      "it": "Maiale",
+      "en": "Pork"
+    }, "order": 8 },
+    
+  {
+    "name": {
+      "it": "Manzo",
+      "en": "Beef"
+    }, "order": 9 },
+    
+  {
+    "name": {
+      "it": "Vitello",
+      "en": "Veal"
+    }, "order": 10 },
+    
+  {
+    "name": {
+      "it": "Pollo",
+      "en": "Chicken"
+    }, "order": 11 },
+    
+  {
+    "name": {
+      "it": "Pesce",
+      "en": "Seafood"
+    }, "order": 12 },
+    
+  {
+    "name": {
+      "it": "Pizza",
+      "en": "Pizza"
+    }, "order": 13 },
+    
+  {
+    "name": {
+      "it": "Dolci",
+      "en": "Desserts"
+    }, "order": 14 },
+    
+  {
+    "name": {
+      "it": "Bevande",
+      "en": "Drinks"
+    }, "order": 15 }
+]
