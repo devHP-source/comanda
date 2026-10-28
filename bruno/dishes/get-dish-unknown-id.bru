@@ -1,0 +1,16 @@
+meta {
+  name: Get dish - unknown id (404)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/dishes/000000000000000000000000
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+  res.body.code: eq DISH_NOT_FOUND
+}

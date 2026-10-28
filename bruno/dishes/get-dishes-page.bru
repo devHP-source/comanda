@@ -1,0 +1,23 @@
+meta {
+  name: Get dishes (page 1)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/dishes?page=1&limit=10
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  limit: 10
+}
+
+assert {
+  res.status: eq 200
+  res.body.data: isArray
+  res.body.page: eq 1
+  res.body.totalPages: isNumber
+}

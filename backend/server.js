@@ -8,6 +8,7 @@ import connectDB from "./config/db.js"
 import notFound from "./middlewares/notFound.js"
 import errorHandler from "./middlewares/errorHandler.js"
 import categoryRoutes from "./routes/categoryRoutes.js"
+import dishRoutes from "./routes/dishRoutes.js"
 
 const app = express()
 const PORT = process.env.PORT || 9099
@@ -31,6 +32,7 @@ app.get("/api/health", (req, res) => { // Health check per svegliare Render dall
 })
 
 app.use("/api/categories", categoryRoutes)
+app.use("/api/dishes", dishRoutes)
 
 app.use(notFound)
 app.use(errorHandler)
