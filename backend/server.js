@@ -7,6 +7,7 @@ import mongoose from "mongoose"
 import connectDB from "./config/db.js"
 import notFound from "./middlewares/notFound.js"
 import errorHandler from "./middlewares/errorHandler.js"
+import categoryRoutes from "./routes/categoryRoutes.js"
 
 const app = express()
 const PORT = process.env.PORT || 9099
@@ -28,6 +29,8 @@ app.get("/api/health", (req, res) => { // Health check per svegliare Render dall
     db: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
   })
 })
+
+app.use("/api/categories", categoryRoutes)
 
 app.use(notFound)
 app.use(errorHandler)
