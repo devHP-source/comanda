@@ -25,8 +25,8 @@ assert {
 }
 
 script:post-response {
-  // Saved for the protected requests of the next steps: Authorization: Bearer {{adminToken}}
+  // Runtime variable (memory only, never written to the environment file): Authorization: Bearer {{adminToken}}
   if (res.status === 200) {
-    bru.setEnvVar("adminToken", res.body.token)
+    bru.setVar("adminToken", res.body.token)
   }
 }

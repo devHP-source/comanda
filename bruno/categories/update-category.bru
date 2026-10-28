@@ -1,0 +1,27 @@
+meta {
+  name: Update category - admin (200)
+  type: http
+  seq: 7
+}
+
+put {
+  url: {{baseUrl}}/categories/{{categoryId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "name": { "en": "Test category (edited)" }
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.name.it: eq Test categoria
+  res.body.name.en: eq Test category (edited)
+}

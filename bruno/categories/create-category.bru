@@ -1,0 +1,35 @@
+meta {
+  name: Create category - admin (201)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/categories
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "name": { "it": "Test categoria", "en": "Test category" },
+    "order": 99
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.name.it: eq Test categoria
+  res.body._id: isString
+}
+
+script:post-response {
+  // Used by the update/delete requests below
+  if (res.status === 201) {
+    bru.setVar("categoryId", res.body._id)
+  }
+}

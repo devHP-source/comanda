@@ -14,3 +14,10 @@ assert {
   res.status: eq 200
   res.body: isArray
 }
+
+script:post-response {
+  // First category in menu order (Antipasti): it has dishes, used by "Delete category - with dishes"
+  if (res.status === 200 && res.body.length) {
+    bru.setVar("seededCategoryId", res.body[0]._id)
+  }
+}

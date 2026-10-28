@@ -1,0 +1,19 @@
+meta {
+  name: Delete category - admin (204)
+  type: http
+  seq: 12
+}
+
+delete {
+  url: {{baseUrl}}/categories/{{categoryId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 204
+}

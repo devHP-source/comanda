@@ -1,0 +1,27 @@
+meta {
+  name: Create category - waiter (403)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/categories
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "name": { "it": "Test categoria", "en": "Test category" },
+    "order": 99
+  }
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq FORBIDDEN
+}

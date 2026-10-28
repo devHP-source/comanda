@@ -1,0 +1,27 @@
+meta {
+  name: Create category - duplicate name (409)
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/categories
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "name": { "it": "Test categoria", "en": "Test category" },
+    "order": 99
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq DUPLICATE_KEY
+}

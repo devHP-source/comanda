@@ -1,0 +1,26 @@
+meta {
+  name: Update category - waiter (403)
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{baseUrl}}/categories/{{categoryId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "name": { "en": "Waiter edit" }
+  }
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq FORBIDDEN
+}

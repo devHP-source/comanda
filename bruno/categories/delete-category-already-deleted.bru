@@ -1,0 +1,20 @@
+meta {
+  name: Delete category - already deleted (404)
+  type: http
+  seq: 13
+}
+
+delete {
+  url: {{baseUrl}}/categories/{{categoryId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 404
+  res.body.code: eq CATEGORY_NOT_FOUND
+}

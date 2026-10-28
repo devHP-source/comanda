@@ -1,0 +1,26 @@
+meta {
+  name: Update category - unknown id (404)
+  type: http
+  seq: 9
+}
+
+put {
+  url: {{baseUrl}}/categories/000000000000000000000000
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "order": 1
+  }
+}
+
+assert {
+  res.status: eq 404
+  res.body.code: eq CATEGORY_NOT_FOUND
+}

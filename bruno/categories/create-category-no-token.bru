@@ -1,0 +1,23 @@
+meta {
+  name: Create category - no token (401)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/categories
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": { "it": "Test categoria", "en": "Test category" },
+    "order": 99
+  }
+}
+
+assert {
+  res.status: eq 401
+  res.body.code: eq NO_TOKEN
+}

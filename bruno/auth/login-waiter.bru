@@ -1,0 +1,30 @@
+meta {
+  name: Login - waiter (200)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{process.env.SEED_WAITER_EMAIL}}",
+    "password": "{{process.env.SEED_WAITER_PASSWORD}}"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.user.role: eq waiter
+}
+
+script:post-response {
+  // Runtime variable (memory only): used to check that admin-only routes answer 403 to other roles
+  if (res.status === 200) {
+    bru.setVar("waiterToken", res.body.token)
+  }
+}
