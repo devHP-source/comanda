@@ -1,0 +1,32 @@
+meta {
+  name: Login - admin (200)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{process.env.SEED_ADMIN_EMAIL}}",
+    "password": "{{process.env.SEED_ADMIN_PASSWORD}}"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.token: isString
+  res.body.user.role: eq admin
+  res.body.user.password: isUndefined
+}
+
+script:post-response {
+  // Saved for the protected requests of the next steps: Authorization: Bearer {{adminToken}}
+  if (res.status === 200) {
+    bru.setEnvVar("adminToken", res.body.token)
+  }
+}

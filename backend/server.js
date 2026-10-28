@@ -9,9 +9,12 @@ import notFound from "./middlewares/notFound.js"
 import errorHandler from "./middlewares/errorHandler.js"
 import categoryRoutes from "./routes/categoryRoutes.js"
 import dishRoutes from "./routes/dishRoutes.js"
+import authRoutes from "./routes/authRoutes.js"
 
 const app = express()
 const PORT = process.env.PORT || 9099
+
+app.set("trust proxy", 1) // Render sits behind a proxy: the rate limit must read the real client IP
 
 // Allow the deployed frontend + Vite dev server
 const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5173"].filter(Boolean)
@@ -31,6 +34,7 @@ app.get("/api/health", (req, res) => { // Health check per svegliare Render dall
   })
 })
 
+app.use("/api/auth", authRoutes)
 app.use("/api/categories", categoryRoutes)
 app.use("/api/dishes", dishRoutes)
 

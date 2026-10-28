@@ -1,0 +1,22 @@
+meta {
+  name: Login - missing fields (400)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{process.env.SEED_ADMIN_EMAIL}}"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq MISSING_CREDENTIALS
+}
