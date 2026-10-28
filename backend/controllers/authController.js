@@ -32,3 +32,7 @@ export const login = async (req, res) => { // POST /api/auth/login (public, rate
     user,
   })
 }
+
+export const getMe = (req, res) => { // GET /api/auth/me (staff): req.user was loaded by authenticate
+  res.json(req.user)
+}

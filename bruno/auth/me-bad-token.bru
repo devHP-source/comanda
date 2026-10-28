@@ -1,0 +1,20 @@
+meta {
+  name: Me - bad token (401)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/auth/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: not.a.real-token
+}
+
+assert {
+  res.status: eq 401
+  res.body.code: eq INVALID_TOKEN
+}

@@ -1,0 +1,26 @@
+meta {
+  name: Me - admin (200)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/auth/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+docs {
+  Run "Login - admin" first: it saves adminToken.
+}
+
+assert {
+  res.status: eq 200
+  res.body.role: eq admin
+  res.body.isActive: eq true
+  res.body.password: isUndefined
+}
