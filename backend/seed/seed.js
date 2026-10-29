@@ -3,16 +3,86 @@
 * npm run seed 
 */
 import "dotenv/config"
-import { readFile } from "node:fs/promises"
+import { readFile, readdir } from "node:fs/promises"
+import path from "node:path"
 import mongoose from "mongoose"
 import connectDB from "../config/db.js"
+import cloudinary from "../config/cloudinary.js"
 import Category from "../models/Category.js"
 import Dish from "../models/Dish.js"
 import User from "../models/User.js"
+import { uploadImage, DISH_IMAGES_FOLDER } from "../services/uploadImage.js"
+
+const PHOTO_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp"]
 
 async function readJson(fileName) {
   const text = await readFile(new URL(fileName, import.meta.url), "utf-8")
   return JSON.parse(text)
+}
+
+// SEED_IMAGES_DIR holds one photo per dish named by its code (47.jpg, P12.jpg) --> Map code -> file path.
+// Relative paths start from backend/ (npm run seed runs there). The photos are never in the repo
+async function findDishPhotos() {
+  const dir = process.env.SEED_IMAGES_DIR
+  if (!dir) {
+    console.warn("SEED_IMAGES_DIR not set: dishes are seeded without photos")
+    return new Map()
+  }
+
+  const photos = new Map()
+  for (const fileName of await readdir(dir)) { // wrong path --> ENOENT, before anything is deleted
+    const { name, ext } = path.parse(fileName)
+    if (PHOTO_EXTENSIONS.includes(ext.toLowerCase())) photos.set(name, path.join(dir, fileName))
+  }
+  return photos
+}
+
+// The seed recreates every dish: photos the admin uploaded (random ids) would stay on Cloudinary with no dish
+// pointing to them. Wiping the whole folder also catches older orphans; the seed photos are uploaded again right after
+async function deleteAllDishPhotos() {
+  const result = await cloudinary.api.delete_resources_by_prefix(`${DISH_IMAGES_FOLDER}/`, { invalidate: true })
+  console.log(`Deleted ${Object.keys(result.deleted).length} dish photos from Cloudinary`)
+}
+
+async function uploadDishPhotos(dishes, photos) {
+  let uploaded = 0
+  for (const dish of dishes) { // one at a time: simple, and well inside Cloudinary's limits
+    const filePath = photos.get(dish.code) // exact match: "P12.jpg" for code "P12"
+    if (!filePath) continue // no file --> image stays empty, the frontend shows a placeholder
+
+    // Fixed public_id comanda/dishes/<code>: re-running the seed replaces the same photo, never adds a copy
+    dish.image = await uploadImage(await readFile(filePath), DISH_IMAGES_FOLDER, {
+      public_id: dish.code,
+      overwrite: true,
+      invalidate: true,
+    })
+    await dish.save()
+    uploaded++
+  }
+  console.log(`Uploaded ${uploaded} dish photos`)
+
+  const dishCodes = new Set(dishes.map((dish) => dish.code))
+  const unmatched = [...photos.keys()].filter((code) => !dishCodes.has(code))
+  if (unmatched.length) console.log(`Skipped photos with no matching dish code: ${unmatched.join(", ")}`)
+}
+
+// Optional "coverDish": "<dish code>" in categories.json picks the category preview photo.
+// Without it, GET /api/categories uses the first dish of the category with a photo
+async function setCoverDishes(categoriesData, categoryIds, dishes) {
+  const dishByCode = new Map(dishes.map((dish) => [dish.code, dish]))
+  let count = 0
+
+  for (const { name, coverDish: code } of categoriesData) {
+    if (!code) continue
+    const dish = dishByCode.get(code)
+    const categoryId = categoryIds[name.it]
+    if (!dish || !dish.category.equals(categoryId)) {
+      throw new Error(`Category "${name.it}": coverDish "${code}" is not one of its dishes`)
+    }
+    await Category.updateOne({ _id: categoryId }, { coverDish: dish._id })
+    count++
+  }
+  console.log(`Set coverDish on ${count} categories`)
 }
 
 function requireEnv(name) { // demo credentials come only from .env, never hardcoded
@@ -55,6 +125,7 @@ async function seed() {
   const categoriesData = await readJson("./categories.json")
   const dishesData = await readJson("./dishes.json")
   const staffData = getStaffData() // check .env before deleting anything
+  const photos = await findDishPhotos() // same: a wrong SEED_IMAGES_DIR stops the seed here
 
   await connectDB()
   await Promise.all([Category.init(), Dish.init(), User.init()]) // wait for the unique indexes (code, name.it, email) before inserting
@@ -62,11 +133,13 @@ async function seed() {
   await Dish.deleteMany()
   await Category.deleteMany()
   await User.deleteMany() // staff accounts come only from the seed
+  await deleteAllDishPhotos()
 
   const users = await User.create(staffData) // create(), not insertMany(): runs pre('save') so passwords get hashed
   console.log(`Inserted ${users.length} staff users (${users.map((user) => user.role).join(", ")})`)
 
-  const categories = await Category.insertMany(categoriesData)
+  // coverDish in the JSON is a dish code: left out here, set by setCoverDishes once the dishes exist
+  const categories = await Category.insertMany(categoriesData.map(({ coverDish, ...category }) => category))
   console.log(`Inserted ${categories.length} categories`)
 
   const categoryIds = {}  // dishes.json links each dish to its category by Italian name --> swap the name for the _id
@@ -84,6 +157,9 @@ async function seed() {
 
   const insertedDishes = await Dish.insertMany(dishes)
   console.log(`Inserted ${insertedDishes.length} dishes`)
+
+  await uploadDishPhotos(insertedDishes, photos)
+  await setCoverDishes(categoriesData, categoryIds, insertedDishes)
 }
 
 try {

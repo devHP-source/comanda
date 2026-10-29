@@ -1,5 +1,5 @@
 import Category from "../models/Category.js"
-import Dish from "../models/Dish.js"
+import Dish, { byCode } from "../models/Dish.js"
 
 const categoryNotFound = () => {
   const err = new Error("Category not found")
@@ -8,9 +8,28 @@ const categoryNotFound = () => {
   return err
 }
 
-export async function getCategories(req, res) { // GET /api/categories (public): all categories in menu order
-  const categories = await Category.find().sort({ order: 1 })
-  res.json(categories)
+
+export const getCategories = async (req, res) => { // GET /api/categories (public): all categories in menu order, each with a coverImage url.
+  const [categories, dishesWithPhoto] = await Promise.all([
+    Category.find().sort({ order: 1 }),
+    Dish.find({ isPublished: true, "image.url": { $ne: "" } }) // unpublished dishes never preview a category
+      .sort({ code: 1 })
+      .collation(byCode)
+      .select("category image"), // coverImage = photo of coverDish, else the first dish of the category with a photo, else "" (the frontend shows a placeholder)
+  ])
+
+  const photoByDish = new Map() // dish _id --> url
+  const firstPhotoByCategory = new Map() // category _id --> url of its first dish (by code) with a photo
+  for (const dish of dishesWithPhoto) {
+    photoByDish.set(String(dish._id), dish.image.url)
+    const categoryId = String(dish.category)
+    if (!firstPhotoByCategory.has(categoryId)) firstPhotoByCategory.set(categoryId, dish.image.url)
+  }
+
+  res.json(categories.map((category) => ({
+    ...category.toJSON(),
+    coverImage: photoByDish.get(String(category.coverDish)) || firstPhotoByCategory.get(String(category._id)) || "",
+  })))
 }
 
 export const createCategory = async (req, res) => { // POST /api/categories (admin)

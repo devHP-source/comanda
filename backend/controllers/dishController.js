@@ -1,14 +1,12 @@
-import Dish from "../models/Dish.js"
+import Dish, { byCode } from "../models/Dish.js"
 import Category from "../models/Category.js"
-import { uploadImage, deleteImage } from "../services/uploadImage.js"
+import { uploadImage, deleteImage, DISH_IMAGES_FOLDER } from "../services/uploadImage.js"
 
 const publishedOnly = { isPublished: true } // guests never see unpublished dishes (sold out ones stay visible)
-const byCode = { locale: "it", numericOrdering: true } // codes are strings: sort 1, 1a, 3, 12, 108 instead of 1, 108, 12
 
 // Fields the admin can write. image is handled by the upload steps, never from the JSON body
 const plainFields = ["code", "price", "category", "allergens", "spiceLevel", "isVegetarian", "isFrozen", "isAvailable", "isPublished", "isFeatured"]
 const langFields = ["name", "description"] // { it, en }
-const DISH_IMAGES_FOLDER = "comanda/dishes" // Cloudinary folder
 
 const dishNotFound = (id) => {
   const err = new Error(`Dish not found: ${id}`)
@@ -152,6 +150,7 @@ export const deleteDish = async (req, res) => { // DELETE /api/dishes/:id (admin
   if (!dish) throw dishNotFound(req.params.id)
 
   await dish.deleteOne()
+  await Category.updateMany({ coverDish: dish._id }, { coverDish: null }) // its category falls back to another dish's photo
   // Photo after the dish: if Cloudinary fails we only leave an unused file, never a dish with a broken image
   if (dish.image.publicId) await deleteImage(dish.image.publicId).catch(console.error)
   res.status(204).end()

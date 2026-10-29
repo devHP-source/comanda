@@ -18,10 +18,16 @@ export const ALLERGENS = [
   "molluscs",
 ]
 
+export const byCode = { // Codes are strings: 
+  locale: "it", 
+  numericOrdering: true 
+} // this collation sorts 1, 1a, 3, 12, 108 instead of 1, 108, 12. Use with .sort({ code: 1 })
+
 const eurosToCents = (euros) => {
   if (euros == null || euros === "") return euros // let required answer (Number(null) would be 0)
-  // "1.005e2" shifts the decimal point in the string: exactly 100.5 --> rounds half up to 101.
-  // 1.005 * 100 would give 100.49999999999999 --> 100 (wrong). Non-numbers --> NaN --> cast error
+  /* 1.005e2" sposta la virgola decimale nella stringa: esattamente 100,5 --> arrotonda per eccesso (se la parte decimale è pari o superiore a 0,5) a 101.
+  1,005 * 100 darebbe 100,499999999 --> 100 (errato)
+  Valori non numerici --> NaN --> errore di conversione (cast) */
   const cents = Number(euros + "e2")
   return cents < 0 ? cents : Math.round(cents) // negatives stay as they are: -0.004 must not round to 0 and pass min
 }

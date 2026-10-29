@@ -13,6 +13,11 @@ get {
 assert {
   res.status: eq 200
   res.body: isArray
+  res.body[0].coverImage: isString
+}
+
+docs {
+  coverImage = photo of coverDish, else the first published dish of the category with a photo, else "" (placeholder).
 }
 
 script:post-response {
