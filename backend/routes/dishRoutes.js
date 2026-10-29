@@ -17,7 +17,7 @@ router.get("/", getDishes)
 router.get("/:id", getDishById)
 router.post("/", authenticate, authorize("admin"), uploadDishImage, createDish) // multer after the role check: guests can't upload files
 
-router.put("/:id", authenticate, authorize("admin"), updateDish)
+router.put("/:id", authenticate, authorize("admin"), uploadDishImage, updateDish)
 router.patch("/:id/availability", authenticate, authorize("admin", "waiter", "kitchen"), updateAvailability)
 router.delete("/:id", authenticate, authorize("admin"), deleteDish)
 

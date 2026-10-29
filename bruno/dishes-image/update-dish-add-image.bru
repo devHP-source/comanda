@@ -1,0 +1,29 @@
+meta {
+  name: Update dish - add image to a dish without one (200)
+  type: http
+  seq: 9
+}
+
+put {
+  url: {{baseUrl}}/dishes/{{imageDishId}}
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:multipart-form {
+  image: @file(../../menu-images/test.jpg)
+}
+
+assert {
+  res.status: eq 200
+  res.body.image.url: startsWith https://res.cloudinary.com/
+  res.body.image.publicId: startsWith comanda/dishes/
+}
+
+docs {
+  No old photo to delete. Gives request 10 a photo, so the delete still removes one from Cloudinary.
+}

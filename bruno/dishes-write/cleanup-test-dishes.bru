@@ -1,0 +1,58 @@
+meta {
+  name: Cleanup - delete leftover test dishes (200)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/admin/dishes?page=1&limit=100
+  body: none
+  auth: bearer
+}
+
+params:query {
+  page: 1
+  limit: 100
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+script:post-response {
+  // A run that stopped halfway leaves TEST1/TEST2 in the DB (and the next create answers 409).
+  // Deleted through the API, so the server also removes their Cloudinary photos
+  const axios = require("axios")
+  const TEST_CODES = ["TEST1", "TEST2"]
+  const baseUrl = bru.getEnvVar("baseUrl")
+  const headers = { Authorization: `Bearer ${bru.getVar("adminToken")}` }
+
+  const leftovers = res.body.data.filter((dish) => TEST_CODES.includes(dish.code))
+  for (let page = 2; page <= res.body.totalPages; page++) { // page 1 is this request's response
+    const { data } = await axios.get(`${baseUrl}/admin/dishes`, { headers, params: { page, limit: 100 } })
+    leftovers.push(...data.data.filter((dish) => TEST_CODES.includes(dish.code)))
+  }
+
+  const statuses = []
+  for (const dish of leftovers) {
+    const { status } = await axios.delete(`${baseUrl}/dishes/${dish._id}`, { headers })
+    statuses.push(status)
+  }
+  bru.setVar("cleanupStatuses", statuses)
+  console.log(`Cleanup: deleted ${leftovers.length} test dish(es)`, leftovers.map((dish) => dish.code))
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("every leftover test dish was deleted", () => {
+    for (const status of bru.getVar("cleanupStatuses")) expect(status).to.equal(204)
+  })
+}
+
+docs {
+  Runs first in the folder: deletes TEST1 and TEST2 if a previous run left them, so every run starts clean.
+  Nothing to delete is normal (most runs). Needs adminToken from the auth folder.
+}

@@ -1,0 +1,32 @@
+meta {
+  name: Update dish - removeImage (200)
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{baseUrl}}/dishes/{{imageDishId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "removeImage": true
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.name.it: eq Piatto con foto
+  res.body.image.url: isEmpty
+  res.body.image.publicId: isEmpty
+}
+
+docs {
+  The photo from request 5 is deleted from Cloudinary after the save: comanda/dishes is empty now.
+}

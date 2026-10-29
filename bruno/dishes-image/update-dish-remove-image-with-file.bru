@@ -1,0 +1,29 @@
+meta {
+  name: Update dish - removeImage with a new image (400)
+  type: http
+  seq: 7
+}
+
+put {
+  url: {{baseUrl}}/dishes/{{imageDishId}}
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:multipart-form {
+  removeImage: true
+  image: @file(../../menu-images/test.jpg)
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq REMOVE_IMAGE_WITH_FILE
+}
+
+docs {
+  Rejected before anything reaches Cloudinary: the dish keeps its photo from request 5.
+}

@@ -1,0 +1,40 @@
+meta {
+  name: Update dish - replace image (200)
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/dishes/{{imageDishId}}
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:multipart-form {
+  name[en]: Dish with new photo
+  image: @file(../../menu-images/test.jpg)
+}
+
+assert {
+  res.status: eq 200
+  res.body.name.it: eq Piatto con foto
+  res.body.name.en: eq Dish with new photo
+  res.body.image.url: startsWith https://res.cloudinary.com/
+  res.body.image.publicId: startsWith comanda/dishes/
+}
+
+tests {
+  test("new photo has a new publicId", () => {
+    expect(res.body.image.publicId).to.not.equal(bru.getVar("imagePublicId"))
+  })
+}
+
+docs {
+  Same file as request 2, but Cloudinary gives every upload a new publicId.
+  No post-response script here: Bruno runs it before tests, so overwriting imagePublicId would make the test compare the new id with itself.
+  The old photo is deleted after the save: comanda/dishes still holds only one photo for this dish.
+}

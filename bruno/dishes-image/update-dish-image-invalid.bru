@@ -1,0 +1,30 @@
+meta {
+  name: Update dish - image with negative price (400)
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/dishes/{{imageDishId}}
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:multipart-form {
+  price: -1
+  image: @file(../../menu-images/test.jpg)
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq VALIDATION_FAILED
+  res.body.errors.price: isString
+}
+
+docs {
+  validate() runs before the upload: nothing reaches Cloudinary and the dish keeps its photo from request 5.
+}

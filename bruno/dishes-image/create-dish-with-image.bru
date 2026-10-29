@@ -1,7 +1,7 @@
 meta {
   name: Create dish - multipart with image (201)
   type: http
-  seq: 1
+  seq: 2
 }
 
 post {
@@ -40,5 +40,6 @@ script:post-response {
   // Any JPEG/PNG/WebP under 5 MB works: put it in Capstone/menu-images/test.jpg or pick another file in the Body tab
   if (res.status === 201) {
     bru.setVar("imageDishId", res.body._id)
+    bru.setVar("imagePublicId", res.body.image.publicId) // the replace request checks it changes
   }
 }

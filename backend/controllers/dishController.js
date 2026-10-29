@@ -37,6 +37,24 @@ const checkCategoryExists = async (categoryId) => { // the schema only checks it
   }
 }
 
+// validates first, upload and save, for create and update. Works the same without a file (JSON requests)
+const saveDish = async (dish, file) => {
+  await dish.validate() // check the fields before uploading: a bad request never leaves a photo on Cloudinary
+  if (!file) return dish.save()
+
+  const oldPublicId = dish.image.publicId // "" on create or when the dish had no photo
+  dish.image = await uploadImage(file.buffer, DISH_IMAGES_FOLDER)
+
+  try {
+    await dish.save() // duplicate code --> 11000 --> 409 in errorHandler (validate() can't see unique indexes)
+  } catch (err) {
+    await deleteImage(dish.image.publicId).catch(console.error) // Save failed after the upload: remove the orphan photo, then answer with the original error
+    throw err
+  }
+
+  if (oldPublicId) await deleteImage(oldPublicId).catch(console.error) // Replaced the old photo goes only after the new one is saved, so the dish never points to a deleted image
+}
+
 const findDishPage = async (filter, query) => { // .sort().skip().limit() + countDocuments() --> { data, page, totalPages }
   const page = Math.max(1, parseInt(query.page) || 1)
   const limit = Math.min(100, Math.max(1, parseInt(query.limit) || 20))
@@ -79,31 +97,34 @@ export const createDish = async (req, res) => { // POST /api/dishes (admin): JSO
 
   const dish = new Dish()
   applyDishFields(dish, body)
-  await dish.validate() // check the fields before uploading: a bad request never leaves a photo on Cloudinary
-
-  if (req.file) {
-    dish.image = await uploadImage(req.file.buffer, DISH_IMAGES_FOLDER)
-  }
-
-  try {
-    await dish.save() // duplicate code --> 11000 --> 409 in errorHandler (validate() can't see unique indexes)
-  } catch (err) {
-    // Save failed after the upload: remove the orphan photo, then answer with the original error
-    if (dish.image.publicId) await deleteImage(dish.image.publicId).catch(console.error)
-    throw err
-  }
+  await saveDish(dish, req.file)
   res.status(201).json(dish)
 }
 
-export const updateDish = async (req, res) => { // PUT /api/dishes/:id (admin): only the fields sent change
+export const updateDish = async (req, res) => { // PUT /api/dishes/:id (admin): only the fields sent change. A new "image" file replaces the old one, removeImage: true clears it
+  const body = req.body ?? {}
+  const removeImage = body.removeImage === true || body.removeImage === "true" // JSON sends a boolean, multipart a string
+
+  if (removeImage && req.file) {
+    const err = new Error("Send either removeImage or a new image, not both")
+    err.status = 400
+    err.code = "REMOVE_IMAGE_WITH_FILE"
+    throw err
+  }
+
   const dish = await Dish.findById(req.params.id)
   if (!dish) throw dishNotFound(req.params.id)
 
-  const body = req.body ?? {}
   await checkCategoryExists(body.category)
 
+  const oldPublicId = dish.image.publicId
+  if (removeImage) dish.image = { url: "", publicId: "" } // the menu shows the placeholder
+
   applyDishFields(dish, body)
-  await dish.save() // save() runs the full schema validation
+  await saveDish(dish, req.file)
+
+  // Same rule as a replace: the photo leaves Cloudinary only after the dish is saved without it
+  if (removeImage && oldPublicId) await deleteImage(oldPublicId).catch(console.error)
   res.json(dish)
 }
 
@@ -126,10 +147,12 @@ export const updateAvailability = async (req, res) => { // PATCH /api/dishes/:id
   res.json(dish)
 }
 
-export const deleteDish = async (req, res) => { // DELETE /api/dishes/:id (admin). Cloudinary image cleanup comes in step 12
+export const deleteDish = async (req, res) => { // DELETE /api/dishes/:id (admin): the dish and its Cloudinary photo
   const dish = await Dish.findById(req.params.id)
   if (!dish) throw dishNotFound(req.params.id)
 
   await dish.deleteOne()
+  // Photo after the dish: if Cloudinary fails we only leave an unused file, never a dish with a broken image
+  if (dish.image.publicId) await deleteImage(dish.image.publicId).catch(console.error)
   res.status(204).end()
 }

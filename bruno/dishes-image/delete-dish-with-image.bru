@@ -1,7 +1,7 @@
 meta {
   name: Delete dish with image - admin (204)
   type: http
-  seq: 4
+  seq: 10
 }
 
 delete {
@@ -19,5 +19,6 @@ assert {
 }
 
 docs {
-  Cleans up the test dish. Its photo stays on Cloudinary until step 12 (delete the image too): remove it by hand for now.
+  Cleans up the test dish and deletes its photo from Cloudinary.
+  After this request comanda/dishes has no test photos left.
 }

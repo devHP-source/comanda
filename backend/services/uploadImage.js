@@ -16,4 +16,4 @@ export const uploadImage = (buffer, folder) =>
     stream.end(buffer) // memoryStorage gives a Buffer: write it all and close the stream
   })
 
-export const deleteImage = (publicId) => cloudinary.uploader.destroy(publicId)
+export const deleteImage = (publicId) => cloudinary.uploader.destroy(publicId, { invalidate: true }) // invalidate: also clears the CDN cache, so the old url stops serving the photo
