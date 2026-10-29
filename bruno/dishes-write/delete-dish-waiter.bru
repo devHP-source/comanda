@@ -1,0 +1,20 @@
+meta {
+  name: Delete dish - waiter (403)
+  type: http
+  seq: 16
+}
+
+delete {
+  url: {{baseUrl}}/dishes/{{dishId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq FORBIDDEN
+}

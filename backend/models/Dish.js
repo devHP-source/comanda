@@ -18,6 +18,16 @@ export const ALLERGENS = [
   "molluscs",
 ]
 
+const eurosToCents = (euros) => {
+  if (euros == null || euros === "") return euros // let required answer (Number(null) would be 0)
+  // "1.005e2" shifts the decimal point in the string: exactly 100.5 --> rounds half up to 101.
+  // 1.005 * 100 would give 100.49999999999999 --> 100 (wrong). Non-numbers --> NaN --> cast error
+  const cents = Number(euros + "e2")
+  return cents < 0 ? cents : Math.round(cents) // negatives stay as they are: -0.004 must not round to 0 and pass min
+}
+
+const centsToEuros = (cents) => (cents == null ? cents : cents / 100)
+
 const dishSchema = new mongoose.Schema(
   {
     code: { // number printed on the menu, es: 47 (String: also "1a", "15g", "P12")
@@ -53,14 +63,12 @@ const dishSchema = new mongoose.Schema(
       },
     },
 
-    price: { // in cents: 850 = € 8,50
+    price: { // API speaks euros (8.5), the DB stores cents (850): no float rounding errors in totals
       type: Number,
       required: true,
-      min: 0,
-      validate: { 
-        validator: Number.isInteger, 
-        message: "price must be an integer (cents)" 
-      },
+      min: [0, "price can't be negative"],
+      set: eurosToCents,
+      get: centsToEuros, // the setter always stores whole cents: no integer validator needed
     },
 
     image: {
@@ -116,7 +124,10 @@ const dishSchema = new mongoose.Schema(
       type: Boolean, 
       default: false 
     },
-  }, { timestamps: true }
+  }, {
+    timestamps: true,
+    toJSON: { getters: true, virtuals: false }, // res.json() sends price in euros; virtuals: false keeps the extra "id" out
+  }
 )
 
 export default mongoose.model("Dish", dishSchema)

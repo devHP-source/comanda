@@ -1,0 +1,33 @@
+meta {
+  name: Get admin dishes - admin (200)
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/admin/dishes?page=1&limit=10
+  body: none
+  auth: bearer
+}
+
+params:query {
+  page: 1
+  limit: 10
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.data: isArray
+  res.body.page: eq 1
+  res.body.totalPages: isNumber
+}
+
+tests {
+  test("page holds at most 10 dishes", function () {
+    expect(res.body.data.length).to.be.at.most(10);
+  });
+}

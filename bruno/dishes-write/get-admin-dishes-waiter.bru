@@ -1,0 +1,20 @@
+meta {
+  name: Get admin dishes - waiter (403)
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/admin/dishes
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq FORBIDDEN
+}

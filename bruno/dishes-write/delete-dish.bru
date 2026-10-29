@@ -1,0 +1,19 @@
+meta {
+  name: Delete dish - admin (204)
+  type: http
+  seq: 17
+}
+
+delete {
+  url: {{baseUrl}}/dishes/{{dishId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 204
+}

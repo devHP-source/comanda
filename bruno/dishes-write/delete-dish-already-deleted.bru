@@ -1,0 +1,20 @@
+meta {
+  name: Delete dish - already deleted (404)
+  type: http
+  seq: 18
+}
+
+delete {
+  url: {{baseUrl}}/dishes/{{dishId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 404
+  res.body.code: eq DISH_NOT_FOUND
+}

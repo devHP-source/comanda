@@ -1,0 +1,26 @@
+meta {
+  name: Set availability - not a boolean (400)
+  type: http
+  seq: 15
+}
+
+patch {
+  url: {{baseUrl}}/dishes/{{dishId}}/availability
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "isAvailable": "false"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_AVAILABILITY
+}

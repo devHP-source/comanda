@@ -1,0 +1,29 @@
+meta {
+  name: Update dish - admin (200)
+  type: http
+  seq: 10
+}
+
+put {
+  url: {{baseUrl}}/dishes/{{dishId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "name": { "en": "Test dish (edited)" },
+    "price": 5.6
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.name.it: eq Piatto di prova
+  res.body.name.en: eq Test dish (edited)
+  res.body.price: eq 5.6
+}

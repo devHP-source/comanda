@@ -1,0 +1,26 @@
+meta {
+  name: Update dish - 1.005 rounds half up to 1.01 (200)
+  type: http
+  seq: 11
+}
+
+put {
+  url: {{baseUrl}}/dishes/{{dishId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "price": 1.005
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.price: eq 1.01
+}

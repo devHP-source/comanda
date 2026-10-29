@@ -1,0 +1,26 @@
+meta {
+  name: Update dish - unknown id (404)
+  type: http
+  seq: 13
+}
+
+put {
+  url: {{baseUrl}}/dishes/000000000000000000000000
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "price": 5.6
+  }
+}
+
+assert {
+  res.status: eq 404
+  res.body.code: eq DISH_NOT_FOUND
+}

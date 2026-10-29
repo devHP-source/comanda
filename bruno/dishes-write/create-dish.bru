@@ -1,0 +1,44 @@
+meta {
+  name: Create dish - admin, unpublished, 8.555 rounds to 8.56 (201)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/dishes
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "code": "TEST1",
+    "name": { "it": "Piatto di prova", "en": "Test dish" },
+    "description": { "it": "Solo per i test" },
+    "price": 8.555,
+    "category": "{{seededCategoryId}}",
+    "allergens": ["gluten", "soybeans"],
+    "isPublished": false,
+    "image": { "url": "https://ignored.example/x.jpg" }
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body._id: isString
+  res.body.code: eq TEST1
+  res.body.price: eq 8.56
+  res.body.isPublished: eq false
+  res.body.image.url: eq ""
+}
+
+script:post-response {
+  // Unpublished on purpose: the test dish never shows up in the public menu. Used by the requests below
+  if (res.status === 201) {
+    bru.setVar("dishId", res.body._id)
+  }
+}

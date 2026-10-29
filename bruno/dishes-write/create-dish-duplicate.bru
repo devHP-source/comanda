@@ -1,0 +1,29 @@
+meta {
+  name: Create dish - duplicate code (409)
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/dishes
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "code": "TEST1",
+    "name": { "it": "Piatto di prova" },
+    "price": 8.5,
+    "category": "{{seededCategoryId}}"
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq DUPLICATE_KEY
+}

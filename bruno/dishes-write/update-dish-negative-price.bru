@@ -1,0 +1,27 @@
+meta {
+  name: Update dish - negative price (400)
+  type: http
+  seq: 12
+}
+
+put {
+  url: {{baseUrl}}/dishes/{{dishId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "price": -1
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq VALIDATION_FAILED
+  res.body.errors.price: isString
+}

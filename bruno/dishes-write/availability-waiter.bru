@@ -1,0 +1,26 @@
+meta {
+  name: Set availability - waiter (200)
+  type: http
+  seq: 14
+}
+
+patch {
+  url: {{baseUrl}}/dishes/{{dishId}}/availability
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "isAvailable": false
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.isAvailable: eq false
+}

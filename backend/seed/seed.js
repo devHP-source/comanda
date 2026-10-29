@@ -79,7 +79,7 @@ async function seed() {
     if (!categoryId) {
       throw new Error(`Dish ${dish.code}: unknown category "${dish.category}"`)
     }
-    return { ...dish, price: Math.round(dish.price * 100), category: categoryId } // dishes.json holds euros (8.5), the DB stores cents (850)
+    return { ...dish, category: categoryId } // price stays in euros: the Dish setter stores cents
   })
 
   const insertedDishes = await Dish.insertMany(dishes)

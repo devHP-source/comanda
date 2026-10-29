@@ -10,6 +10,7 @@ import errorHandler from "./middlewares/errorHandler.js"
 import categoryRoutes from "./routes/categoryRoutes.js"
 import dishRoutes from "./routes/dishRoutes.js"
 import authRoutes from "./routes/authRoutes.js"
+import adminRoutes from "./routes/adminRoutes.js"
 
 const app = express()
 const PORT = process.env.PORT || 9099
@@ -37,6 +38,7 @@ app.get("/api/health", (req, res) => { // Health check per svegliare Render dall
 app.use("/api/auth", authRoutes)
 app.use("/api/categories", categoryRoutes)
 app.use("/api/dishes", dishRoutes)
+app.use("/api/admin", adminRoutes)
 
 app.use(notFound)
 app.use(errorHandler)
