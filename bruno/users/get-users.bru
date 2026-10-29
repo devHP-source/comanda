@@ -1,0 +1,50 @@
+meta {
+  name: Get users - admin (200)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/users
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body: isArray
+  res.body[0].name: isString
+  res.body[0].email: isString
+  res.body[0].role: isString
+  res.body[0].isActive: isBoolean
+  res.body[0].password: isUndefined
+  res.body[0].googleId: isUndefined
+}
+
+tests {
+  test("every seeded role is listed", () => {
+    const roles = res.body.map((user) => user.role)
+    expect(roles).to.include.members(["admin", "waiter", "kitchen"])
+  })
+
+  test("Google-only owner has a masked email", () => {
+    const owner = res.body.find((user) => user.name === "Titolare") // seed name of the Google-only owner
+    expect(owner).to.exist
+    expect(owner.email).to.match(/^.\*\*\*@/)
+  })
+
+  test("demo .test accounts stay unmasked", () => {
+    const demo = res.body.filter((user) => user.email.endsWith(".test"))
+    expect(demo.length).to.equal(3)
+    for (const user of demo) expect(user.email).to.not.include("***")
+  })
+}
+
+docs {
+  Staff list for the "View as" switcher: sorted by role, then name. Inactive users are included with isActive: false.
+  Google-only accounts (no password) show a masked email (p***@gmail.com) in this list only: /auth/me still returns the full one.
+}
