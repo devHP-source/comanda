@@ -1,0 +1,20 @@
+meta {
+  name: Impersonate other admin - Titolare (403)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/auth/impersonate/{{ownerUserId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq CANNOT_IMPERSONATE_ADMIN
+}

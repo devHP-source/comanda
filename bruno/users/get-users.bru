@@ -48,3 +48,13 @@ docs {
   Staff list for the "View as" switcher: sorted by role, then name. Inactive users are included with isActive: false.
   Google-only accounts (no password) show a masked email (p***@gmail.com) in this list only: /auth/me still returns the full one.
 }
+
+script:post-response {
+  // Ids for the impersonate folder (runs after this one)
+  if (res.status === 200) {
+    const byName = (name) => res.body.find((user) => user.name === name)?._id
+    bru.setVar("adminUserId", byName("Admin"))
+    bru.setVar("ownerUserId", byName("Titolare"))
+    bru.setVar("waiterUserId", res.body.find((user) => user.role === "waiter")?._id)
+  }
+}

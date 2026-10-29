@@ -1,0 +1,20 @@
+meta {
+  name: Impersonate yourself (403)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/auth/impersonate/{{adminUserId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq CANNOT_IMPERSONATE_ADMIN
+}

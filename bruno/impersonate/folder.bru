@@ -1,0 +1,11 @@
+meta {
+  name: impersonate
+  seq: 9
+}
+
+docs {
+  Run auth (adminToken, waiterToken) and users (adminUserId, ownerUserId, waiterUserId) first.
+
+  Inactive user (400 USER_INACTIVE) is not in the collection: the seed has no inactive account.
+  To try it: in Compass set isActive: false on the waiter, send "Impersonate waiter", then set it back to true.
+}

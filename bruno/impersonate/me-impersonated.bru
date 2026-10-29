@@ -1,0 +1,25 @@
+meta {
+  name: Me - with the impersonated token (200)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/auth/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{impersonatedToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.role: eq waiter
+  res.body.impersonatedBy: eq {{adminUserId}}
+}
+
+docs {
+  The token acts as the waiter, and /me says who started "View as".
+}

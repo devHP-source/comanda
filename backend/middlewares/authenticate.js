@@ -33,7 +33,16 @@ const authenticate = async (req, res, next) => { // staff only: reads "Authoriza
   if (!user) throw authError("User no longer exists", "INVALID_TOKEN")
   if (!user.isActive) throw authError("Account disabled", "ACCOUNT_DISABLED")
 
+
+  if (payload.impersonatedBy) { // "View as" token: the admin who started it must still be an active admin, or the token dies with them
+    const admin = await User.findById(payload.impersonatedBy)
+    if (!admin || !admin.isActive || admin.role !== "admin") {
+      throw authError("Impersonation no longer allowed", "INVALID_TOKEN")
+    }
+  }
+
   req.user = user
+  req.impersonatedBy = payload.impersonatedBy ?? null // admin id while "View as" is on
   next()
 }
 

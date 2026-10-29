@@ -1,0 +1,20 @@
+meta {
+  name: Impersonate - caller is a waiter (403)
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/auth/impersonate/{{waiterUserId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq FORBIDDEN
+}

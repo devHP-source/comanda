@@ -1,0 +1,37 @@
+meta {
+  name: Impersonate waiter - admin (200)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/impersonate/{{waiterUserId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.token: isString
+  res.body.user.role: eq waiter
+  res.body.user.password: isUndefined
+  res.body.impersonatedBy: eq {{adminUserId}}
+  res.body.expiresAt: isString
+}
+
+tests {
+  test("token expires in 30 minutes", () => {
+    const minutes = (new Date(res.body.expiresAt) - Date.now()) / 60000
+    expect(minutes).to.be.within(29, 30.5)
+  })
+}
+
+script:post-response {
+  if (res.status === 200) {
+    bru.setVar("impersonatedToken", res.body.token)
+  }
+}
