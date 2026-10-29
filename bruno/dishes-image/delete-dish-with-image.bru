@@ -1,0 +1,23 @@
+meta {
+  name: Delete dish with image - admin (204)
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/dishes/{{imageDishId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 204
+}
+
+docs {
+  Cleans up the test dish. Its photo stays on Cloudinary until step 12 (delete the image too): remove it by hand for now.
+}

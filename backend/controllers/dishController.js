@@ -1,5 +1,6 @@
 import Dish from "../models/Dish.js"
 import Category from "../models/Category.js"
+import { uploadImage, deleteImage } from "../services/uploadImage.js"
 
 const publishedOnly = { isPublished: true } // guests never see unpublished dishes (sold out ones stay visible)
 const byCode = { locale: "it", numericOrdering: true } // codes are strings: sort 1, 1a, 3, 12, 108 instead of 1, 108, 12
@@ -7,6 +8,7 @@ const byCode = { locale: "it", numericOrdering: true } // codes are strings: sor
 // Fields the admin can write. image is handled by the upload steps, never from the JSON body
 const plainFields = ["code", "price", "category", "allergens", "spiceLevel", "isVegetarian", "isFrozen", "isAvailable", "isPublished", "isFeatured"]
 const langFields = ["name", "description"] // { it, en }
+const DISH_IMAGES_FOLDER = "comanda/dishes" // Cloudinary folder
 
 const dishNotFound = (id) => {
   const err = new Error(`Dish not found: ${id}`)
@@ -71,13 +73,25 @@ export const getAdminDishes = async (req, res) => { // GET /api/admin/dishes (ad
   res.json(await findDishPage({}, req.query))
 }
 
-export const createDish = async (req, res) => { // POST /api/dishes (admin). price in euros (8.5): the Dish setter stores cents
+export const createDish = async (req, res) => { // POST /api/dishes (admin): JSON, or multipart with an optional "image" file. price in euros (8.5): the Dish setter stores cents
   const body = req.body ?? {}
   await checkCategoryExists(body.category)
 
   const dish = new Dish()
   applyDishFields(dish, body)
-  await dish.save() // duplicate code --> 11000 --> 409 in errorHandler
+  await dish.validate() // check the fields before uploading: a bad request never leaves a photo on Cloudinary
+
+  if (req.file) {
+    dish.image = await uploadImage(req.file.buffer, DISH_IMAGES_FOLDER)
+  }
+
+  try {
+    await dish.save() // duplicate code --> 11000 --> 409 in errorHandler (validate() can't see unique indexes)
+  } catch (err) {
+    // Save failed after the upload: remove the orphan photo, then answer with the original error
+    if (dish.image.publicId) await deleteImage(dish.image.publicId).catch(console.error)
+    throw err
+  }
   res.status(201).json(dish)
 }
 

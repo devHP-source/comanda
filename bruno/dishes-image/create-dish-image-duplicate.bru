@@ -1,0 +1,33 @@
+meta {
+  name: Create dish - image, duplicate code (409)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/dishes
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:multipart-form {
+  code: TEST2
+  name[it]: Piatto con foto
+  price: 6.5
+  category: {{seededCategoryId}}
+  image: @file(../../menu-images/test.jpg)
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq DUPLICATE_KEY
+}
+
+docs {
+  The photo is uploaded, then save() fails on the unique code: the controller deletes it again.
+  Check in the Cloudinary Media Library that comanda/dishes has only the image from request 1.
+}

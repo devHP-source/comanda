@@ -26,6 +26,13 @@ export default function errorHandler(err, req, res, next) {
     })
   }
 
+  if (err.name === "MulterError") { // multer: file too big, unexpected file field...
+    return res.status(400).json({
+      message: err.message,
+      code: err.code === "LIMIT_FILE_SIZE" ? "IMAGE_TOO_LARGE" : "INVALID_UPLOAD"
+    })
+  }
+
   if (err.type === "entity.parse.failed") { // express.json(): body is not valid JSON
     return res.status(400).json({
       message: "Malformed JSON in request body",

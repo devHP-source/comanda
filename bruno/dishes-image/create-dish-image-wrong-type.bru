@@ -1,0 +1,28 @@
+meta {
+  name: Create dish - file is not an image (400)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/dishes
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:multipart-form {
+  code: TEST3
+  name[it]: Piatto con file sbagliato
+  price: 6.5
+  category: {{seededCategoryId}}
+  image: @file(bruno.json)
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_IMAGE_TYPE
+}

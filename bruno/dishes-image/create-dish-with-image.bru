@@ -1,0 +1,44 @@
+meta {
+  name: Create dish - multipart with image (201)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/dishes
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:multipart-form {
+  code: TEST2
+  name[it]: Piatto con foto
+  name[en]: Dish with photo
+  price: 6.5
+  category: {{seededCategoryId}}
+  allergens: gluten
+  allergens: eggs
+  isPublished: false
+  image: @file(../../menu-images/test.jpg)
+}
+
+assert {
+  res.status: eq 201
+  res.body.code: eq TEST2
+  res.body.price: eq 6.5
+  res.body.name.en: eq Dish with photo
+  res.body.isPublished: eq false
+  res.body.image.url: startsWith https://res.cloudinary.com/
+  res.body.image.publicId: startsWith comanda/dishes/
+}
+
+script:post-response {
+  // Any JPEG/PNG/WebP under 5 MB works: put it in Capstone/menu-images/test.jpg or pick another file in the Body tab
+  if (res.status === 201) {
+    bru.setVar("imageDishId", res.body._id)
+  }
+}
