@@ -121,6 +121,20 @@ function getStaffData() {
   ]
 }
 
+// Upsert by email instead of delete + create: each user keeps its _id, so orders keep their waiter ref
+async function upsertStaff(staffData) {
+  const users = []
+  for (const data of staffData) {
+    const user = (await User.findOne({ email: data.email })) ?? new User()
+    user.set({ ...data, isActive: true })
+    await user.save() // save(), not findOneAndUpdate(): runs pre('save') so passwords get hashed
+    users.push(user)
+  }
+
+  const { deletedCount } = await User.deleteMany({ _id: { $nin: users.map((user) => user._id) } }) // and staff tokens still work after a re-seed. Staff not in the list are removed (accounts come only from the seed)
+  console.log(`Upserted ${users.length} staff users (${users.map((user) => user.role).join(", ")}), removed ${deletedCount}`)
+}
+
 async function seed() {
   const categoriesData = await readJson("./categories.json")
   const dishesData = await readJson("./dishes.json")
@@ -132,11 +146,9 @@ async function seed() {
 
   await Dish.deleteMany()
   await Category.deleteMany()
-  await User.deleteMany() // staff accounts come only from the seed
   await deleteAllDishPhotos()
 
-  const users = await User.create(staffData) // create(), not insertMany(): runs pre('save') so passwords get hashed
-  console.log(`Inserted ${users.length} staff users (${users.map((user) => user.role).join(", ")})`)
+  await upsertStaff(staffData)
 
   // coverDish in the JSON is a dish code: left out here, set by setCoverDishes once the dishes exist
   const categories = await Category.insertMany(categoriesData.map(({ coverDish, ...category }) => category))
