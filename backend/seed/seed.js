@@ -11,6 +11,7 @@ import cloudinary from "../config/cloudinary.js"
 import Category from "../models/Category.js"
 import Dish from "../models/Dish.js"
 import User from "../models/User.js"
+import Settings from "../models/Settings.js"
 import { uploadImage, DISH_IMAGES_FOLDER } from "../services/uploadImage.js"
 
 const PHOTO_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp"]
@@ -150,6 +151,10 @@ async function seed() {
 
   await upsertStaff(staffData)
 
+  await Settings.deleteMany() // demo resets back to the schema defaults
+  await Settings.create({ closedDates: ["2027-08-16"] }) // + closure day after Ferragosto
+  console.log("Reset settings to the defaults")
+
   // coverDish in the JSON is a dish code: left out here, set by setCoverDishes once the dishes exist
   const categories = await Category.insertMany(categoriesData.map(({ coverDish, ...category }) => category))
   console.log(`Inserted ${categories.length} categories`)
@@ -164,7 +169,7 @@ async function seed() {
     if (!categoryId) {
       throw new Error(`Dish ${dish.code}: unknown category "${dish.category}"`)
     }
-    return { ...dish, category: categoryId } // price stays in euros: the Dish setter stores cents
+    return { ...dish, category: categoryId } // price stays in euros
   })
 
   const insertedDishes = await Dish.insertMany(dishes)

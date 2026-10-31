@@ -1,0 +1,23 @@
+meta {
+  name: Get settings - admin (200)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/settings
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.tableCount: isNumber
+  res.body.seatsPerTable: isNumber
+  res.body.maxOnlineTables: isNumber
+  res.body.avgDurationMinutes: isNumber
+}

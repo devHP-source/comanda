@@ -1,0 +1,35 @@
+meta {
+  name: Get public settings (200)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/settings/public
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.openingTime: isString
+  res.body.closingTime: isString
+  res.body.lastBookingTime: isString
+  res.body.slotMinutes: isNumber
+  res.body.maxPartySizeAuto: isNumber
+  res.body.maxDaysAhead: isNumber
+  res.body.closedDays: isArray
+  res.body.closedDates: isArray
+}
+
+tests {
+  test("capacity numbers stay private", () => {
+    for (const field of ["tableCount", "seatsPerTable", "maxOnlineTables", "avgDurationMinutes", "_id"]) {
+      expect(res.body).to.not.have.property(field)
+    }
+  })
+}
+
+docs {
+  Public: hours, closed days and slot info for the menu intro, /info and the booking form.
+}

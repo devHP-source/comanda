@@ -1,0 +1,20 @@
+meta {
+  name: Get settings - waiter (403)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/settings
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq FORBIDDEN
+}

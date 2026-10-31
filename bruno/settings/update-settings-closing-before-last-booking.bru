@@ -1,0 +1,31 @@
+meta {
+  name: Update settings - only closingTime, before lastBookingTime (400)
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{baseUrl}}/settings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "closingTime": "20:00"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq VALIDATION_FAILED
+  res.body.errors.lastBookingTime: isString
+}
+
+docs {
+  Only closingTime is sent, but the saved lastBookingTime (20:30) would now be after it: the cross-field rule still catches it.
+}

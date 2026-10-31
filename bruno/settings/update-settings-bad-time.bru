@@ -1,0 +1,27 @@
+meta {
+  name: Update settings - bad time format (400)
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/settings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "openingTime": "9:00"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq VALIDATION_FAILED
+  res.body.errors.openingTime: isString
+}

@@ -1,0 +1,48 @@
+meta {
+  name: Restore default settings (200)
+  type: http
+  seq: 13
+}
+
+put {
+  url: {{baseUrl}}/settings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "openingTime": "12:00",
+    "closingTime": "22:00",
+    "lastBookingTime": "20:30",
+    "slotMinutes": 30,
+    "avgDurationMinutes": 90,
+    "tableCount": 50,
+    "seatsPerTable": 4,
+    "maxOnlineTables": 36,
+    "maxPartySizeAuto": 10,
+    "maxDaysAhead": 30,
+    "closedDays": [1],
+    "closedDates": ["2027-08-16"]
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.slotMinutes: eq 30
+}
+
+tests {
+  test("closed on Mondays and the day after Ferragosto", () => {
+    expect(res.body.closedDays).to.deep.equal([1])
+    expect(res.body.closedDates).to.deep.equal(["2027-08-16"])
+  })
+}
+
+docs {
+  Puts back what "Update settings - admin" changed: the same values npm run seed creates (schema defaults + closedDates 2027-08-16).
+}

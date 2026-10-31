@@ -1,0 +1,27 @@
+meta {
+  name: Update settings - lastBookingTime after closing (400)
+  type: http
+  seq: 7
+}
+
+put {
+  url: {{baseUrl}}/settings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "lastBookingTime": "22:30"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq VALIDATION_FAILED
+  res.body.errors.lastBookingTime: isString
+}

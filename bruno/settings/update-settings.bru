@@ -1,0 +1,47 @@
+meta {
+  name: Update settings - admin (200)
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/settings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "slotMinutes": 15,
+    "closedDays": [0, 1],
+    "closedDates": ["2027-12-24", "2027-08-16"],
+    "unknownField": "ignored"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.slotMinutes: eq 15
+  res.body.openingTime: eq 12:00
+  res.body.tableCount: eq 50
+  res.body.unknownField: isUndefined
+}
+
+tests {
+  test("closedDays saved as sent", () => {
+    expect(res.body.closedDays).to.deep.equal([0, 1])
+  })
+
+  test("closedDates saved sorted", () => {
+    expect(res.body.closedDates).to.deep.equal(["2027-08-16", "2027-12-24"])
+  })
+}
+
+docs {
+  Partial update: only the fields sent change, unknown fields are ignored. closedDays uses Date.getDay() (0 = Sunday, 1 = Monday).
+  closedDates are sent out of order on purpose: the server stores them sorted.
+}
