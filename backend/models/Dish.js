@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import { priceField } from "./price.js"
 
 // The 14 allergens EU law requires on menus (Reg. 1169/2011)
 export const ALLERGENS = [
@@ -22,17 +23,6 @@ export const byCode = { // Codes are strings:
   locale: "it", 
   numericOrdering: true 
 } // this collation sorts 1, 1a, 3, 12, 108 instead of 1, 108, 12. Use with .sort({ code: 1 })
-
-const eurosToCents = (euros) => {
-  if (euros == null || euros === "") return euros // let required answer (Number(null) would be 0)
-  /* 1.005e2" sposta la virgola decimale nella stringa: esattamente 100,5 --> arrotonda per eccesso (se la parte decimale è pari o superiore a 0,5) a 101.
-  1,005 * 100 darebbe 100,499999999 --> 100 (errato)
-  Valori non numerici --> NaN --> errore di conversione (cast) */
-  const cents = Number(euros + "e2")
-  return cents < 0 ? cents : Math.round(cents) // negatives stay as they are: -0.004 must not round to 0 and pass min
-}
-
-const centsToEuros = (cents) => (cents == null ? cents : cents / 100)
 
 const dishSchema = new mongoose.Schema(
   {
@@ -69,13 +59,7 @@ const dishSchema = new mongoose.Schema(
       },
     },
 
-    price: { // API speaks euros (8.5), the DB stores cents (850): no float rounding errors in totals
-      type: Number,
-      required: true,
-      min: [0, "price can't be negative"],
-      set: eurosToCents,
-      get: centsToEuros, // the setter always stores whole cents: no integer validator needed
-    },
+    price: priceField(), // API speaks euros (8.5), the DB stores cents (850)
 
     image: {
       url: { 
