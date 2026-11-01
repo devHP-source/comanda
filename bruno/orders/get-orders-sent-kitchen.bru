@@ -1,0 +1,45 @@
+meta {
+  name: Get orders - status sent, kitchen (200)
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{baseUrl}}/orders?status=sent
+  body: none
+  auth: bearer
+}
+
+params:query {
+  status: sent
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body: isArray
+}
+
+tests {
+  test("only open tickets with status sent", () => {
+    for (const order of res.body) {
+      expect(order.status).to.equal("sent")
+      expect(order.closedAt).to.equal(null)
+    }
+  })
+
+  test("oldest first", () => {
+    const times = res.body.map((order) => new Date(order.createdAt).getTime())
+    expect(times).to.deep.equal([...times].sort((a, b) => a - b))
+  })
+
+  test("contains the waiter's ticket with the waiter name populated", () => {
+    const order = res.body.find((order) => order._id === bru.getVar("orderId"))
+    expect(order).to.be.an("object")
+    expect(order.waiter.name).to.be.a("string")
+    expect(order.waiter.password).to.equal(undefined)
+  })
+}

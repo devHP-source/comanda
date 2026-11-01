@@ -1,0 +1,27 @@
+meta {
+  name: Update status - waiter served (200)
+  type: http
+  seq: 24
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{orderId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "status": "served"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq served
+  res.body.waiter.name: isString
+}

@@ -51,6 +51,7 @@ const userSchema = new mongoose.Schema( // staff only (guests live in Customer)
   }, {
     timestamps: true,
     toJSON: {
+      virtuals: false, // _id is enough
       transform(doc, ret) { // the hash stays in memory after create(): never send it
         delete ret.password
         return ret

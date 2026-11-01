@@ -1,0 +1,26 @@
+meta {
+  name: Update status - waiter sets preparing (403)
+  type: http
+  seq: 18
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{orderId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "status": "preparing"
+  }
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq FORBIDDEN
+}

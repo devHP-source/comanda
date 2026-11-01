@@ -1,0 +1,26 @@
+meta {
+  name: Update status - already served (409)
+  type: http
+  seq: 25
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{orderId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "status": "served"
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq INVALID_STATUS_TRANSITION
+}

@@ -1,4 +1,4 @@
-import Order from "../models/Order.js"
+import Order, { ORDER_STATUSES } from "../models/Order.js"
 import Dish from "../models/Dish.js"
 import { getSettings } from "../services/settings.js"
 
@@ -57,4 +57,54 @@ export const createOrder = async (req, res) => { // POST /api/orders (waiter, ad
 
   await order.save() // qty and notes are checked by the schema --> 400 VALIDATION_FAILED with errors["items.0.qty"]
   res.status(201).json(order)
+}
+
+export const getOrders = async (req, res) => { // GET /api/orders?status=sent,preparing (all staff): open tickets, oldest first
+  const filter = { closedAt: null } // closed tables leave the kitchen board and the waiter screen
+
+  if (req.query.status !== undefined) {
+    const statuses = String(req.query.status).split(",").map((status) => status.trim())
+    const invalid = statuses.filter((status) => !ORDER_STATUSES.includes(status))
+    if (invalid.length > 0) {
+      throw orderError(400, "INVALID_STATUS", `Unknown status: ${invalid.join(", ")}. Use ${ORDER_STATUSES.join(", ")}`)
+    }
+    filter.status = { $in: statuses }
+  }
+
+  const orders = await Order.find(filter)
+    .sort({ createdAt: 1 }) // the kitchen cooks the oldest ticket first
+    .populate("waiter", "name")
+  res.json(orders)
+}
+
+
+const TRANSITIONS = { // Target status changes the status the ticket must be in, and who may move it there
+  preparing: { from: "sent", roles: ["kitchen"] },
+  ready: { from: "preparing", roles: ["kitchen"] },
+  served: { from: "ready", roles: ["waiter", "admin"] }, // any waiter, not only the one who sent the ticket
+}
+
+export const updateOrderStatus = async (req, res) => { // PATCH /api/orders/:id/status { status } (all staff, checked by TRANSITIONS)
+  const { status } = req.body ?? {}
+
+  const rule = Object.hasOwn(TRANSITIONS, status) ? TRANSITIONS[status] : null // hasOwn: "constructor" isn't a status
+  if (!rule) {
+    throw orderError(400, "INVALID_STATUS", `status must be one of: ${Object.keys(TRANSITIONS).join(", ")}`)
+  }
+  if (!rule.roles.includes(req.user.role)) {
+    throw orderError(403, "FORBIDDEN", `Only ${rule.roles.join(" or ")} can set a ticket to ${status}`)
+  }
+
+  const order = await Order.findById(req.params.id) // bad id sends "CastError" then 400 INVALID_ID
+  if (!order) throw orderError(404, "ORDER_NOT_FOUND", `Order not found: ${req.params.id}`)
+
+  if (order.closedAt || order.status !== rule.from) { // One step at a time, and never on a closed table
+    const reason = order.closedAt ? "the table is closed" : `the ticket is ${order.status}`
+    throw orderError(409, "INVALID_STATUS_TRANSITION", `Can't set ${status}: ${reason}`)
+  }
+
+  order.status = status
+  await order.save()
+  await order.populate("waiter", "name") // same shape as GET /api/orders
+  res.json(order)
 }

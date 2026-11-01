@@ -1,0 +1,26 @@
+meta {
+  name: Update status - sent is not a target (400)
+  type: http
+  seq: 26
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{orderId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+body:json {
+  {
+    "status": "sent"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_STATUS
+}

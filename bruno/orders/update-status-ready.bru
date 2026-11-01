@@ -1,0 +1,27 @@
+meta {
+  name: Update status - kitchen ready (200)
+  type: http
+  seq: 22
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{orderId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+body:json {
+  {
+    "status": "ready"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq ready
+  res.body.waiter.name: isString
+}

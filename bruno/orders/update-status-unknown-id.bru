@@ -1,0 +1,26 @@
+meta {
+  name: Update status - unknown id (404)
+  type: http
+  seq: 27
+}
+
+patch {
+  url: {{baseUrl}}/orders/000000000000000000000000/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+body:json {
+  {
+    "status": "preparing"
+  }
+}
+
+assert {
+  res.status: eq 404
+  res.body.code: eq ORDER_NOT_FOUND
+}

@@ -1,0 +1,26 @@
+meta {
+  name: Update status - kitchen skips to ready (409)
+  type: http
+  seq: 19
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{orderId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+body:json {
+  {
+    "status": "ready"
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq INVALID_STATUS_TRANSITION
+}

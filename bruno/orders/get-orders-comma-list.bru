@@ -1,0 +1,37 @@
+meta {
+  name: Get orders - comma list, waiter (200)
+  type: http
+  seq: 21
+}
+
+get {
+  url: {{baseUrl}}/orders?status=sent,preparing
+  body: none
+  auth: bearer
+}
+
+params:query {
+  status: sent,preparing
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body: isArray
+}
+
+tests {
+  test("only sent or preparing", () => {
+    for (const order of res.body) {
+      expect(["sent", "preparing"]).to.include(order.status)
+    }
+  })
+
+  test("the ticket moved to preparing", () => {
+    const order = res.body.find((order) => order._id === bru.getVar("orderId"))
+    expect(order.status).to.equal("preparing")
+  })
+}

@@ -1,0 +1,26 @@
+meta {
+  name: Update status - kitchen sets served (403)
+  type: http
+  seq: 23
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{orderId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+body:json {
+  {
+    "status": "served"
+  }
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq FORBIDDEN
+}
