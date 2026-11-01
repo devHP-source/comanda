@@ -1,0 +1,36 @@
+meta {
+  name: Update status - ticket of a closed table (409)
+  type: http
+  seq: 17
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{tableOrder1Id}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "status": "served"
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq INVALID_STATUS_TRANSITION
+}
+
+tests {
+  test("refused because the table is closed, not because of the status", () => {
+    expect(res.body.message).to.contain("table is closed")
+  })
+}
+
+docs {
+  Ticket 1 is ready, so ready --> served would be a valid step on an open table.
+}

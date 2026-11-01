@@ -1,0 +1,26 @@
+meta {
+  name: Ticket 1 - kitchen preparing (200)
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{tableOrder1Id}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+body:json {
+  {
+    "status": "preparing"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq preparing
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Cleanup - close table 50 (200)
+  type: http
+  seq: 22
+}
+
+post {
+  url: {{baseUrl}}/tables/50/close
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.closedTickets: eq 1
+  res.body.notServed: eq 1
+}

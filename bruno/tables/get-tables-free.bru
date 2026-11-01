@@ -1,0 +1,31 @@
+meta {
+  name: Get tables - waiter, table 50 free (200)
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/tables
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body: isArray
+  res.body.length: eq 50
+}
+
+tests {
+  test("one row per table, 1...tableCount in order", () => {
+    res.body.forEach((table, index) => expect(table.number).to.equal(index + 1))
+  })
+
+  test("table 50 is free", () => {
+    expect(res.body[49]).to.deep.equal({ number: 50, status: "free", openTickets: 0, round: 0, total: 0, hasReady: false })
+  })
+}

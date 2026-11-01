@@ -1,0 +1,26 @@
+meta {
+  name: 4. Kitchen - ready (200)
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{flowOrderId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+body:json {
+  {
+    "status": "ready"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq ready
+}

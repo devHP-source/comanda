@@ -1,0 +1,26 @@
+meta {
+  name: 6. Waiter - served (200)
+  type: http
+  seq: 10
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{flowOrderId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "status": "served"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq served
+}

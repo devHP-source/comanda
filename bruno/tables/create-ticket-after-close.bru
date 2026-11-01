@@ -1,0 +1,27 @@
+meta {
+  name: Create ticket after close - round starts again (201)
+  type: http
+  seq: 21
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "tableNumber": 50,
+    "items": [{ "dish": "{{tableDishId}}", "qty": 1 }]
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.round: eq 1
+}

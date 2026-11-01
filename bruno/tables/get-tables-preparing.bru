@@ -1,0 +1,33 @@
+meta {
+  name: Get tables - table 50 preparing (200)
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/tables
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("2 open tickets, both still in the kitchen", () => {
+    const table = res.body[49]
+    expect(table.status).to.equal("preparing")
+    expect(table.openTickets).to.equal(2)
+    expect(table.round).to.equal(2)
+    expect(table.hasReady).to.equal(false)
+  })
+
+  test("total in euros = price x 3 dishes", () => {
+    expect(res.body[49].total).to.equal(bru.getVar("tableDishCents") * 3 / 100)
+  })
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Setup - free table 50 (200 or 409)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/tables/50/close
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+tests {
+  test("table 50 is free now: closed (200) or already free (409)", () => {
+    expect([200, 409]).to.include(res.status)
+  })
+}
+
+docs {
+  Only matters when an older run stopped halfway and left tickets open on table 50.
+}

@@ -1,0 +1,22 @@
+meta {
+  name: Setup - pick a dish from the menu (200)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/dishes
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body: isArray
+}
+
+script:post-response {
+  const dish = res.body.find((dish) => dish.isAvailable)
+  bru.setVar("flowDishId", dish._id)
+  bru.setVar("flowDishCents", Math.round(dish.price * 100)) // expected totals in cents, like the server
+}

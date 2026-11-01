@@ -1,0 +1,25 @@
+meta {
+  name: 9. Table 50 free again (200)
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/tables
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("table 50 is free", () => {
+    expect(res.body[49]).to.deep.equal({ number: 50, status: "free", openTickets: 0, round: 0, total: 0, hasReady: false })
+  })
+}

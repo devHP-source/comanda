@@ -1,0 +1,34 @@
+meta {
+  name: 1. Waiter sends a ticket (201)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "tableNumber": 50,
+    "items": [{ "dish": "{{flowDishId}}", "qty": 2, "notes": "senza cipolla" }]
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.status: eq sent
+  res.body.round: eq 1
+}
+
+script:post-response {
+  if (res.status === 201) {
+    bru.setVar("flowOrderId", res.body._id)
+  }
+}

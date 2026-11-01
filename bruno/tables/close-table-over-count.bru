@@ -1,0 +1,20 @@
+meta {
+  name: Close table - table over tableCount (400)
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{baseUrl}}/tables/51/close
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_TABLE
+}

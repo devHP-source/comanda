@@ -5,8 +5,8 @@ meta {
 
 docs {
   Run auth (adminToken, waiterToken, kitchenToken) first.
-  The tickets go to table 50 and stay open: every run adds 2 tickets (the round keeps growing) until the table is closed or npm run seed clears the orders.
+  The tickets go to table 50. The last request closes the table, so every run starts and ends with table 50 free.
   "Mark dish sold out" changes a real dish: the last create request puts it back on the menu.
   The status requests (seq 18-25) walk the waiter's ticket through sent --> preparing --> ready --> served: run them in order.
-  "Closed ticket --> 409 INVALID_STATUS_TRANSITION" is tested in tables/ once "Libera tavolo" exists.
+  "Closed ticket --> 409 INVALID_STATUS_TRANSITION" is tested in tables/.
 }

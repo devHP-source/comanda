@@ -1,0 +1,20 @@
+meta {
+  name: Get tables - kitchen (403)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/tables
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq FORBIDDEN
+}

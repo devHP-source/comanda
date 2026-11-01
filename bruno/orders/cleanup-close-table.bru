@@ -1,0 +1,25 @@
+meta {
+  name: Cleanup - close table 50 (200)
+  type: http
+  seq: 28
+}
+
+post {
+  url: {{baseUrl}}/tables/50/close
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.tableNumber: eq 50
+  res.body.closedTickets: gte 2
+}
+
+docs {
+  Closes the 2 tickets sent by this folder (more if an older run left table 50 open), so the next run starts from a free table.
+}

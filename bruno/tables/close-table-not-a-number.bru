@@ -1,0 +1,20 @@
+meta {
+  name: Close table - not a number (400)
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{baseUrl}}/tables/abc/close
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_TABLE
+}

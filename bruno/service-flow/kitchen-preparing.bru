@@ -1,0 +1,26 @@
+meta {
+  name: 3. Kitchen - preparing (200)
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{flowOrderId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+body:json {
+  {
+    "status": "preparing"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq preparing
+}

@@ -1,0 +1,29 @@
+meta {
+  name: Login - waiter (200)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{process.env.SEED_WAITER_EMAIL}}",
+    "password": "{{process.env.SEED_WAITER_PASSWORD}}"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.user.role: eq waiter
+}
+
+script:post-response {
+  if (res.status === 200) {
+    bru.setVar("waiterToken", res.body.token)
+  }
+}

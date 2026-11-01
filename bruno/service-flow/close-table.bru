@@ -1,0 +1,28 @@
+meta {
+  name: 8. Waiter - Libera tavolo 50 (200)
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}/tables/50/close
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.tableNumber: eq 50
+  res.body.closedTickets: eq 1
+  res.body.notServed: eq 0
+}
+
+tests {
+  test("total = price x 2", () => {
+    expect(res.body.total).to.equal(bru.getVar("flowDishCents") * 2 / 100)
+  })
+}

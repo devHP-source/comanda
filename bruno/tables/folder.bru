@@ -1,0 +1,10 @@
+meta {
+  name: tables
+  seq: 12
+}
+
+docs {
+  Run auth (adminToken, waiterToken, kitchenToken) first. Run the requests in order.
+  Everything happens on table 50. The setup request frees it (200, or 409 if it's already free), the last request closes it again: every run starts and ends with table 50 free.
+  50 = the default tableCount (restored by the settings folder and the seed).
+}

@@ -1,0 +1,30 @@
+meta {
+  name: 2. Kitchen sees it on the board (200)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/orders?status=sent,preparing
+  body: none
+  auth: bearer
+}
+
+params:query {
+  status: sent,preparing
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("the new ticket is on the board", () => {
+    const ids = res.body.map((order) => order._id)
+    expect(ids).to.include(bru.getVar("flowOrderId"))
+  })
+}

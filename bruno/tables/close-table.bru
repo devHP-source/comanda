@@ -1,0 +1,32 @@
+meta {
+  name: Close table 50 - waiter (200)
+  type: http
+  seq: 16
+}
+
+post {
+  url: {{baseUrl}}/tables/50/close
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.tableNumber: eq 50
+  res.body.closedTickets: eq 2
+  res.body.notServed: eq 2
+}
+
+tests {
+  test("total in euros = price x 3 dishes", () => {
+    expect(res.body.total).to.equal(bru.getVar("tableDishCents") * 3 / 100)
+  })
+}
+
+docs {
+  notServed = 2: ticket 1 is ready and ticket 2 is still sent. The frontend warns about it in the confirm modal, the server closes anyway.
+}

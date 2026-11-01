@@ -1,0 +1,27 @@
+meta {
+  name: Get orders - closed tickets leave the board (200)
+  type: http
+  seq: 19
+}
+
+get {
+  url: {{baseUrl}}/orders
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("neither ticket of table 50 is on the kitchen board", () => {
+    const ids = res.body.map((order) => order._id)
+    expect(ids).to.not.include(bru.getVar("tableOrder1Id"))
+    expect(ids).to.not.include(bru.getVar("tableOrder2Id"))
+  })
+}

@@ -1,0 +1,29 @@
+meta {
+  name: Login - kitchen (200)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{process.env.SEED_KITCHEN_EMAIL}}",
+    "password": "{{process.env.SEED_KITCHEN_PASSWORD}}"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.user.role: eq kitchen
+}
+
+script:post-response {
+  if (res.status === 200) {
+    bru.setVar("kitchenToken", res.body.token)
+  }
+}

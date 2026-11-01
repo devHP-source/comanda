@@ -1,0 +1,32 @@
+meta {
+  name: 7. Table occupied, everything served (200)
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/tables
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("table 50 is occupied: guests eating, nothing in the kitchen", () => {
+    expect(res.body[49]).to.deep.equal({
+      number: 50,
+      status: "occupied",
+      openTickets: 1,
+      round: 1,
+      total: bru.getVar("flowDishCents") * 2 / 100,
+      hasReady: false,
+    })
+  })
+}

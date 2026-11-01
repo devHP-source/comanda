@@ -1,0 +1,20 @@
+meta {
+  name: Close table - already free (409)
+  type: http
+  seq: 20
+}
+
+post {
+  url: {{baseUrl}}/tables/50/close
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq TABLE_ALREADY_FREE
+}

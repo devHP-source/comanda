@@ -1,0 +1,26 @@
+meta {
+  name: Get tables - admin, table 50 ready (200)
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/tables
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("one ready ticket wins over the one still in the kitchen", () => {
+    expect(res.body[49].status).to.equal("ready")
+    expect(res.body[49].hasReady).to.equal(true)
+  })
+}

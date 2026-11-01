@@ -14,6 +14,7 @@ import adminRoutes from "./routes/adminRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
 import settingsRoutes from "./routes/settingsRoutes.js"
 import orderRoutes from "./routes/orderRoutes.js"
+import tableRoutes from "./routes/tableRoutes.js"
 
 const app = express()
 const PORT = process.env.PORT || 9099
@@ -45,6 +46,7 @@ app.use("/api/admin", adminRoutes)
 app.use("/api/users", userRoutes)
 app.use("/api/settings", settingsRoutes)
 app.use("/api/orders", orderRoutes)
+app.use("/api/tables", tableRoutes)
 
 app.use(notFound)
 app.use(errorHandler)

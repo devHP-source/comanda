@@ -1,0 +1,26 @@
+meta {
+  name: 5. Waiter sees "Pronto" (200)
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/tables
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("table 50 is ready", () => {
+    expect(res.body[49].status).to.equal("ready")
+    expect(res.body[49].hasReady).to.equal(true)
+  })
+}
