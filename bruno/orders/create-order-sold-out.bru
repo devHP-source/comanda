@@ -1,0 +1,40 @@
+meta {
+  name: Create order - sold-out dish (409)
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "tableNumber": 50,
+    "items": [
+      { "dish": "{{orderDishId}}", "qty": 1 },
+      { "dish": "{{soldOutDishId}}", "qty": 1 }
+    ]
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq DISH_UNAVAILABLE
+}
+
+tests {
+  test("errors.dishes lists only the sold-out dish code", () => {
+    expect(res.body.errors.dishes).to.deep.equal([bru.getVar("soldOutDishCode")])
+  })
+}
+
+docs {
+  The whole ticket is refused, not only the sold-out line: the waiter fixes it and sends again.
+}

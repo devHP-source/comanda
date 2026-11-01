@@ -1,0 +1,32 @@
+meta {
+  name: Create order - admin, next round (201)
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "tableNumber": 50,
+    "items": [{ "dish": "{{orderDishId}}", "qty": 1 }]
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+tests {
+  test("second send to the same table = next round", () => {
+    expect(res.body.round).to.equal(bru.getVar("orderRound") + 1)
+  })
+}

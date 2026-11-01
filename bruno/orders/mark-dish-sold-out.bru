@@ -1,0 +1,26 @@
+meta {
+  name: Mark dish sold out (200)
+  type: http
+  seq: 12
+}
+
+patch {
+  url: {{baseUrl}}/dishes/{{soldOutDishId}}/availability
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "isAvailable": false
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.isAvailable: eq false
+}

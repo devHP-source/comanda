@@ -1,0 +1,26 @@
+meta {
+  name: Restore dish availability (200)
+  type: http
+  seq: 14
+}
+
+patch {
+  url: {{baseUrl}}/dishes/{{soldOutDishId}}/availability
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "isAvailable": true
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.isAvailable: eq true
+}

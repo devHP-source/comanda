@@ -52,6 +52,7 @@ export default function errorHandler(err, req, res, next) {
 
   res.status(status).json({
     message: err.message,
-    code: typeof err.code === "string" ? err.code : "REQUEST_FAILED"
+    code: typeof err.code === "string" ? err.code : "REQUEST_FAILED",
+    ...(err.errors && { errors: err.errors }) // optional details, e.g. { dishes: ["47", "P12"] }
   })
 }

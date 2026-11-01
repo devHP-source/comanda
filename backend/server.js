@@ -13,6 +13,7 @@ import authRoutes from "./routes/authRoutes.js"
 import adminRoutes from "./routes/adminRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
 import settingsRoutes from "./routes/settingsRoutes.js"
+import orderRoutes from "./routes/orderRoutes.js"
 
 const app = express()
 const PORT = process.env.PORT || 9099
@@ -43,6 +44,7 @@ app.use("/api/dishes", dishRoutes)
 app.use("/api/admin", adminRoutes)
 app.use("/api/users", userRoutes)
 app.use("/api/settings", settingsRoutes)
+app.use("/api/orders", orderRoutes)
 
 app.use(notFound)
 app.use(errorHandler)

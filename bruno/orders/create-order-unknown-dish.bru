@@ -1,0 +1,27 @@
+meta {
+  name: Create order - unknown dish (400)
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "tableNumber": 50,
+    "items": [{ "dish": "000000000000000000000000", "qty": 1 }]
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_DISH
+}

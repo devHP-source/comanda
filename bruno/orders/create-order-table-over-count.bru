@@ -1,0 +1,31 @@
+meta {
+  name: Create order - table over tableCount (400)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "tableNumber": 51,
+    "items": [{ "dish": "{{orderDishId}}", "qty": 1 }]
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_TABLE
+}
+
+docs {
+  51 = one over the default tableCount (50, restored by the settings folder and the seed).
+}

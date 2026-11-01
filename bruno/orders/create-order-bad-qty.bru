@@ -1,0 +1,36 @@
+meta {
+  name: Create order - qty not an integer (400)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "tableNumber": 50,
+    "items": [
+      { "dish": "{{orderDishId}}", "qty": 1 },
+      { "dish": "{{orderDish2Id}}", "qty": 1.5 }
+    ]
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq VALIDATION_FAILED
+}
+
+tests {
+  test("the error points to the second line", () => {
+    expect(res.body.errors["items.1.qty"]).to.be.a("string")
+  })
+}

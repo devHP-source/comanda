@@ -1,0 +1,56 @@
+meta {
+  name: Create order - waiter (201)
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "tableNumber": 50,
+    "items": [
+      { "dish": "{{orderDishId}}", "qty": 2, "notes": "senza cipolla", "priceSnapshot": 0.01 },
+      { "dish": "{{orderDish2Id}}", "qty": 1 }
+    ]
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.tableNumber: eq 50
+  res.body.status: eq sent
+  res.body.closedAt: isNull
+  res.body.waiter: isString
+  res.body.items.length: eq 2
+}
+
+tests {
+  test("snapshots copied from the dish, not from the body", () => {
+    const item = res.body.items[0]
+    expect(item.codeSnapshot).to.equal(bru.getVar("orderDishCode"))
+    expect(item.nameSnapshot).to.equal(bru.getVar("orderDishName"))
+    expect(item.priceSnapshot).to.equal(bru.getVar("orderDishPrice")) // euros, not cents, and not the 0.01 sent
+    expect(item.qty).to.equal(2)
+    expect(item.notes).to.equal("senza cipolla")
+  })
+
+  test("notes default to an empty string", () => {
+    expect(res.body.items[1].notes).to.equal("")
+  })
+}
+
+script:post-response {
+  if (res.status === 201) {
+    bru.setVar("orderId", res.body._id)
+    bru.setVar("orderRound", res.body.round)
+  }
+}

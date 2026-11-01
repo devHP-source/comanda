@@ -1,0 +1,23 @@
+meta {
+  name: Create order - no token (401)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "tableNumber": 50,
+    "items": [{ "dish": "{{orderDishId}}", "qty": 1 }]
+  }
+}
+
+assert {
+  res.status: eq 401
+  res.body.code: eq NO_TOKEN
+}

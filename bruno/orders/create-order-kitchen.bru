@@ -1,0 +1,27 @@
+meta {
+  name: Create order - kitchen (403)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+body:json {
+  {
+    "tableNumber": 50,
+    "items": [{ "dish": "{{orderDishId}}", "qty": 1 }]
+  }
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq FORBIDDEN
+}

@@ -1,0 +1,28 @@
+meta {
+  name: Setup - pick dishes from the menu (200)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/dishes
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body: isArray
+}
+
+script:post-response {
+  // Three available dishes: two for the ticket, one to mark sold out
+  const available = res.body.filter((dish) => dish.isAvailable)
+  bru.setVar("orderDishId", available[0]._id)
+  bru.setVar("orderDishCode", available[0].code)
+  bru.setVar("orderDishName", available[0].name.it)
+  bru.setVar("orderDishPrice", available[0].price)
+  bru.setVar("orderDish2Id", available[1]._id)
+  bru.setVar("soldOutDishId", available[2]._id)
+  bru.setVar("soldOutDishCode", available[2].code)
+}

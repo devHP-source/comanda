@@ -1,0 +1,30 @@
+meta {
+  name: Login - kitchen (200)
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{process.env.SEED_KITCHEN_EMAIL}}",
+    "password": "{{process.env.SEED_KITCHEN_PASSWORD}}"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.user.role: eq kitchen
+}
+
+script:post-response {
+  // Runtime variable (memory only): the kitchen moves tickets but never creates them
+  if (res.status === 200) {
+    bru.setVar("kitchenToken", res.body.token)
+  }
+}

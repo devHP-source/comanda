@@ -1,0 +1,27 @@
+meta {
+  name: Create order - table 0 (400)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "tableNumber": 0,
+    "items": [{ "dish": "{{orderDishId}}", "qty": 1 }]
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_TABLE
+}

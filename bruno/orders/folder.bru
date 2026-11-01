@@ -1,0 +1,10 @@
+meta {
+  name: orders
+  seq: 11
+}
+
+docs {
+  Run auth (adminToken, waiterToken, kitchenToken) first.
+  The tickets go to table 50 and stay open: every run adds 2 tickets (the round keeps growing) until the table is closed or npm run seed clears the orders.
+  "Mark dish sold out" changes a real dish: the last request puts it back on the menu.
+}

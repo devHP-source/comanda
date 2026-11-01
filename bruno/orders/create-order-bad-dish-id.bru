@@ -1,0 +1,27 @@
+meta {
+  name: Create order - bad dish id (400)
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "tableNumber": 50,
+    "items": [{ "dish": "abc", "qty": 1 }]
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_ID
+}
