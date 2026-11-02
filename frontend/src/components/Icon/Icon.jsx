@@ -1,0 +1,122 @@
+const paths = {
+  alert: (
+    <>
+      <path d="M12 3 2.8 20h18.4L12 3Z" />
+      <path d="M12 9v4.5M12 17h.1" />
+    </>
+  ),
+  bell: (
+    <>
+      <path d="M5 17h14l-1.5-2.2V10a5.5 5.5 0 0 0-11 0v4.8L5 17Z" />
+      <path d="M10 20h4" />
+    </>
+  ),
+  bookmark: <path d="M6 3.75h12v16.5l-6-3.6-6 3.6V3.75Z" />,
+  calendar: (
+    <>
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <path d="M8 3v4M16 3v4M3 10h18" />
+    </>
+  ),
+  check: <path d="m5 12 4.5 4.5L19 7" />,
+  chef: (
+    <>
+      <path d="M6 11a4 4 0 0 1 1-7.8A5.5 5.5 0 0 1 17.5 5 3.5 3.5 0 0 1 18 12H6Z" />
+      <path d="M7 12v8h10v-8M10 16h4" />
+    </>
+  ),
+  chevron: <path d="m9 18 6-6-6-6" />,
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3.5 2" />
+    </>
+  ),
+  dashboard: (
+    <>
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <rect x="14" y="14" width="7" height="7" rx="1" />
+    </>
+  ),
+  dish: (
+    <>
+      <path d="M4 17h16M6 17a6 6 0 0 1 12 0M12 8V5" />
+      <path d="M3 20h18" />
+    </>
+  ),
+  globe: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18M12 3c2.4 2.5 3.5 5.5 3.5 9S14.4 18.5 12 21M12 3c-2.4 2.5-3.5 5.5-3.5 9s1.1 6.5 3.5 9" />
+    </>
+  ),
+  home: (
+    <>
+      <path d="m3.5 10 8.5-7 8.5 7" />
+      <path d="M5.5 9v11h13V9M9.5 20v-6h5v6" />
+    </>
+  ),
+  info: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v6M12 7.2v.1" />
+    </>
+  ),
+  list: (
+    <>
+      <path d="M8 6h12M8 12h12M8 18h12" />
+      <path d="M4 6h.1M4 12h.1M4 18h.1" />
+    </>
+  ),
+  map: (
+    <>
+      <path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3V6Z" />
+      <path d="M9 3v15M15 6v15" />
+    </>
+  ),
+  menu: <path d="M4 6h16M4 12h16M4 18h16" />,
+  people: (
+    <>
+      <circle cx="9" cy="8" r="3" />
+      <circle cx="17" cy="9" r="2.5" />
+      <path d="M3.5 20a5.5 5.5 0 0 1 11 0M14 15a4.5 4.5 0 0 1 6.5 4" />
+    </>
+  ),
+  search: (
+    <>
+      <circle cx="10.5" cy="10.5" r="6.5" />
+      <path d="m16 16 4.5 4.5" />
+    </>
+  ),
+  settings: (
+    <>
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19 13.5v-3l-2-.7-.6-1.4.9-1.9-2.1-2.1-1.9.9-1.4-.6-.7-2h-3l-.7 2-1.4.6-1.9-.9-2.1 2.1.9 1.9-.6 1.4-2 .7v3l2 .7.6 1.4-.9 1.9 2.1 2.1 1.9-.9 1.4.6.7 2h3l.7-2 1.4-.6 1.9.9 2.1-2.1-.9-1.9.6-1.4 2-.7Z" />
+    </>
+  ),
+  sparkle: <path d="M12 2.5c.8 5.6 3.4 8.2 9 9-5.6.8-8.2 3.4-9 9-.8-5.6-3.4-8.2-9-9 5.6-.8 8.2-3.4 9-9Z" />,
+  table: <path d="M4 9h16v5H4zM7 14v7M17 14v7M4 6h16" />,
+}
+
+const Icon = ({ name, size = 20, className }) => {
+  if (!paths[name]) return null
+
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      height={size}
+      viewBox="0 0 24 24"
+      width={size}
+    >
+      <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.7">
+        {paths[name]}
+      </g>
+    </svg>
+  )
+}
+
+export default Icon

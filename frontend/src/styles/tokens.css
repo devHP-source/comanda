@@ -1,0 +1,77 @@
+:root {
+  --color-canvas: #f5f0e7;
+  --color-surface: #fffdf9;
+  --color-surface-muted: #eee6da;
+  --color-ink: #241c18;
+  --color-ink-muted: #756b63;
+  --color-accent: #8f1f26;
+  --color-accent-soft: #f1dadd;
+  --color-line: #ded5c8;
+  --color-white: #ffffff;
+  --canvas-glow: rgb(255 255 255 / 60%);
+
+  /* Status (tables, tickets) */
+  --status-free-bg: #faf9f7;
+  --status-free-line: #e2ddd6;
+  --status-occupied-bg: #f8eeee;
+  --status-occupied-line: #dbc7c8;
+  --status-occupied-dot: #c58f93;
+  --status-preparing-bg: #faf5e9;
+  --status-preparing-line: #e7d6b5;
+  --status-preparing-dot: #d2aa5b;
+  --status-ready: var(--color-accent);
+
+  /* Stat card tones (admin dashboard) */
+  --tone-wine: #8f1f26;
+  --tone-wine-bg: #f4e5e6;
+  --tone-amber: #8c621c;
+  --tone-amber-bg: #f5ecd9;
+  --tone-green: #477455;
+  --tone-green-bg: #e5efe8;
+  --tone-blue: #496d7a;
+  --tone-blue-bg: #e4edef;
+
+  /* Dish photo placeholder */
+  --placeholder-bg: #d7c6ad;
+
+
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --text-xs: 0.75rem;    /* minimum size for any text */
+  --text-sm: 0.875rem;   /* secondary text */
+  --text-md: 1rem;       /* body */
+  --text-lg: 1.15rem;    /* dish titles */
+  --text-xl: 1.55rem;    /* section titles */
+  --text-hero: clamp(2rem, 9vw, 4.5rem);
+  --tracking-label: 0.08em;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.65rem;
+  --radius-lg: 0.85rem;
+  --radius-card: 1rem;
+  --radius-bar: 1.2rem;
+  --radius-pill: 99px;
+  --radius-round: 50%;
+
+  --shadow-card: 0 10px 28px rgb(65 46 35 / 5%);
+  --shadow-soft: 0 6px 16px rgb(44 35 29 / 6%);
+  --shadow-float: 0 15px 38px rgb(60 38 26 / 16%);
+  --shadow-accent: 0 7px 18px rgb(143 31 38 / 28%);
+
+  --glass-bg: rgb(255 253 249 / 88%);
+  --glass-bg-fallback: #fffdf9;
+  --glass-blur: blur(18px);
+
+  --tap-min: 44px;
+  --topbar-height: 4.5rem;
+}
+
+/* Breakpoints, 700px tablet, 1024px desktop, 1320px wide */
