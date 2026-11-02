@@ -1,0 +1,27 @@
+.skeleton {
+  display: block;
+  background: var(--color-surface-muted);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--color-surface-muted) 25%,
+      var(--color-canvas) 50%,
+      var(--color-surface-muted) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}

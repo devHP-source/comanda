@@ -3,6 +3,26 @@
     "label": "Language",
     "switchTo": "Switch to {name}"
   },
+  "brand": {
+    "note": "Chinese cuisine & pizza"
+  },
+  "nav": {
+    "main": "Main navigation",
+    "mobile": "Navigation",
+    "menu": "Menu",
+    "list": "My list",
+    "info": "Info",
+    "about": "About & contact"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The link may be wrong, or the page no longer exists.",
+    "backToMenu": "Back to the menu"
+  },
+  "loading": {
+    "label": "Loading…",
+    "slow": "Just a few more seconds, we're connecting…"
+  },
   "errors": {
     "NETWORK_ERROR": "The server isn't responding. Check your connection and try again in a few seconds.",
     "UNKNOWN_ERROR": "Something went wrong. Please try again.",
