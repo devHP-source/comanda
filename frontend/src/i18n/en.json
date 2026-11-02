@@ -1,0 +1,51 @@
+{
+  "language": {
+    "label": "Language",
+    "switchTo": "Switch to {name}"
+  },
+  "errors": {
+    "NETWORK_ERROR": "The server isn't responding. Check your connection and try again in a few seconds.",
+    "UNKNOWN_ERROR": "Something went wrong. Please try again.",
+    "REQUEST_FAILED": "Request failed. Please try again.",
+    "INTERNAL_ERROR": "Server error. Please try again shortly.",
+    "ROUTE_NOT_FOUND": "Page or resource not found.",
+    "INVALID_JSON": "The data sent is not valid.",
+    "VALIDATION_FAILED": "Please check the highlighted fields.",
+    "INVALID_ID": "Invalid identifier.",
+    "DUPLICATE_KEY": "An item with this value already exists.",
+    "TOO_MANY_REQUESTS": "Too many attempts. Wait a few minutes and try again.",
+
+    "MISSING_CREDENTIALS": "Enter your email and password.",
+    "INVALID_CREDENTIALS": "Incorrect email or password.",
+    "NO_TOKEN": "Sign in to continue.",
+    "INVALID_TOKEN": "Invalid session. Please sign in again.",
+    "TOKEN_EXPIRED": "Your session has expired. Please sign in again.",
+    "ACCOUNT_DISABLED": "This account is disabled.",
+    "FORBIDDEN": "You don't have permission for this action.",
+
+    "USER_NOT_FOUND": "User not found.",
+    "USER_INACTIVE": "This user is not active.",
+    "CANNOT_IMPERSONATE_ADMIN": "You can't use another admin's account.",
+
+    "CATEGORY_NOT_FOUND": "Category not found.",
+    "CATEGORY_HAS_DISHES": "This category still has dishes: move or delete them first.",
+    "INVALID_CATEGORY": "Invalid category.",
+
+    "DISH_NOT_FOUND": "Dish not found.",
+    "INVALID_AVAILABILITY": "Invalid availability.",
+    "INVALID_IMAGE_TYPE": "Unsupported image format. Use JPG, PNG or WebP.",
+    "IMAGE_TOO_LARGE": "Image is too large (max 5 MB).",
+    "INVALID_UPLOAD": "File upload failed.",
+    "IMAGE_UPLOAD_FAILED": "Photo upload failed. Please try again.",
+    "REMOVE_IMAGE_WITH_FILE": "Choose either to replace or to remove the photo, not both.",
+
+    "INVALID_TABLE": "Invalid table number.",
+    "TABLE_ALREADY_FREE": "This table is already free.",
+    "EMPTY_ORDER": "Add at least one dish to the ticket.",
+    "INVALID_DISH": "One of the dishes no longer exists. Refresh the page.",
+    "DISH_UNAVAILABLE": "One or more dishes are sold out or unavailable.",
+    "ORDER_NOT_FOUND": "Ticket not found.",
+    "INVALID_STATUS": "Invalid status.",
+    "INVALID_STATUS_TRANSITION": "This ticket has already been updated. Refresh the page."
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "language": {
+    "label": "Lingua",
+    "switchTo": "Passa a {name}"
+  },
+  "errors": {
+    "NETWORK_ERROR": "Il server non risponde. Controlla la connessione e riprova tra qualche secondo.",
+    "UNKNOWN_ERROR": "Qualcosa è andato storto. Riprova.",
+    "REQUEST_FAILED": "Richiesta non riuscita. Riprova.",
+    "INTERNAL_ERROR": "Errore del server. Riprova tra poco.",
+    "ROUTE_NOT_FOUND": "Pagina o risorsa non trovata.",
+    "INVALID_JSON": "Dati inviati non validi.",
+    "VALIDATION_FAILED": "Controlla i campi evidenziati.",
+    "INVALID_ID": "Identificativo non valido.",
+    "DUPLICATE_KEY": "Esiste già un elemento con questo valore.",
+    "TOO_MANY_REQUESTS": "Troppi tentativi. Aspetta qualche minuto e riprova.",
+
+    "MISSING_CREDENTIALS": "Inserisci email e password.",
+    "INVALID_CREDENTIALS": "Email o password non corretti.",
+    "NO_TOKEN": "Accedi per continuare.",
+    "INVALID_TOKEN": "Sessione non valida. Accedi di nuovo.",
+    "TOKEN_EXPIRED": "Sessione scaduta. Accedi di nuovo.",
+    "ACCOUNT_DISABLED": "Questo account è disattivato.",
+    "FORBIDDEN": "Non hai i permessi per questa azione.",
+
+    "USER_NOT_FOUND": "Utente non trovato.",
+    "USER_INACTIVE": "Questo utente non è attivo.",
+    "CANNOT_IMPERSONATE_ADMIN": "Non puoi usare l'account di un altro amministratore.",
+
+    "CATEGORY_NOT_FOUND": "Categoria non trovata.",
+    "CATEGORY_HAS_DISHES": "Questa categoria contiene ancora dei piatti: spostali o eliminali prima.",
+    "INVALID_CATEGORY": "Categoria non valida.",
+
+    "DISH_NOT_FOUND": "Piatto non trovato.",
+    "INVALID_AVAILABILITY": "Disponibilità non valida.",
+    "INVALID_IMAGE_TYPE": "Formato immagine non supportato. Usa JPG, PNG o WebP.",
+    "IMAGE_TOO_LARGE": "Immagine troppo grande (massimo 5 MB).",
+    "INVALID_UPLOAD": "Caricamento del file non riuscito.",
+    "IMAGE_UPLOAD_FAILED": "Caricamento della foto non riuscito. Riprova.",
+    "REMOVE_IMAGE_WITH_FILE": "Scegli se sostituire o rimuovere la foto, non entrambe.",
+
+    "INVALID_TABLE": "Numero di tavolo non valido.",
+    "TABLE_ALREADY_FREE": "Questo tavolo è già libero.",
+    "EMPTY_ORDER": "Aggiungi almeno un piatto alla comanda.",
+    "INVALID_DISH": "Uno dei piatti non esiste più. Aggiorna la pagina.",
+    "DISH_UNAVAILABLE": "Uno o più piatti sono esauriti o non disponibili.",
+    "ORDER_NOT_FOUND": "Comanda non trovata.",
+    "INVALID_STATUS": "Stato non valido.",
+    "INVALID_STATUS_TRANSITION": "La comanda è già stata aggiornata. Aggiorna la pagina."
+  }
+}
