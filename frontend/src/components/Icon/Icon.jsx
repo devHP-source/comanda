@@ -32,6 +32,7 @@ const paths = {
       <path d="M12 7v5l3.5 2" />
     </>
   ),
+  close: <path d="M6 6l12 12M18 6 6 18" />,
   dashboard: (
     <>
       <rect x="3" y="3" width="7" height="7" rx="1" />

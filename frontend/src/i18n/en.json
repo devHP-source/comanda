@@ -78,6 +78,15 @@
     "vegetarian": "Vegetarian",
     "spicy": "Spicy"
   },
+  "dishSheet": {
+    "label": "Dish details",
+    "close": "Close",
+    "italianName": "In Italian",
+    "notFoundTitle": "Dish not found",
+    "notFoundText": "This dish is no longer on the menu.",
+    "errorTitle": "We couldn't load this dish",
+    "backToMenu": "Back to the menu"
+  },
   "allergens": {
     "gluten": "gluten",
     "crustaceans": "crustaceans",

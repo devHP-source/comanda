@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import DishVisual from '../DishVisual/DishVisual.jsx'
 import useLanguage from '../../hooks/useLanguage.js'
 import formatPrice from '../../utils/formatPrice.js'
@@ -20,7 +21,9 @@ const DishCard = ({ dish }) => { // One menu row: text on the left, photo on the
         </p>
 
         <h3 className={styles.title}>
-          {pick(dish.name)}
+          <Link to={`/menu/dish/${dish._id}`} state={{ fromMenu: true }} className={styles.link}>
+            {pick(dish.name)}
+          </Link>
           {dish.isFrozen && ( // Italian law: frozen products carry an asterisk, explained in the menu note
             <>
               <span className={styles.frozen} aria-hidden="true">*</span>

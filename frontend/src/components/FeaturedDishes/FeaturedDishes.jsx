@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import DishVisual from '../DishVisual/DishVisual.jsx'
 import Icon from '../Icon/Icon.jsx'
 import useLanguage from '../../hooks/useLanguage.js'
@@ -40,7 +41,9 @@ const FeaturedDishes = ({ dishes }) => { // "Consigliati dallo chef": swipeable 
                 {dish.code}
               </p>
               <h3 className={styles.name}>
-                {pick(dish.name)}
+                <Link to={`/menu/dish/${dish._id}`} state={{ fromMenu: true }} className={styles.link}>
+                  {pick(dish.name)}
+                </Link>
                 {dish.isFrozen && (
                   <>
                     <span className={styles.frozen} aria-hidden="true">*</span>

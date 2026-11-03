@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { Outlet } from 'react-router'
 import api from '../../../api/client.js'
 import CategoryChips from '../../../components/CategoryChips/CategoryChips.jsx'
 import CategoryShortcuts from '../../../components/CategoryShortcuts/CategoryShortcuts.jsx'
@@ -217,10 +218,9 @@ const MenuPage = () => {
         <p className={styles.status}>
           {settings && (
             <>
-              <span className={`${styles.statusDot} ${status === 'open' ? styles.isOpen : ''}`} aria-hidden="true" />
+              <Icon name="clock" size={15} />
               {t(`menu.${status}`)}
               <span className={styles.statusSeparator} aria-hidden="true" />
-              <Icon name="clock" size={15} />
               <span className="visually-hidden">{t('menu.hours')}: </span>
               {settings.openingTime}–{settings.closingTime}
             </>
@@ -239,6 +239,9 @@ const MenuPage = () => {
         />
         <div className={styles.content}>{content}</div>
       </div>
+
+      {/* /menu/dish/:id: the sheet reuses the loaded menu instead of fetching it again */}
+      <Outlet context={menu} />
     </div>
   )
 }

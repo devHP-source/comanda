@@ -34,6 +34,7 @@
   display: flex;
   width: min(72vw, 16rem);
   flex: 0 0 auto;
+  position: relative; /* the name link's ::after covers the card */
   flex-direction: column;
   overflow: hidden;
   scroll-snap-align: start;
@@ -86,6 +87,22 @@
   font-size: var(--text-md);
   font-weight: 750;
   line-height: 1.3;
+}
+
+.link::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: '';
+}
+
+.link:focus-visible {
+  outline: none; /* drawn around the whole card instead */
+}
+
+.card:has(.link:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px; /* inside: the scrolling strip would clip an outer ring */
 }
 
 .frozen {

@@ -78,6 +78,15 @@
     "vegetarian": "Vegetariano",
     "spicy": "Piccante"
   },
+  "dishSheet": {
+    "label": "Scheda del piatto",
+    "close": "Chiudi",
+    "italianName": "In italiano",
+    "notFoundTitle": "Piatto non trovato",
+    "notFoundText": "Questo piatto non è più nel menu.",
+    "errorTitle": "Non riusciamo a caricare il piatto",
+    "backToMenu": "Torna al menu"
+  },
   "allergens": {
     "gluten": "glutine",
     "crustaceans": "crostacei",

@@ -1,4 +1,5 @@
 .card {
+  position: relative; /* the title link's ::after covers the card */
   display: grid;
   grid-template-columns: minmax(0, 1fr) 8.25rem; /* text | photo column, both as tall as the card */
   gap: var(--space-3);
@@ -29,6 +30,23 @@
   font-size: var(--text-lg);
   letter-spacing: -0.02em;
   line-height: 1.12;
+}
+
+.link::after {
+  position: absolute;
+  z-index: 1; /* above the photo, which comes later in the card */
+  inset: 0;
+  border-radius: inherit;
+  content: '';
+}
+
+.link:focus-visible {
+  outline: none; /* drawn around the whole card instead */
+}
+
+.card:has(.link:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
 }
 
 .frozen {

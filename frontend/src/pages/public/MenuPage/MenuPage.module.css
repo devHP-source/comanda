@@ -46,20 +46,6 @@
   font-weight: 650;
 }
 
-.statusDot {
-  width: 0.45rem;
-  height: 0.45rem;
-  margin-right: 0.15rem;
-  border-radius: var(--radius-round);
-  background: var(--color-ink-muted);
-  box-shadow: 0 0 0 0.22rem var(--color-surface-muted);
-}
-
-.statusDot.isOpen {
-  background: var(--tone-green);
-  box-shadow: 0 0 0 0.22rem var(--tone-green-bg);
-}
-
 .statusSeparator {
   width: 0.2rem;
   height: 0.2rem;

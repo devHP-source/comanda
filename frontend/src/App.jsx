@@ -3,6 +3,7 @@ import { Toaster } from 'sonner'
 import PublicLayout from './components/PublicLayout/PublicLayout.jsx'
 import StaffLayout from './components/StaffLayout/StaffLayout.jsx'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx'
+import DishSheet from './pages/public/DishSheet/DishSheet.jsx'
 import MenuPage from './pages/public/MenuPage/MenuPage.jsx'
 import NotFoundPage from './pages/public/NotFoundPage/NotFoundPage.jsx'
 import StaffLoginPage from './pages/public/StaffLoginPage/StaffLoginPage.jsx'
@@ -22,7 +23,10 @@ const App = () => (
     <Routes>
       <Route element={<PublicLayout />}>
         <Route index element={<Navigate to="/menu" replace />} />
-        <Route path="menu" element={<MenuPage />} />
+        <Route path="menu" element={<MenuPage />}>
+          {/* Drawn over the menu, which stays mounted: scroll position and search survive */}
+          <Route path="dish/:id" element={<DishSheet />} />
+        </Route>
         <Route path="list" />
         <Route path="info" />
         <Route path="*" element={<NotFoundPage />} />

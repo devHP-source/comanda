@@ -9,6 +9,11 @@
 
 html {
   scroll-padding-top: calc(var(--topbar-height) + var(--space-3)); /* in-page jumps and keyboard focus stop below the sticky top bar */
+  scrollbar-gutter: stable; /* the page doesn't shift sideways when a dialog hides the scrollbar */
+}
+
+html:has(dialog[open]) {
+  overflow: hidden; /* the page behind a sheet or modal doesn't scroll */
 }
 
 body {
