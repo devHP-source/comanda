@@ -13,7 +13,7 @@ const hasUsableToken = () => { // Reads the stored token without trusting it, on
     const { kind, exp } = jwtDecode(token)
     if (kind === 'staff' && exp * 1000 > Date.now()) return true
   } catch {
-    
+    // not a valid JWT: dropped below, like an expired one
   }
 
   clearToken() // expired or broken, no need to ask the server

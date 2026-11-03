@@ -21,6 +21,14 @@
   }
 }
 
+@media (prefers-reduced-transparency: reduce) {
+  .dialog {
+    background: var(--glass-bg-fallback);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
 .box {
   display: grid;
   gap: var(--space-3);

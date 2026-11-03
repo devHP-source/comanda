@@ -20,6 +20,7 @@
 
 .brand {
   display: flex;
+  min-width: 0; /* with very large text the name shrinks, the language pill stays on screen */
   min-height: var(--tap-min);
   align-items: center;
   gap: var(--space-3);
@@ -39,6 +40,17 @@
   font-size: 1.35rem;
   font-weight: 700;
   box-shadow: var(--shadow-accent);
+}
+
+.brandText {
+  min-width: 0;
+}
+
+.brandName,
+.brandNote {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .brandName {
@@ -144,6 +156,15 @@
   }
 }
 
+@media (prefers-reduced-transparency: reduce) {
+  .topbar,
+  .bottomNav {
+    background: var(--glass-bg-fallback);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
 /* Tablet and up: top navbar, no bottom bar */
 @media (min-width: 700px) {
   .shell {
@@ -171,7 +192,6 @@
 
 @media (min-width: 1024px) {
   .topbar {
-    min-height: 5.25rem;
     padding: 0.85rem clamp(2rem, 5vw, 5rem);
   }
 }

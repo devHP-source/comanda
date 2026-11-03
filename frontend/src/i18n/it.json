@@ -57,7 +57,18 @@
     "empty": "Il menu non è disponibile in questo momento. Chiedi al personale.",
     "noteTitle": "Informazioni importanti",
     "noteFrozen": "* Prodotto surgelato o congelato all'origine.",
-    "noteAllergens": "Per allergie e intolleranze chiedi al personale."
+    "noteAllergens": "Per allergie e intolleranze chiedi al personale.",
+    "categories": "Categorie",
+    "jumpTo": "Vai alla categoria",
+    "featuredKicker": "Scelti per te",
+    "featuredTitle": "Consigliati dallo chef",
+    "searchLabel": "Cerca nel menu",
+    "searchPlaceholder": "Cerca un piatto o un numero",
+    "searchResults": "{count} piatti per “{query}”",
+    "searchResultsOne": "1 piatto per “{query}”",
+    "searchEmptyTitle": "Nessun piatto per “{query}”",
+    "searchEmptyText": "Prova con un altro nome o con il numero del piatto che trovi sul menu.",
+    "clearSearch": "Cancella ricerca"
   },
   "dish": {
     "number": "Piatto n.",

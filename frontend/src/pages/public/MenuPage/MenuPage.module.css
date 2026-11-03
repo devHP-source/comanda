@@ -1,11 +1,13 @@
 .page {
+  --gutter: var(--space-5);
+
   max-width: 90rem;
   margin: 0 auto;
 }
 
 /* Intro */
 .intro {
-  padding: 1.75rem var(--space-5) var(--space-5);
+  padding: 1.75rem var(--gutter) var(--space-5);
 }
 
 .eyebrow {
@@ -34,6 +36,7 @@
 
 .status {
   display: flex;
+  flex-wrap: wrap; /* very large text: the hours go on a second line */
   min-height: 1.5rem;
   align-items: center;
   gap: 0.4rem;
@@ -65,19 +68,35 @@
   background: var(--color-line);
 }
 
+/* Layout: one column, then sidebar + dishes on desktop */
+.layout {
+  padding: 0 var(--gutter);
+}
+
+.content {
+  min-width: 0;
+}
+
+.searchStatus {
+  margin-top: var(--space-5);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: 650;
+}
+
 /* Category sections */
+.menuBody {
+  margin-top: var(--space-8);
+}
+
 .sections {
   display: grid;
   gap: 2.5rem;
-  padding: var(--space-5) var(--space-5) 0;
-}
-
-.section {
-  scroll-margin-top: calc(var(--topbar-height) + var(--space-4)); /* a jump to the section stops below the sticky bar */
 }
 
 .sectionHeading {
   display: flex;
+  flex-wrap: wrap; /* very large text: the dish count goes under the title */
   align-items: end;
   justify-content: space-between;
   gap: var(--space-4);
@@ -105,11 +124,12 @@
   gap: var(--space-3);
 }
 
-/* Error and empty states */
+/* Error, empty and no-results states */
 .message {
   display: grid;
   justify-items: start;
   gap: var(--space-3);
+  margin-top: var(--space-5);
   padding: var(--space-6);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-card);
@@ -126,7 +146,7 @@
   line-height: 1.55;
 }
 
-.retry {
+.button {
   min-height: var(--tap-min);
   padding: 0 var(--space-5);
   border-radius: var(--radius-pill);
@@ -140,7 +160,7 @@
 .note {
   display: flex;
   gap: 0.85rem;
-  margin: var(--space-8) var(--space-5) 0;
+  margin-top: var(--space-8);
   padding: 1.1rem;
   border: 1px dashed var(--color-line);
   border-radius: var(--radius-lg);
@@ -171,38 +191,58 @@
   line-height: 1.5;
 }
 
+/* Tablet: wider gutters, 2 columns of dishes */
 @media (min-width: 700px) {
-  .intro {
-    padding: 4rem 2.5rem 2.5rem;
+  .page {
+    --gutter: 2.5rem;
   }
 
-  .sections {
-    padding-right: 2.5rem;
-    padding-left: 2.5rem;
+  .intro {
+    padding: 4rem var(--gutter) 2.5rem;
   }
 
   .dishGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .note {
-    margin-right: 2.5rem;
-    margin-left: 2.5rem;
-  }
 }
 
+/* Desktop: sticky sidebar on the left, no chips, 2–3 columns as the screen grows */
 @media (min-width: 1024px) {
+  .page {
+    --gutter: clamp(2rem, 5vw, 5rem);
+  }
+
   .intro {
-    padding: 5rem clamp(2rem, 5vw, 5rem) 3.5rem;
+    padding: 5rem var(--gutter) 3.5rem;
   }
 
-  .sections {
-    padding-right: clamp(2rem, 5vw, 5rem);
-    padding-left: clamp(2rem, 5vw, 5rem);
+  .layout {
+    display: grid;
+    grid-template-areas:
+      'sidebar search'
+      'sidebar content';
+    grid-template-columns: 13rem minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    column-gap: clamp(2rem, 4vw, 4.5rem);
   }
 
-  .note {
-    margin-right: clamp(2rem, 5vw, 5rem);
-    margin-left: clamp(2rem, 5vw, 5rem);
+  .searchArea {
+    grid-area: search;
+  }
+
+  .sidebarArea {
+    grid-area: sidebar;
+  }
+
+  .content {
+    grid-area: content;
+  }
+
+  .menuBody {
+    margin-top: 2.75rem;
+  }
+
+  .dishGrid {
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   }
 }

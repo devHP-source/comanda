@@ -7,6 +7,10 @@
   -webkit-font-smoothing: antialiased;
 }
 
+html {
+  scroll-padding-top: calc(var(--topbar-height) + var(--space-3)); /* in-page jumps and keyboard focus stop below the sticky top bar */
+}
+
 body {
   min-width: 320px;
   min-height: 100vh;

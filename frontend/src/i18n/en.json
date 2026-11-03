@@ -57,7 +57,18 @@
     "empty": "The menu isn't available right now. Please ask our staff.",
     "noteTitle": "Important information",
     "noteFrozen": "* Frozen product, or frozen at source.",
-    "noteAllergens": "For allergies and intolerances, ask our staff."
+    "noteAllergens": "For allergies and intolerances, ask our staff.",
+    "categories": "Categories",
+    "jumpTo": "Jump to a category",
+    "featuredKicker": "Picked for you",
+    "featuredTitle": "Chef's recommendations",
+    "searchLabel": "Search the menu",
+    "searchPlaceholder": "Search a dish or a number",
+    "searchResults": "{count} dishes for “{query}”",
+    "searchResultsOne": "1 dish for “{query}”",
+    "searchEmptyTitle": "No dishes for “{query}”",
+    "searchEmptyText": "Try another name, or the dish number you see on the menu.",
+    "clearSearch": "Clear search"
   },
   "dish": {
     "number": "Dish no.",

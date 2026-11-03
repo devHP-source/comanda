@@ -93,6 +93,14 @@
   }
 }
 
+@media (prefers-reduced-transparency: reduce) {
+  .bar {
+    background: var(--glass-bg-fallback);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
 @media (min-width: 700px) {
   .bar {
     padding: var(--space-2) 2.5rem;

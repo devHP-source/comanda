@@ -41,7 +41,7 @@ const PublicLayout = () => {
       <header className={styles.topbar}>
         <Link to="/menu" className={styles.brand}>
           <span className={styles.brandMark} aria-hidden="true">C</span>
-          <span>
+          <span className={styles.brandText}>
             <span className={styles.brandName}>Comanda</span>
             <span className={styles.brandNote}>{t('brand.note')}</span>
           </span>

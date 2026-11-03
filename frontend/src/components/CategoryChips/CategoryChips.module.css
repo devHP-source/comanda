@@ -1,0 +1,84 @@
+.bar {
+  position: sticky;
+  z-index: 30;
+  top: var(--topbar-height);
+  margin: 0 calc(-1 * var(--gutter)) var(--space-5);
+  border-bottom: 1px solid var(--color-line);
+  background: var(--glass-bg-fallback);
+}
+
+.strip {
+  position: relative; /* chips measure their offsetLeft from here */
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding: var(--space-2) var(--gutter);
+  scroll-padding-inline: var(--gutter);
+}
+
+.chip {
+  display: flex;
+  min-height: var(--tap-min);
+  align-items: center;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  color: var(--color-ink-muted);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  color: var(--color-ink);
+}
+
+.chip[aria-current='true'] {
+  border-color: var(--color-accent);
+  color: var(--color-white);
+  background: var(--color-accent);
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .bar {
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .bar {
+    background: var(--glass-bg-fallback);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .strip {
+    scroll-behavior: smooth;
+  }
+}
+
+/* While the chips are sticky, jumps and keyboard focus also stop below them (global.css covers the top bar alone) */
+@media (width < 1024px) and (height > 500px) {
+  :global(html):has(.bar) {
+    scroll-padding-top: calc(var(--topbar-height) + var(--chips-height) + var(--space-3));
+  }
+}
+
+/* Short screens (phone in landscape): the chips scroll away with the page, else the bars cover most of it */
+@media (max-height: 500px) {
+  .bar {
+    position: static;
+  }
+}
+
+/* Desktop: the sticky sidebar replaces the chips */
+@media (min-width: 1024px) {
+  .bar {
+    display: none;
+  }
+}
