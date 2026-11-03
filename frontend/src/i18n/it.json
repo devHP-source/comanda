@@ -23,6 +23,28 @@
     "label": "Caricamento…",
     "slow": "Ancora qualche secondo, ci stiamo collegando…"
   },
+  "auth": {
+    "checkingSlow": "Stiamo controllando la sessione, ancora qualche secondo…"
+  },
+  "login": {
+    "kicker": "Area staff",
+    "title": "Accedi",
+    "text": "Entra con l'account che ti ha dato il titolare.",
+    "email": "Email",
+    "password": "Password",
+    "showPassword": "Mostra password",
+    "submit": "Accedi",
+    "submitting": "Accesso in corso…",
+    "backToMenu": "← Torna al menu"
+  },
+  "staff": {
+    "logout": "Esci",
+    "roles": {
+      "admin": "Titolare",
+      "waiter": "Cameriere",
+      "kitchen": "Cucina"
+    }
+  },
   "errors": {
     "NETWORK_ERROR": "Il server non risponde. Controlla la connessione e riprova tra qualche secondo.",
     "UNKNOWN_ERROR": "Qualcosa è andato storto. Riprova.",

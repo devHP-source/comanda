@@ -23,6 +23,28 @@
     "label": "Loading…",
     "slow": "Just a few more seconds, we're connecting…"
   },
+  "auth": {
+    "checkingSlow": "Checking your session, just a few more seconds…"
+  },
+  "login": {
+    "kicker": "Staff area",
+    "title": "Sign in",
+    "text": "Use the account the owner gave you.",
+    "email": "Email",
+    "password": "Password",
+    "showPassword": "Show password",
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "backToMenu": "← Back to the menu"
+  },
+  "staff": {
+    "logout": "Sign out",
+    "roles": {
+      "admin": "Owner",
+      "waiter": "Waiter",
+      "kitchen": "Kitchen"
+    }
+  },
   "errors": {
     "NETWORK_ERROR": "The server isn't responding. Check your connection and try again in a few seconds.",
     "UNKNOWN_ERROR": "Something went wrong. Please try again.",

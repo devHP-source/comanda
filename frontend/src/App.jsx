@@ -2,7 +2,9 @@ import { Navigate, Route, Routes } from 'react-router'
 import { Toaster } from 'sonner'
 import PublicLayout from './components/PublicLayout/PublicLayout.jsx'
 import StaffLayout from './components/StaffLayout/StaffLayout.jsx'
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx'
 import NotFoundPage from './pages/public/NotFoundPage/NotFoundPage.jsx'
+import StaffLoginPage from './pages/public/StaffLoginPage/StaffLoginPage.jsx'
 
 const toastStyle = {
   border: '1px solid var(--color-line)',
@@ -25,9 +27,21 @@ const App = () => (
         <Route path="*" element={<NotFoundPage />} />
       </Route>
 
-      <Route element={<StaffLayout />}>
-        <Route path="staff/waiter" />
-        <Route path="staff/kitchen" />
+      <Route path="staff/login" element={<StaffLoginPage />} />
+
+      <Route element={<ProtectedRoute />}>
+        <Route element={<StaffLayout />}>
+          {/* One interface per duty: admin reaches the others through "View as" */}
+          <Route element={<ProtectedRoute roles={['waiter']} />}>
+            <Route path="staff/waiter" />
+          </Route>
+          <Route element={<ProtectedRoute roles={['kitchen']} />}>
+            <Route path="staff/kitchen" />
+          </Route>
+          <Route element={<ProtectedRoute roles={['admin']} />}>
+            <Route path="admin" />
+          </Route>
+        </Route>
       </Route>
     </Routes>
 
