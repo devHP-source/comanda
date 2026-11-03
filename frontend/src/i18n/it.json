@@ -37,6 +37,10 @@
     "submitting": "Accesso in corso…",
     "backToMenu": "← Torna al menu"
   },
+  "confirm": {
+    "cancel": "Annulla",
+    "confirm": "Conferma"
+  },
   "staff": {
     "logout": "Esci",
     "roles": {

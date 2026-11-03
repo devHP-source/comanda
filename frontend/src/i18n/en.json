@@ -37,6 +37,10 @@
     "submitting": "Signing in…",
     "backToMenu": "← Back to the menu"
   },
+  "confirm": {
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
   "staff": {
     "logout": "Sign out",
     "roles": {

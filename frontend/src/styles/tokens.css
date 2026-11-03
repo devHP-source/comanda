@@ -69,6 +69,7 @@
   --glass-bg: rgb(255 253 249 / 88%);
   --glass-bg-fallback: #fffdf9;
   --glass-blur: blur(18px);
+  --backdrop: rgb(36 28 24 / 45%);
 
   --tap-min: 44px;
   --topbar-height: 4.5rem;
