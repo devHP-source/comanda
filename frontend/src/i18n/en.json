@@ -41,6 +41,48 @@
     "cancel": "Cancel",
     "confirm": "Confirm"
   },
+  "menu": {
+    "eyebrow": "Welcome to Comanda",
+    "title": "What would you like to eat?",
+    "lead": "Pick your favourite dishes and show the list to your waiter.",
+    "open": "Kitchen open",
+    "closedNow": "Kitchen closed",
+    "closedToday": "Closed today",
+    "hours": "Opening hours",
+    "dishCount": "{count} dishes",
+    "dishCountOne": "1 dish",
+    "slow": "Getting the menu ready…",
+    "errorTitle": "We couldn't load the menu",
+    "retry": "Try again",
+    "empty": "The menu isn't available right now. Please ask our staff.",
+    "noteTitle": "Important information",
+    "noteFrozen": "* Frozen product, or frozen at source.",
+    "noteAllergens": "For allergies and intolerances, ask our staff."
+  },
+  "dish": {
+    "number": "Dish no.",
+    "frozen": "frozen",
+    "allergens": "Allergens",
+    "soldOut": "Sold out",
+    "vegetarian": "Vegetarian",
+    "spicy": "Spicy"
+  },
+  "allergens": {
+    "gluten": "gluten",
+    "crustaceans": "crustaceans",
+    "eggs": "eggs",
+    "fish": "fish",
+    "peanuts": "peanuts",
+    "soybeans": "soy",
+    "milk": "milk",
+    "nuts": "tree nuts",
+    "celery": "celery",
+    "mustard": "mustard",
+    "sesame": "sesame",
+    "sulphites": "sulphites",
+    "lupin": "lupin",
+    "molluscs": "molluscs"
+  },
   "staff": {
     "logout": "Sign out",
     "roles": {

@@ -1,0 +1,30 @@
+.card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 8.25rem;
+  gap: var(--space-3);
+  padding: 0.85rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+.copy {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-1);
+}
+
+.price {
+  margin-top: var(--space-3);
+}
+
+.media {
+  min-height: 8.5rem;
+}
+
+@media (min-width: 1320px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr) 9rem;
+  }
+}

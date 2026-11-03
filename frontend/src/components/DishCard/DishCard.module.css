@@ -1,0 +1,127 @@
+.card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 8.25rem; /* text | photo column, both as tall as the card */
+  gap: var(--space-3);
+  padding: 0.85rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--space-1);
+}
+
+.code {
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: 850;
+  letter-spacing: 0.06em;
+}
+
+.title {
+  margin-top: var(--space-2);
+  font-size: var(--text-lg);
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.frozen {
+  margin-left: 0.1em;
+  color: var(--color-accent);
+}
+
+.description {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: var(--space-2);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.allergens {
+  margin-top: var(--space-2);
+  color: var(--color-ink-muted);
+  font-size: var(--text-xs);
+  line-height: 1.45;
+}
+
+.allergens strong {
+  color: var(--color-ink);
+  font-weight: 700;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.7rem;
+}
+
+.price {
+  margin-right: 0.2rem;
+  font-size: var(--text-md);
+  font-weight: 850;
+}
+
+.tag {
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-pill);
+  color: var(--tone-green);
+  background: var(--tone-green-bg);
+  font-size: var(--text-xs);
+  font-weight: 750;
+}
+
+.tagSpicy {
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.tagSoldOut {
+  color: var(--color-ink);
+  background: var(--color-surface-muted);
+}
+
+.media {
+  position: relative;
+  min-height: 8.5rem;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--placeholder-bg);
+}
+
+.media .fill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Sold out but still listed, greyed, the "Esaurito" tag says why */
+.soldOut .media {
+  opacity: 0.55;
+  filter: grayscale(1);
+}
+
+.soldOut .title,
+.soldOut .price {
+  color: var(--color-ink-muted);
+}
+
+@media (min-width: 1320px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr) 9rem;
+  }
+}

@@ -3,6 +3,7 @@ import { Toaster } from 'sonner'
 import PublicLayout from './components/PublicLayout/PublicLayout.jsx'
 import StaffLayout from './components/StaffLayout/StaffLayout.jsx'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx'
+import MenuPage from './pages/public/MenuPage/MenuPage.jsx'
 import NotFoundPage from './pages/public/NotFoundPage/NotFoundPage.jsx'
 import StaffLoginPage from './pages/public/StaffLoginPage/StaffLoginPage.jsx'
 
@@ -21,7 +22,7 @@ const App = () => (
     <Routes>
       <Route element={<PublicLayout />}>
         <Route index element={<Navigate to="/menu" replace />} />
-        <Route path="menu" />
+        <Route path="menu" element={<MenuPage />} />
         <Route path="list" />
         <Route path="info" />
         <Route path="*" element={<NotFoundPage />} />

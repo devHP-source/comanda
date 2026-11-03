@@ -41,6 +41,48 @@
     "cancel": "Annulla",
     "confirm": "Conferma"
   },
+  "menu": {
+    "eyebrow": "Benvenuto da Comanda",
+    "title": "Cosa vuoi mangiare?",
+    "lead": "Scegli i tuoi piatti preferiti e mostra la lista al cameriere.",
+    "open": "Cucina aperta",
+    "closedNow": "Cucina chiusa",
+    "closedToday": "Oggi siamo chiusi",
+    "hours": "Orario",
+    "dishCount": "{count} piatti",
+    "dishCountOne": "1 piatto",
+    "slow": "Stiamo preparando il menu…",
+    "errorTitle": "Non riusciamo a caricare il menu",
+    "retry": "Riprova",
+    "empty": "Il menu non è disponibile in questo momento. Chiedi al personale.",
+    "noteTitle": "Informazioni importanti",
+    "noteFrozen": "* Prodotto surgelato o congelato all'origine.",
+    "noteAllergens": "Per allergie e intolleranze chiedi al personale."
+  },
+  "dish": {
+    "number": "Piatto n.",
+    "frozen": "surgelato",
+    "allergens": "Allergeni",
+    "soldOut": "Esaurito",
+    "vegetarian": "Vegetariano",
+    "spicy": "Piccante"
+  },
+  "allergens": {
+    "gluten": "glutine",
+    "crustaceans": "crostacei",
+    "eggs": "uova",
+    "fish": "pesce",
+    "peanuts": "arachidi",
+    "soybeans": "soia",
+    "milk": "latte",
+    "nuts": "frutta a guscio",
+    "celery": "sedano",
+    "mustard": "senape",
+    "sesame": "sesamo",
+    "sulphites": "solfiti",
+    "lupin": "lupini",
+    "molluscs": "molluschi"
+  },
   "staff": {
     "logout": "Esci",
     "roles": {

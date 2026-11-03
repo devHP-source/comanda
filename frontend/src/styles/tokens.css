@@ -31,8 +31,18 @@
   --tone-blue: #496d7a;
   --tone-blue-bg: #e4edef;
 
-  /* Dish photo placeholder */
+  /* Dish photo placeholder: a plate drawn in CSS, four warm tones */
   --placeholder-bg: #d7c6ad;
+  --placeholder-noodles: #c79d61;
+  --placeholder-chicken: #b98a66;
+  --placeholder-pizza: #c87956;
+  --placeholder-light: #fff8e9;
+  --placeholder-dark: #8f6948;
+  --placeholder-plate: rgb(255 253 249 / 55%);
+  --placeholder-rim: rgb(255 253 249 / 75%);
+  --placeholder-food: rgb(143 31 38 / 67%);
+  --placeholder-herb: rgb(69 101 63 / 60%);
+  --shadow-plate: 0 12px 22px rgb(62 38 24 / 20%);
 
 
   --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
