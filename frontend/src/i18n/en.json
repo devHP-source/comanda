@@ -153,6 +153,56 @@
       "kitchen": "Kitchen"
     }
   },
+  "tables": {
+    "table": "Table",
+    "tableNumber": "Table {number}",
+    "round": "Round {round}",
+    "tickets": "{count} tickets",
+    "ticketsOne": "1 ticket",
+    "dishes": "{count} dishes",
+    "dishesOne": "1 dish",
+    "status": {
+      "free": "Free",
+      "preparing": "In the kitchen",
+      "ready": "Ready"
+    }
+  },
+  "waiter": {
+    "greeting": {
+      "morning": "Good morning, {name}",
+      "evening": "Good evening, {name}"
+    },
+    "service": {
+      "lunch": "Lunch service",
+      "dinner": "Dinner service"
+    },
+    "readyKicker": "Needs attention",
+    "readyTitle": "Ready to serve",
+    "readyNow": "Ready now",
+    "allServed": "All served",
+    "markServed": "Mark served",
+    "serveTitle": "Mark {round} of Table {number} as served?",
+    "serveMessage": "{dishes} to bring to the table. The ticket leaves “Ready to serve”.",
+    "servedToast": "Table {number} · {round} served",
+    "roomKicker": "Dining room",
+    "tablesTitle": "Tables",
+    "occupied": "{count} occupied",
+    "occupiedOne": "1 occupied",
+    "filterLabel": "Filter tables",
+    "filters": {
+      "all": "All",
+      "occupied": "Occupied",
+      "ready": "Ready"
+    },
+    "empty": {
+      "all": "No tables set up.",
+      "occupied": "All tables are free.",
+      "ready": "No table has dishes ready."
+    },
+    "stale": "We can't refresh the tables. Trying again shortly…",
+    "loadError": "We can't load the tables.",
+    "slow": "Loading the dining room…"
+  },
   "errors": {
     "NETWORK_ERROR": "The server isn't responding. Check your connection and try again in a few seconds.",
     "UNKNOWN_ERROR": "Something went wrong. Please try again.",

@@ -153,6 +153,56 @@
       "kitchen": "Cucina"
     }
   },
+  "tables": {
+    "table": "Tavolo",
+    "tableNumber": "Tavolo {number}",
+    "round": "{round}ª comanda",
+    "tickets": "{count} comande",
+    "ticketsOne": "1 comanda",
+    "dishes": "{count} piatti",
+    "dishesOne": "1 piatto",
+    "status": {
+      "free": "Libero",
+      "preparing": "In cucina",
+      "ready": "Pronto"
+    }
+  },
+  "waiter": {
+    "greeting": {
+      "morning": "Buongiorno, {name}",
+      "evening": "Buonasera, {name}"
+    },
+    "service": {
+      "lunch": "Servizio pranzo",
+      "dinner": "Servizio cena"
+    },
+    "readyKicker": "Richiede attenzione",
+    "readyTitle": "Pronto da servire",
+    "readyNow": "Pronto ora",
+    "allServed": "Tutto servito",
+    "markServed": "Segna servita",
+    "serveTitle": "Segnare servita la {round} del Tavolo {number}?",
+    "serveMessage": "{dishes} da portare al tavolo. La comanda sparisce da “Pronto da servire”.",
+    "servedToast": "Tavolo {number} · {round} servita",
+    "roomKicker": "Sala",
+    "tablesTitle": "Tavoli",
+    "occupied": "{count} occupati",
+    "occupiedOne": "1 occupato",
+    "filterLabel": "Filtra i tavoli",
+    "filters": {
+      "all": "Tutti",
+      "occupied": "Occupati",
+      "ready": "Pronti"
+    },
+    "empty": {
+      "all": "Nessun tavolo configurato.",
+      "occupied": "Tutti i tavoli sono liberi.",
+      "ready": "Nessun tavolo ha piatti pronti."
+    },
+    "stale": "Non riusciamo ad aggiornare i tavoli. Riprovo tra poco…",
+    "loadError": "Non riusciamo a caricare i tavoli.",
+    "slow": "Stiamo caricando la sala…"
+  },
   "errors": {
     "NETWORK_ERROR": "Il server non risponde. Controlla la connessione e riprova tra qualche secondo.",
     "UNKNOWN_ERROR": "Qualcosa è andato storto. Riprova.",

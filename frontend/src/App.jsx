@@ -9,6 +9,7 @@ import ListPage from './pages/public/ListPage/ListPage.jsx'
 import MenuPage from './pages/public/MenuPage/MenuPage.jsx'
 import NotFoundPage from './pages/public/NotFoundPage/NotFoundPage.jsx'
 import StaffLoginPage from './pages/public/StaffLoginPage/StaffLoginPage.jsx'
+import WaiterPage from './pages/waiter/WaiterPage/WaiterPage.jsx'
 
 const toastStyle = {
   border: '1px solid var(--color-line)',
@@ -38,7 +39,7 @@ const App = () => (
       <Route element={<ProtectedRoute />}>
         <Route element={<StaffLayout />}>
           <Route element={<ProtectedRoute roles={['waiter']} />}>
-            <Route path="staff/waiter" />
+            <Route path="staff/waiter" element={<WaiterPage />} />
           </Route>
           <Route element={<ProtectedRoute roles={['kitchen']} />}>
             <Route path="staff/kitchen" />

@@ -1,0 +1,204 @@
+import { useCallback, useRef, useState } from 'react'
+import { toast } from 'sonner'
+import api from '../../../api/client.js'
+import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog.jsx'
+import Icon from '../../../components/Icon/Icon.jsx'
+import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
+import ReadyTicketCard from '../../../components/ReadyTicketCard/ReadyTicketCard.jsx'
+import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
+import TableTile from '../../../components/TableTile/TableTile.jsx'
+import useAuth from '../../../hooks/useAuth.js'
+import useLanguage from '../../../hooks/useLanguage.js'
+import usePolling from '../../../hooks/usePolling.js'
+import dishCount from '../../../utils/dishCount.js'
+import { romeNow } from '../../../utils/kitchenStatus.js'
+import styles from './WaiterPage.module.css'
+
+const POLL_MS = 5000
+const FILTERS = ['all', 'occupied', 'ready']
+const SKELETON_TILES = 12
+
+const matchesFilter = (table, filter) => {
+  if (filter === 'occupied') return table.status !== 'free'
+  if (filter === 'ready') return table.status === 'ready'
+  return true
+}
+
+const timeOfDay = () => { // Greeting and service from the restaurant's clock, ES: "Buongiorno" until 14:00, lunch service until 17:00
+  const { time } = romeNow()
+  return {
+    time,
+    greeting: time < '14:00' ? 'morning' : 'evening',
+    service: time < '17:00' ? 'lunch' : 'dinner',
+  }
+}
+
+const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room grid, both refreshed every 5s
+  const { t, tError } = useLanguage()
+  const { user } = useAuth()
+  const [tables, setTables] = useState(null) // null until the first answer
+  const [readyTickets, setReadyTickets] = useState([])
+  const [error, setError] = useState(null)
+  const [filter, setFilter] = useState('all')
+  const [ticketToServe, setTicketToServe] = useState(null)
+  const latestLoad = useRef(0)
+
+  const load = useCallback(async () => {
+    const loadId = ++latestLoad.current // an older poll that answers late never overwrites newer data (es: right after "Segna servita")
+    try {
+      const [tablesRes, readyRes] = await Promise.all([
+        api.get('/tables'),
+        api.get('/orders', { params: { status: 'ready' } }),
+      ])
+      if (loadId !== latestLoad.current) return
+      setTables(tablesRes.data)
+      setReadyTickets(readyRes.data)
+      setError(null)
+    } catch (err) {
+      if (loadId === latestLoad.current) setError(err) // a 401 is handled by the axios interceptor (back to login)
+    }
+  }, [])
+
+  usePolling(load, POLL_MS)
+
+  const handleRetry = () => {
+    setError(null)
+    load()
+  }
+
+  const markServed = async () => {
+    const { _id, tableNumber, round } = ticketToServe
+    try {
+      await api.patch(`/orders/${_id}/status`, { status: 'served' })
+      toast.success(t('waiter.servedToast', { number: tableNumber, round: t('tables.round', { round }) }))
+    } catch (err) {
+      toast.error(tError(err)) // 409: another waiter served it first, the reload below shows the current state
+    }
+    await load()
+  }
+
+  const { time, greeting, service } = timeOfDay()
+  const firstName = user.name.split(' ')[0]
+
+  let content
+  if (!tables && error) {
+    content = (
+      <div className={styles.loadError} role="alert">
+        <p>{t('waiter.loadError')}</p>
+        <button type="button" className={styles.retry} onClick={handleRetry}>{t('menu.retry')}</button>
+      </div>
+    )
+  } else if (!tables) {
+    content = (
+      <LoadingState slowMessage="waiter.slow">
+        <div className={styles.layout}>
+          <Skeleton height="11rem" radius="var(--radius-card)" />
+          <div className={styles.grid}>
+            {Array.from({ length: SKELETON_TILES }, (_, index) => (
+              <Skeleton key={index} height="6rem" radius="var(--radius-lg)" />
+            ))}
+          </div>
+        </div>
+      </LoadingState>
+    )
+  } else {
+    const visibleTables = tables.filter((table) => matchesFilter(table, filter))
+    const occupiedCount = tables.filter((table) => table.status !== 'free').length
+
+    content = (
+      <div className={styles.layout}>
+        <section className={styles.readySection} aria-labelledby="ready-title">
+          <div className={styles.heading}>
+            <div>
+              <p className={styles.kicker}>{t('waiter.readyKicker')}</p>
+              <h2 id="ready-title" className={styles.title}>{t('waiter.readyTitle')}</h2>
+            </div>
+            {readyTickets.length > 0 && <span className={styles.readyCount}>{readyTickets.length}</span>}
+          </div>
+
+          {readyTickets.length > 0 ? (
+            <ul className={`${styles.readyList} hide-scrollbar`}>
+              {readyTickets.map((ticket) => (
+                <li key={ticket._id} className={styles.readyItem}>
+                  <ReadyTicketCard ticket={ticket} onServe={setTicketToServe} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className={styles.allServed}>
+              <Icon name="check" size={20} />
+              {t('waiter.allServed')}
+            </p>
+          )}
+        </section>
+
+        <section className={styles.tablesSection} aria-labelledby="tables-title">
+          <div className={styles.heading}>
+            <div>
+              <p className={`${styles.kicker} ${styles.muted}`}>{t('waiter.roomKicker')}</p>
+              <h2 id="tables-title" className={styles.title}>{t('waiter.tablesTitle')}</h2>
+            </div>
+            <span className={styles.occupied}>
+              {occupiedCount === 1 ? t('waiter.occupiedOne') : t('waiter.occupied', { count: occupiedCount })}
+            </span>
+          </div>
+
+          <div className={styles.filters} role="group" aria-label={t('waiter.filterLabel')}>
+            {FILTERS.map((value) => (
+              <button
+                key={value}
+                type="button"
+                className={`${styles.filter} ${filter === value ? styles.filterActive : ''}`}
+                aria-pressed={filter === value}
+                onClick={() => setFilter(value)}
+              >
+                {t(`waiter.filters.${value}`)}
+              </button>
+            ))}
+          </div>
+
+          {error && <p className={styles.stale} role="status">{t('waiter.stale')}</p>}
+
+          {visibleTables.length > 0 ? (
+            <ul className={styles.grid}>
+              {visibleTables.map((table) => (
+                <li key={table.number}>
+                  <TableTile table={table} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className={styles.empty}>{t(`waiter.empty.${filter}`)}</p>
+          )}
+        </section>
+      </div>
+    )
+  }
+
+  return (
+    <div className={styles.page}>
+      <header className={styles.header}>
+        <h1 className={styles.greeting}>{t(`waiter.greeting.${greeting}`, { name: firstName })}</h1>
+        <p className={styles.service}>{t(`waiter.service.${service}`)} · {time}</p>
+      </header>
+
+      {content}
+
+      <ConfirmDialog
+        open={Boolean(ticketToServe)}
+        title={ticketToServe && t('waiter.serveTitle', {
+          round: t('tables.round', { round: ticketToServe.round }),
+          number: ticketToServe.tableNumber,
+        })}
+        message={ticketToServe && t('waiter.serveMessage', {
+          dishes: dishCount(ticketToServe) === 1 ? t('tables.dishesOne') : t('tables.dishes', { count: dishCount(ticketToServe) }),
+        })}
+        confirmLabel={t('waiter.markServed')}
+        onConfirm={markServed}
+        onClose={() => setTicketToServe(null)}
+      />
+    </div>
+  )
+}
+
+export default WaiterPage

@@ -1,0 +1,78 @@
+.tile {
+  display: flex;
+  min-height: 6rem;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  text-align: left;
+}
+
+.number {
+  margin-bottom: auto; /* status and total sit at the bottom of the tile */
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.status {
+  color: var(--color-ink-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.total {
+  font-size: var(--text-sm);
+  font-weight: 800;
+}
+
+.free {
+  border-color: var(--status-free-line);
+  background: var(--status-free-bg);
+}
+
+.free .number {
+  color: var(--color-ink-muted);
+}
+
+.occupied {
+  border-color: var(--status-occupied-line);
+  background: var(--status-occupied-bg);
+}
+
+.preparing {
+  border-color: var(--status-preparing-line);
+  background: var(--status-preparing-bg);
+}
+
+.preparing .status {
+  color: var(--tone-amber);
+  font-weight: 700;
+}
+
+.ready {
+  border-color: var(--status-ready);
+  color: var(--color-white);
+  background: var(--status-ready);
+  box-shadow: var(--shadow-accent);
+}
+
+.ready .status {
+  color: var(--color-white);
+  font-weight: 800;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+@media (min-width: 700px) {
+  .tile {
+    min-height: 7rem;
+    padding: var(--space-4);
+  }
+
+  .number {
+    font-size: 1.4rem;
+  }
+}
