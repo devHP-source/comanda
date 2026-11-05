@@ -164,8 +164,26 @@
     "status": {
       "free": "Free",
       "preparing": "In the kitchen",
+      "occupied": "All served",
       "ready": "Ready"
+    },
+    "ticketStatus": {
+      "sent": "Sent",
+      "preparing": "Preparing",
+      "ready": "Ready",
+      "served": "Served"
     }
+  },
+  "tableSheet": {
+    "kicker": "Selected table",
+    "close": "Close",
+    "freeTitle": "This table is free",
+    "freeText": "Start a new ticket to open it.",
+    "tickets": "Tickets",
+    "total": "Total",
+    "status": "Status",
+    "newTicket": "New ticket",
+    "closeTable": "Close table"
   },
   "waiter": {
     "greeting": {
@@ -201,7 +219,14 @@
     },
     "stale": "We can't refresh the tables. Trying again shortly…",
     "loadError": "We can't load the tables.",
-    "slow": "Loading the dining room…"
+    "slow": "Loading the dining room…",
+    "closeTitle": "Close Table {number}?",
+    "closeMessage": "Total {total} · {tickets}.",
+    "closeTickets": "{count} tickets will be closed",
+    "closeTicketsOne": "1 ticket will be closed",
+    "closeWarning": "Warning: {count} tickets haven't been served yet.",
+    "closeWarningOne": "Warning: 1 ticket hasn't been served yet.",
+    "closedToast": "Table {number} closed · Total {total}"
   },
   "errors": {
     "NETWORK_ERROR": "The server isn't responding. Check your connection and try again in a few seconds.",

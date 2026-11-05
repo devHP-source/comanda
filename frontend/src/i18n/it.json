@@ -164,8 +164,26 @@
     "status": {
       "free": "Libero",
       "preparing": "In cucina",
+      "occupied": "Tutto servito",
       "ready": "Pronto"
+    },
+    "ticketStatus": {
+      "sent": "Inviata",
+      "preparing": "In preparazione",
+      "ready": "Pronta",
+      "served": "Servita"
     }
+  },
+  "tableSheet": {
+    "kicker": "Tavolo selezionato",
+    "close": "Chiudi",
+    "freeTitle": "Il tavolo è libero",
+    "freeText": "Inizia una nuova comanda per aprirlo.",
+    "tickets": "Comande",
+    "total": "Totale",
+    "status": "Stato",
+    "newTicket": "Nuova comanda",
+    "closeTable": "Libera tavolo"
   },
   "waiter": {
     "greeting": {
@@ -201,7 +219,14 @@
     },
     "stale": "Non riusciamo ad aggiornare i tavoli. Riprovo tra poco…",
     "loadError": "Non riusciamo a caricare i tavoli.",
-    "slow": "Stiamo caricando la sala…"
+    "slow": "Stiamo caricando la sala…",
+    "closeTitle": "Liberare il Tavolo {number}?",
+    "closeMessage": "Totale {total} · {tickets}.",
+    "closeTickets": "{count} comande verranno chiuse",
+    "closeTicketsOne": "1 comanda verrà chiusa",
+    "closeWarning": "Attenzione: {count} comande non sono ancora state servite.",
+    "closeWarningOne": "Attenzione: 1 comanda non è ancora stata servita.",
+    "closedToast": "Tavolo {number} liberato · Totale {total}"
   },
   "errors": {
     "NETWORK_ERROR": "Il server non risponde. Controlla la connessione e riprova tra qualche secondo.",

@@ -10,6 +10,18 @@
   text-align: left;
 }
 
+.button {
+  width: 100%;
+  height: 100%;
+  color: var(--color-ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.button:not(.ready):hover {
+  border-color: var(--color-ink-muted);
+}
+
 .number {
   margin-bottom: auto; /* status and total sit at the bottom of the tile */
   font-size: 1.25rem;

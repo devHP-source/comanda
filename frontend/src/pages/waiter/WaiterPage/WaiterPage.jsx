@@ -6,11 +6,13 @@ import Icon from '../../../components/Icon/Icon.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import ReadyTicketCard from '../../../components/ReadyTicketCard/ReadyTicketCard.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
+import TableSheet from '../../../components/TableSheet/TableSheet.jsx'
 import TableTile from '../../../components/TableTile/TableTile.jsx'
 import useAuth from '../../../hooks/useAuth.js'
 import useLanguage from '../../../hooks/useLanguage.js'
 import usePolling from '../../../hooks/usePolling.js'
 import dishCount from '../../../utils/dishCount.js'
+import formatPrice from '../../../utils/formatPrice.js'
 import { romeNow } from '../../../utils/kitchenStatus.js'
 import styles from './WaiterPage.module.css'
 
@@ -37,22 +39,24 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
   const { t, tError } = useLanguage()
   const { user } = useAuth()
   const [tables, setTables] = useState(null) // null until the first answer
-  const [readyTickets, setReadyTickets] = useState([])
+  const [orders, setOrders] = useState([]) // every open ticket: the ready strip and the table sheet both read from it
   const [error, setError] = useState(null)
   const [filter, setFilter] = useState('all')
   const [ticketToServe, setTicketToServe] = useState(null)
+  const [selectedNumber, setSelectedNumber] = useState(null)
+  const [tableToClose, setTableToClose] = useState(null)
   const latestLoad = useRef(0)
 
   const load = useCallback(async () => {
     const loadId = ++latestLoad.current // an older poll that answers late never overwrites newer data (es: right after "Segna servita")
     try {
-      const [tablesRes, readyRes] = await Promise.all([
+      const [tablesRes, ordersRes] = await Promise.all([
         api.get('/tables'),
-        api.get('/orders', { params: { status: 'ready' } }),
+        api.get('/orders'), // open tickets only, oldest first
       ])
       if (loadId !== latestLoad.current) return
       setTables(tablesRes.data)
-      setReadyTickets(readyRes.data)
+      setOrders(ordersRes.data)
       setError(null)
     } catch (err) {
       if (loadId === latestLoad.current) setError(err) // a 401 is handled by the axios interceptor (back to login)
@@ -76,6 +80,24 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
     }
     await load()
   }
+
+  const closeTable = async () => {
+    const { number } = tableToClose
+    try {
+      const { data } = await api.post(`/tables/${number}/close`)
+      toast.success(t('waiter.closedToast', { number, total: formatPrice(data.total) }))
+      setSelectedNumber(null) // the table is free: back to the room
+    } catch (err) {
+      toast.error(tError(err)) // 409 TABLE_ALREADY_FREE: someone else closed it, the reload shows it
+    }
+    await load()
+  }
+
+  const readyTickets = orders.filter((ticket) => ticket.status === 'ready')
+  const selectedTable = tables?.find((table) => table.number === selectedNumber)
+  const closeNotServed = tableToClose
+    ? orders.filter((ticket) => ticket.tableNumber === tableToClose.number && ticket.status !== 'served').length
+    : 0
 
   const { time, greeting, service } = timeOfDay()
   const firstName = user.name.split(' ')[0]
@@ -163,7 +185,7 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
             <ul className={styles.grid}>
               {visibleTables.map((table) => (
                 <li key={table.number}>
-                  <TableTile table={table} />
+                  <TableTile table={table} onSelect={setSelectedNumber} />
                 </li>
               ))}
             </ul>
@@ -183,6 +205,32 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
       </header>
 
       {content}
+
+      {selectedTable && (
+        <TableSheet
+          table={selectedTable}
+          tickets={orders.filter((ticket) => ticket.tableNumber === selectedTable.number)}
+          onClose={() => setSelectedNumber(null)}
+          onServe={setTicketToServe}
+          onCloseTable={setTableToClose}
+        />
+      )}
+
+      <ConfirmDialog
+        open={Boolean(tableToClose)}
+        destructive
+        title={tableToClose && t('waiter.closeTitle', { number: tableToClose.number })}
+        message={tableToClose && [
+          t('waiter.closeMessage', {
+            total: formatPrice(tableToClose.total),
+            tickets: tableToClose.openTickets === 1 ? t('waiter.closeTicketsOne') : t('waiter.closeTickets', { count: tableToClose.openTickets }),
+          }),
+          closeNotServed > 0 && (closeNotServed === 1 ? t('waiter.closeWarningOne') : t('waiter.closeWarning', { count: closeNotServed })),
+        ].filter(Boolean).join(' ')}
+        confirmLabel={t('tableSheet.closeTable')}
+        onConfirm={closeTable}
+        onClose={() => setTableToClose(null)}
+      />
 
       <ConfirmDialog
         open={Boolean(ticketToServe)}
