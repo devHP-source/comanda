@@ -104,6 +104,23 @@
     "errorTitle": "We couldn't load your list",
     "slow": "Getting your list ready…"
   },
+  "info": {
+    "eyebrow": "About & contact",
+    "title": "Come and visit us",
+    "lead": "Chinese cuisine and pizza under one roof. Here are our opening hours, address and phone number.",
+    "hoursTitle": "Opening hours",
+    "today": "Today",
+    "closed": "Closed",
+    "closuresTitle": "Special closures",
+    "hoursError": "We couldn't load the opening hours.",
+    "slow": "Loading the opening hours…",
+    "addressTitle": "Where we are",
+    "openMap": "Open in Maps",
+    "newTab": "opens in a new tab",
+    "contactTitle": "Contact",
+    "contactText": "For information or large groups, give us a call.",
+    "call": "Call"
+  },
   "waiterView": {
     "hint": "Show this screen to your waiter",
     "close": "Close",

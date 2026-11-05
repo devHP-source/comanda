@@ -4,6 +4,7 @@ import PublicLayout from './components/PublicLayout/PublicLayout.jsx'
 import StaffLayout from './components/StaffLayout/StaffLayout.jsx'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx'
 import DishSheet from './pages/public/DishSheet/DishSheet.jsx'
+import InfoPage from './pages/public/InfoPage/InfoPage.jsx'
 import ListPage from './pages/public/ListPage/ListPage.jsx'
 import MenuPage from './pages/public/MenuPage/MenuPage.jsx'
 import NotFoundPage from './pages/public/NotFoundPage/NotFoundPage.jsx'
@@ -28,7 +29,7 @@ const App = () => (
           <Route path="dish/:id" element={<DishSheet />} />
         </Route>
         <Route path="list" element={<ListPage />} />
-        <Route path="info" />
+        <Route path="info" element={<InfoPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
 

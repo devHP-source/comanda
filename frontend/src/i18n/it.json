@@ -104,6 +104,23 @@
     "errorTitle": "Non riusciamo a caricare la lista",
     "slow": "Stiamo preparando la lista…"
   },
+  "info": {
+    "eyebrow": "Chi siamo & contatti",
+    "title": "Vieni a trovarci",
+    "lead": "Cucina cinese e pizza sotto lo stesso tetto. Qui trovi orari, indirizzo e telefono.",
+    "hoursTitle": "Orari",
+    "today": "Oggi",
+    "closed": "Chiuso",
+    "closuresTitle": "Chiusure straordinarie",
+    "hoursError": "Non riusciamo a caricare gli orari.",
+    "slow": "Stiamo caricando gli orari…",
+    "addressTitle": "Dove siamo",
+    "openMap": "Apri in Maps",
+    "newTab": "si apre in una nuova scheda",
+    "contactTitle": "Contatti",
+    "contactText": "Per informazioni o per gruppi numerosi, chiamaci.",
+    "call": "Chiama"
+  },
   "waiterView": {
     "hint": "Mostra questo schermo al cameriere",
     "close": "Chiudi",

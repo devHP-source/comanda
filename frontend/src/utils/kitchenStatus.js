@@ -11,7 +11,7 @@ const romeClock = new Intl.DateTimeFormat('en-CA', {
   hourCycle: 'h23',
 })
 
-const romeNow = (date) => { // { date: "2026-11-03", time: "14:05", weekday: 2 }
+export const romeNow = (date = new Date()) => { // { date: "2026-11-03", time: "14:05", weekday: 2 }
   const parts = Object.fromEntries(romeClock.formatToParts(date).map(({ type, value }) => [type, value]))
   return {
     date: `${parts.year}-${parts.month}-${parts.day}`,
