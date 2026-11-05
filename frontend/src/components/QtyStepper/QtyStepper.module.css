@@ -1,0 +1,37 @@
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+}
+
+.step {
+  display: grid;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  place-items: center;
+  border: 0;
+  border-radius: var(--radius-round);
+  color: var(--color-ink);
+  background: transparent;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.step:hover:not(:disabled) {
+  background: var(--color-surface-muted);
+}
+
+.step:disabled {
+  color: var(--color-ink-muted);
+  cursor: not-allowed;
+}
+
+.qty {
+  min-width: 1.75rem;
+  font-size: var(--text-md);
+  font-weight: 800;
+  text-align: center;
+}
