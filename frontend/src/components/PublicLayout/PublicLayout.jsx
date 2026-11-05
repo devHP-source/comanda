@@ -2,6 +2,7 @@ import { Link, NavLink, Outlet } from 'react-router'
 import Icon from '../Icon/Icon.jsx'
 import LanguagePill from '../LanguagePill/LanguagePill.jsx'
 import useLanguage from '../../hooks/useLanguage.js'
+import useList from '../../hooks/useList.js'
 import styles from './PublicLayout.module.css'
 
 const topLinks = [ // Home and Prenota join both bars when their pages exist
@@ -21,10 +22,11 @@ const bottomLinks = [
     label: 'nav.menu', 
     icon: 'menu' 
   },
-  { 
-    to: '/list', 
-    label: 'nav.list', 
-    icon: 'bookmark' 
+  {
+    to: '/list',
+    label: 'nav.list',
+    icon: 'bookmark',
+    showsListCount: true
   },
   { 
     to: '/info', 
@@ -35,6 +37,7 @@ const bottomLinks = [
 
 const PublicLayout = () => {
   const { t } = useLanguage()
+  const { count: listCount } = useList()
 
   return (
     <div className={styles.shell}>
@@ -63,12 +66,24 @@ const PublicLayout = () => {
       </main>
 
       <nav className={styles.bottomNav} aria-label={t('nav.mobile')}>
-        {bottomLinks.map((link) => (
-          <NavLink key={link.to} to={link.to} className={styles.bottomLink}>
-            <Icon name={link.icon} size={22} />
-            <span>{t(link.label)}</span>
-          </NavLink>
-        ))}
+        {bottomLinks.map((link) => {
+          const badge = link.showsListCount ? listCount : 0
+
+          return (
+            <NavLink key={link.to} to={link.to} className={styles.bottomLink}>
+              <span className={styles.iconWrap}>
+                <Icon name={link.icon} size={22} />
+                {badge > 0 && <span className={styles.badge} aria-hidden="true">{badge}</span>}
+              </span>
+              <span>{t(link.label)}</span>
+              {badge > 0 && (
+                <span className="visually-hidden">
+                  {' '}({badge === 1 ? t('list.countOne') : t('list.count', { count: badge })})
+                </span>
+              )}
+            </NavLink>
+          )
+        })}
       </nav>
     </div>
   )

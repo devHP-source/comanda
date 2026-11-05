@@ -87,6 +87,31 @@
     "errorTitle": "Non riusciamo a caricare il piatto",
     "backToMenu": "Torna al menu"
   },
+  "list": {
+    "eyebrow": "Il tuo promemoria",
+    "title": "La mia lista",
+    "lead": "I piatti che hai salvato dal menu. Quando sei pronto, mostrali al cameriere per ordinare.",
+    "count": "{count} piatti salvati",
+    "countOne": "1 piatto salvato",
+    "add": "Aggiungi alla lista",
+    "remove": "Rimuovi dalla lista",
+    "addDish": "Aggiungi {name} alla lista",
+    "removeDish": "Rimuovi {name} dalla lista",
+    "showWaiter": "Mostra al cameriere",
+    "emptyTitle": "La tua lista è vuota",
+    "emptyText": "Tocca il segnalibro su un piatto per salvarlo qui, poi mostra la lista al cameriere.",
+    "browseMenu": "Vai al menu",
+    "errorTitle": "Non riusciamo a caricare la lista",
+    "slow": "Stiamo preparando la lista…"
+  },
+  "waiterView": {
+    "hint": "Mostra questo schermo al cameriere",
+    "close": "Chiudi",
+    "title": "Piatti scelti",
+    "count": "{count} piatti",
+    "countOne": "1 piatto",
+    "notOrder": "Questo non è un ordine"
+  },
   "allergens": {
     "gluten": "glutine",
     "crustaceans": "crostacei",

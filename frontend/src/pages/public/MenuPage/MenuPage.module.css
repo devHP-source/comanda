@@ -63,6 +63,34 @@
   min-width: 0;
 }
 
+/* Search + "La mia lista" link */
+.searchRow {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.search {
+  min-width: 0;
+  flex: 1;
+}
+
+.listLink {
+  display: none; /* phones: the bottom bar has it */
+}
+
+.listCount {
+  display: grid;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  place-items: center;
+  padding: 0 0.35rem;
+  border-radius: var(--radius-pill);
+  color: var(--color-white);
+  background: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: 800;
+}
+
 .searchStatus {
   margin-top: var(--space-5);
   color: var(--color-ink-muted);
@@ -185,6 +213,26 @@
 
   .intro {
     padding: 4rem var(--gutter) 2.5rem;
+  }
+
+  .listLink {
+    display: flex;
+    min-height: 3.25rem; /* same height as the search field */
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.55rem;
+    margin-left: auto; /* desktop: the search field stops at 33rem, the link goes to the right edge */
+    padding: 0 var(--space-4);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-soft);
+    font-size: var(--text-sm);
+    font-weight: 750;
+  }
+
+  .listLink:hover {
+    background: var(--color-surface-muted);
   }
 
   .dishGrid {

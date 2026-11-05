@@ -4,6 +4,7 @@ import PublicLayout from './components/PublicLayout/PublicLayout.jsx'
 import StaffLayout from './components/StaffLayout/StaffLayout.jsx'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx'
 import DishSheet from './pages/public/DishSheet/DishSheet.jsx'
+import ListPage from './pages/public/ListPage/ListPage.jsx'
 import MenuPage from './pages/public/MenuPage/MenuPage.jsx'
 import NotFoundPage from './pages/public/NotFoundPage/NotFoundPage.jsx'
 import StaffLoginPage from './pages/public/StaffLoginPage/StaffLoginPage.jsx'
@@ -24,10 +25,9 @@ const App = () => (
       <Route element={<PublicLayout />}>
         <Route index element={<Navigate to="/menu" replace />} />
         <Route path="menu" element={<MenuPage />}>
-          {/* Drawn over the menu, which stays mounted: scroll position and search survive */}
           <Route path="dish/:id" element={<DishSheet />} />
         </Route>
-        <Route path="list" />
+        <Route path="list" element={<ListPage />} />
         <Route path="info" />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
@@ -36,7 +36,6 @@ const App = () => (
 
       <Route element={<ProtectedRoute />}>
         <Route element={<StaffLayout />}>
-          {/* One interface per duty: admin reaches the others through "View as" */}
           <Route element={<ProtectedRoute roles={['waiter']} />}>
             <Route path="staff/waiter" />
           </Route>

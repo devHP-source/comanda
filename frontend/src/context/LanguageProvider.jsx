@@ -42,6 +42,15 @@ const detectLang = () => {
 const lookup = (dictionary, key) =>
   key.split('.').reduce((node, part) => (node == null ? undefined : node[part]), dictionary)
 
+const translate = (lang, key, values) => {
+  const text = lookup(dictionaries[lang], key) ?? lookup(dictionaries[DEFAULT_LANG], key) ?? key
+  if (!values) return text
+  return text.replace(/\{(\w+)\}/g, (placeholder, name) => values[name] ?? placeholder)
+}
+
+// Text for the staff side of the guest's screen ("Mostra al cameriere"): always Italian, whatever the guest picked
+const tItalian = (key, values) => translate(DEFAULT_LANG, key, values)
+
 export const LanguageProvider = ({ children }) => {
   const [lang, setLangState] = useState(detectLang)
 
@@ -57,11 +66,7 @@ export const LanguageProvider = ({ children }) => {
 
   // Missing in the current language → Italian → the key itself (easy to spot on screen)
   // Placeholders: t('waiter.table', { number: 12 }) with "Tavolo {number}"
-  const t = useCallback((key, values) => {
-    const text = lookup(dictionaries[lang], key) ?? lookup(dictionaries[DEFAULT_LANG], key) ?? key
-    if (!values) return text
-    return text.replace(/\{(\w+)\}/g, (placeholder, name) => values[name] ?? placeholder)
-  }, [lang])
+  const t = useCallback((key, values) => translate(lang, key, values), [lang])
 
   // Translated fields from the API: { it: 'Riso', en: 'Rice' }
   const pick = useCallback((field) => field?.[lang] || field?.it || '', [lang])
@@ -73,7 +78,7 @@ export const LanguageProvider = ({ children }) => {
   }, [lang])
 
   const value = useMemo(
-    () => ({ lang, setLang, languages: SUPPORTED_LANGS, t, pick, tError }),
+    () => ({ lang, setLang, languages: SUPPORTED_LANGS, t, tItalian, pick, tError }),
     [lang, setLang, t, pick, tError],
   )
 

@@ -1,0 +1,141 @@
+.page {
+  --gutter: var(--space-5);
+
+  max-width: 90rem;
+  margin: 0 auto;
+}
+
+/* Intro, same rhythm as the menu */
+.intro {
+  padding: 1.75rem var(--gutter) var(--space-5);
+}
+
+.eyebrow {
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin-top: 0.4rem;
+  font-size: var(--text-hero);
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+}
+
+.lead {
+  max-width: 36rem;
+  margin-top: var(--space-4);
+  color: var(--color-ink-muted);
+  font-size: var(--text-md);
+  line-height: 1.55;
+}
+
+.content {
+  padding: 0 var(--gutter);
+}
+
+/* Count + "Mostra al cameriere" */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.count {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: 650;
+}
+
+.toolbar .button {
+  width: 100%; /* phones: the main action, full width */
+}
+
+.dishGrid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+/* Empty and error states */
+.message {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+.emptyIcon {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border-radius: var(--radius-round);
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.messageTitle {
+  font-size: var(--text-xl);
+  letter-spacing: -0.03em;
+}
+
+.messageText {
+  max-width: 34rem;
+  color: var(--color-ink-muted);
+  line-height: 1.55;
+}
+
+.button {
+  display: inline-flex;
+  min-height: var(--tap-min);
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-pill);
+  color: var(--color-white);
+  background: var(--color-accent);
+  font-weight: 700;
+  box-shadow: var(--shadow-accent);
+}
+
+@media (min-width: 700px) {
+  .page {
+    --gutter: 2.5rem;
+  }
+
+  .intro {
+    padding: 4rem var(--gutter) 2.5rem;
+  }
+
+  .toolbar .button {
+    width: auto;
+  }
+
+  .dishGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .page {
+    --gutter: clamp(2rem, 5vw, 5rem);
+  }
+
+  .intro {
+    padding: 5rem var(--gutter) 3.5rem;
+  }
+
+  .dishGrid {
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  }
+}

@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { useLocation, useNavigate, useOutletContext, useParams } from 'react-router'
 import api, { getErrorCode } from '../../../api/client.js'
+import BookmarkButton from '../../../components/BookmarkButton/BookmarkButton.jsx'
 import DishVisual from '../../../components/DishVisual/DishVisual.jsx'
 import Icon from '../../../components/Icon/Icon.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
@@ -121,6 +122,8 @@ const DishSheet = () => {
             {dish.isVegetarian && <span className={styles.tag}>{t('dish.vegetarian')}</span>}
             {dish.spiceLevel > 0 && <span className={`${styles.tag} ${styles.tagSpicy}`}>{t('dish.spicy')}</span>}
           </div>
+
+          <BookmarkButton dish={dish} variant="pill" />
 
           {description && <p className={styles.description}>{description}</p>}
 

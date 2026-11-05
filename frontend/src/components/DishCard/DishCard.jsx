@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import BookmarkButton from '../BookmarkButton/BookmarkButton.jsx'
 import DishVisual from '../DishVisual/DishVisual.jsx'
 import useLanguage from '../../hooks/useLanguage.js'
 import formatPrice from '../../utils/formatPrice.js'
@@ -63,6 +64,9 @@ const DishCard = ({ dish }) => { // One menu row: text on the left, photo on the
           <DishVisual seed={dish.code} className={styles.fill} />
         )}
       </div>
+
+      {/* Outside .media: the sold-out filter there would make a stacking context and put the button under the link */}
+      <BookmarkButton dish={dish} className={styles.bookmark} />
     </article>
   )
 }

@@ -1,9 +1,11 @@
 .card {
+  --card-padding: 0.85rem;
+
   position: relative; /* the title link's ::after covers the card */
   display: grid;
   grid-template-columns: minmax(0, 1fr) 8.25rem; /* text | photo column, both as tall as the card */
   gap: var(--space-3);
-  padding: 0.85rem;
+  padding: var(--card-padding);
   border: 1px solid var(--color-line);
   border-radius: var(--radius-card);
   background: var(--color-surface);
@@ -125,6 +127,14 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Top-right corner of the photo. z-index 2: above the link's ::after (1), so a tap saves the dish instead of opening it */
+.bookmark {
+  position: absolute;
+  z-index: 2;
+  top: calc(var(--card-padding) + 0.4rem);
+  right: calc(var(--card-padding) + 0.4rem);
 }
 
 /* Sold out but still listed, greyed, the "Esaurito" tag says why */

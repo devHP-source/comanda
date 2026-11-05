@@ -87,6 +87,31 @@
     "errorTitle": "We couldn't load this dish",
     "backToMenu": "Back to the menu"
   },
+  "list": {
+    "eyebrow": "Your reminder",
+    "title": "My list",
+    "lead": "The dishes you saved from the menu. When you're ready, show them to your waiter to order.",
+    "count": "{count} saved dishes",
+    "countOne": "1 saved dish",
+    "add": "Add to my list",
+    "remove": "Remove from my list",
+    "addDish": "Add {name} to my list",
+    "removeDish": "Remove {name} from my list",
+    "showWaiter": "Show to the waiter",
+    "emptyTitle": "Your list is empty",
+    "emptyText": "Tap the bookmark on a dish to save it here, then show the list to your waiter.",
+    "browseMenu": "Go to the menu",
+    "errorTitle": "We couldn't load your list",
+    "slow": "Getting your list ready…"
+  },
+  "waiterView": {
+    "hint": "Show this screen to your waiter",
+    "close": "Close",
+    "title": "Chosen dishes",
+    "count": "{count} dishes",
+    "countOne": "1 dish",
+    "notOrder": "This is not an order"
+  },
   "allergens": {
     "gluten": "gluten",
     "crustaceans": "crustaceans",

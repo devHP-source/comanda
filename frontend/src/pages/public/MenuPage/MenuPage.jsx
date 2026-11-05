@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Outlet } from 'react-router'
+import { Link, Outlet } from 'react-router'
 import api from '../../../api/client.js'
 import CategoryChips from '../../../components/CategoryChips/CategoryChips.jsx'
 import CategoryShortcuts from '../../../components/CategoryShortcuts/CategoryShortcuts.jsx'
@@ -12,6 +12,7 @@ import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import MenuSearch from '../../../components/MenuSearch/MenuSearch.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import useLanguage from '../../../hooks/useLanguage.js'
+import useList from '../../../hooks/useList.js'
 import useScrollSpy from '../../../hooks/useScrollSpy.js'
 import kitchenStatus from '../../../utils/kitchenStatus.js'
 import normalizeText from '../../../utils/normalizeText.js'
@@ -30,6 +31,7 @@ const matchesSearch = (dish, search, lang) =>
 
 const MenuPage = () => {
   const { lang, t, pick, tError } = useLanguage()
+  const { count: listCount } = useList()
   const [menu, setMenu] = useState(null) // { categories, dishes, settings }
   const [error, setError] = useState(null)
   const [attempt, setAttempt] = useState(0) // "Riprova" bumps it and the effect fetches again
@@ -230,7 +232,22 @@ const MenuPage = () => {
 
       {/* Search first in the DOM, so keyboard users reach it before the 15 categories; on desktop the grid still puts the sidebar on the left */}
       <div className={styles.layout}>
-        <MenuSearch value={query} onChange={setQuery} className={styles.searchArea} />
+        <div className={`${styles.searchRow} ${styles.searchArea}`}>
+          <MenuSearch value={query} onChange={setQuery} className={styles.search} />
+          {/* Tablet and up: the bottom bar is gone, this is the way to the list */}
+          <Link to="/list" className={styles.listLink}>
+            <Icon name="bookmark" size={18} />
+            {t('nav.list')}
+            {listCount > 0 && (
+              <>
+                <span className={styles.listCount} aria-hidden="true">{listCount}</span>
+                <span className="visually-hidden">
+                  {' '}({listCount === 1 ? t('list.countOne') : t('list.count', { count: listCount })})
+                </span>
+              </>
+            )}
+          </Link>
+        </div>
         <CategorySidebar
           items={navItems}
           activeId={activeId}
