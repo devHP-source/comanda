@@ -46,6 +46,7 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
   const [ticketToServe, setTicketToServe] = useState(null)
   const [selectedNumber, setSelectedNumber] = useState(null)
   const [tableToClose, setTableToClose] = useState(null)
+  const [sheetNotice, setSheetNotice] = useState(null) // { type: 'success' | 'error', text }: shown inside the table sheet, a toast would sit under its backdrop
   const [isAvailabilityOpen, setIsAvailabilityOpen] = useState(false)
   const latestLoad = useRef(0)
 
@@ -72,13 +73,27 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
     load()
   }
 
+  const openSheet = (number) => {
+    setSheetNotice(null)
+    setSelectedNumber(number)
+  }
+
+  const closeSheet = () => {
+    setSheetNotice(null)
+    setSelectedNumber(null)
+  }
+
   const markServed = async () => {
     const { _id, tableNumber, round } = ticketToServe
+    const fromSheet = selectedNumber !== null // the strip can't be tapped while the sheet is open
     try {
       await api.patch(`/orders/${_id}/status`, { status: 'served' })
-      toast.success(t('waiter.servedToast', { number: tableNumber, round: t('tables.round', { round }) }))
-    } catch (err) {
-      toast.error(tError(err)) // 409: another waiter served it first, the reload below shows the current state
+      const text = t('waiter.servedToast', { number: tableNumber, round: t('tables.round', { round }) })
+      if (fromSheet) setSheetNotice({ type: 'success', text })
+      else toast.success(text)
+    } catch (err) { // 409: another waiter served it first, the reload below shows the current state
+      if (fromSheet) setSheetNotice({ type: 'error', text: tError(err) })
+      else toast.error(tError(err))
     }
     await load()
   }
@@ -87,10 +102,10 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
     const { number } = tableToClose
     try {
       const { data } = await api.post(`/tables/${number}/close`)
+      closeSheet() // the table is free: back to the room, where the toast is visible
       toast.success(t('waiter.closedToast', { number, total: formatPrice(data.total) }))
-      setSelectedNumber(null) // the table is free: back to the room
-    } catch (err) {
-      toast.error(tError(err)) // 409 TABLE_ALREADY_FREE: someone else closed it, the reload shows it
+    } catch (err) { // "Libera tavolo" lives only in the sheet, which is still open. 409 TABLE_ALREADY_FREE: someone else closed it, the reload shows it
+      setSheetNotice({ type: 'error', text: tError(err) })
     }
     await load()
   }
@@ -187,7 +202,7 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
             <ul className={styles.grid}>
               {visibleTables.map((table) => (
                 <li key={table.number}>
-                  <TableTile table={table} onSelect={setSelectedNumber} />
+                  <TableTile table={table} onSelect={openSheet} />
                 </li>
               ))}
             </ul>
@@ -218,9 +233,16 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
         <TableSheet
           table={selectedTable}
           tickets={orders.filter((ticket) => ticket.tableNumber === selectedTable.number)}
-          onClose={() => setSelectedNumber(null)}
-          onServe={setTicketToServe}
-          onCloseTable={setTableToClose}
+          notice={sheetNotice}
+          onClose={closeSheet}
+          onServe={(ticket) => {
+            setSheetNotice(null) // an old message would read as the answer to this tap
+            setTicketToServe(ticket)
+          }}
+          onCloseTable={(table) => {
+            setSheetNotice(null)
+            setTableToClose(table)
+          }}
         />
       )}
 

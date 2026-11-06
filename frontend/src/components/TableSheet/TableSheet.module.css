@@ -70,6 +70,27 @@
   font-weight: 700;
 }
 
+/* Result of "Segna servita" / "Libera tavolo": a toast would sit under the sheet's backdrop. Always rendered (live region), empty = no height */
+.notice,
+.noticeError {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.notice:empty,
+.noticeError:empty {
+  margin-top: 0;
+}
+
+.notice {
+  color: var(--tone-green);
+}
+
+.noticeError {
+  color: var(--color-accent);
+}
+
 .close {
   display: grid;
   width: var(--tap-min);

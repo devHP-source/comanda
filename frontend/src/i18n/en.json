@@ -328,6 +328,46 @@
     "loadError": "We can't load the dishes.",
     "slow": "Loading the dishes…"
   },
+  "admin": {
+    "area": "Administration",
+    "navLabel": "Admin sections",
+    "nav": {
+      "dishes": "Menu & dishes"
+    },
+    "greeting": {
+      "morning": "Good morning, {name}",
+      "evening": "Good evening, {name}"
+    }
+  },
+  "adminDishes": {
+    "kicker": "Menu",
+    "title": "Dishes",
+    "subtitle": "Every dish, unpublished ones too.",
+    "tableLabel": "Dish list",
+    "columns": {
+      "photo": "Photo",
+      "code": "No.",
+      "name": "Dish",
+      "category": "Category",
+      "price": "Price",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "missingEnglish": "English translation missing",
+    "available": "Available",
+    "unpublished": "Unpublished",
+    "featured": "Chef's pick",
+    "delete": "Delete",
+    "deleteLabel": "Delete {code} · {name}",
+    "deleteTitle": "Delete {code} · {name}?",
+    "deleteMessage": "The dish and its photo will be deleted for good. Tickets already sent keep it in their history.",
+    "deleted": "{code} · {name} deleted",
+    "empty": "No dishes in the menu yet.",
+    "paginationLabel": "Dish pages",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {page} of {total}"
+  },
   "errors": {
     "NETWORK_ERROR": "The server isn't responding. Check your connection and try again in a few seconds.",
     "UNKNOWN_ERROR": "Something went wrong. Please try again.",

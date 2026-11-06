@@ -8,7 +8,7 @@ import styles from './TableSheet.module.css'
 
 
 
-const TableSheet = ({ table, tickets, onClose, onServe, onCloseTable }) => { // The selected table: its open tickets, total and actions. Bottom sheet on phones, centered modal from tablet up.
+const TableSheet = ({ table, tickets, notice, onClose, onServe, onCloseTable }) => { // The selected table: its open tickets, total and actions. Bottom sheet on phones, centered modal from tablet up.
   const { t } = useLanguage()
   const dialogRef = useRef(null)
   const titleId = useId()
@@ -37,6 +37,9 @@ const TableSheet = ({ table, tickets, onClose, onServe, onCloseTable }) => { // 
           <div>
             <p className={styles.kicker}>{t('tableSheet.kicker')}</p>
             <h2 id={titleId} className={styles.title}>{t('tables.tableNumber', { number: table.number })}</h2>
+            <p className={notice?.type === 'error' ? styles.noticeError : styles.notice} role="status">
+              {notice?.text}
+            </p>
           </div>
           <button
             type="button"

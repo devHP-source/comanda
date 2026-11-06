@@ -328,6 +328,46 @@
     "loadError": "Non riusciamo a caricare i piatti.",
     "slow": "Stiamo caricando i piatti…"
   },
+  "admin": {
+    "area": "Amministrazione",
+    "navLabel": "Sezioni dell'amministrazione",
+    "nav": {
+      "dishes": "Menu e piatti"
+    },
+    "greeting": {
+      "morning": "Buongiorno, {name}",
+      "evening": "Buonasera, {name}"
+    }
+  },
+  "adminDishes": {
+    "kicker": "Menu",
+    "title": "Piatti",
+    "subtitle": "Tutti i piatti, anche quelli non pubblicati.",
+    "tableLabel": "Elenco dei piatti",
+    "columns": {
+      "photo": "Foto",
+      "code": "N.",
+      "name": "Piatto",
+      "category": "Categoria",
+      "price": "Prezzo",
+      "status": "Stato",
+      "actions": "Azioni"
+    },
+    "missingEnglish": "manca la traduzione inglese",
+    "available": "Disponibile",
+    "unpublished": "Non pubblicato",
+    "featured": "Consigliato",
+    "delete": "Elimina",
+    "deleteLabel": "Elimina {code} · {name}",
+    "deleteTitle": "Eliminare {code} · {name}?",
+    "deleteMessage": "Il piatto e la sua foto verranno eliminati definitivamente. Le comande già inviate lo mantengono nello storico.",
+    "deleted": "{code} · {name} eliminato",
+    "empty": "Nessun piatto nel menu.",
+    "paginationLabel": "Pagine dei piatti",
+    "previous": "Precedente",
+    "next": "Successiva",
+    "page": "Pagina {page} di {total}"
+  },
   "errors": {
     "NETWORK_ERROR": "Il server non risponde. Controlla la connessione e riprova tra qualche secondo.",
     "UNKNOWN_ERROR": "Qualcosa è andato storto. Riprova.",
