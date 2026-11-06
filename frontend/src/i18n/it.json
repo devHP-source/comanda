@@ -285,6 +285,11 @@
     "start": "Inizia preparazione",
     "markReady": "Segna come pronto",
     "waitingWaiter": "In attesa del cameriere",
+    "reopen": "Rimetti in preparazione",
+    "reopenTitle": "Rimettere in preparazione il Tavolo {number} · {round}?",
+    "reopenMessage": "La comanda torna in “In preparazione” e sparisce da “Pronto da servire” dei camerieri.",
+    "reopenConfirm": "Rimetti in preparazione",
+    "reopened": "Tavolo {number} · {round} rimessa in preparazione",
     "empty": "Nessuna comanda",
     "toast": {
       "preparing": "Tavolo {number} · {round} in preparazione",

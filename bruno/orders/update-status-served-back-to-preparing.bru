@@ -1,0 +1,30 @@
+meta {
+  name: Update status - kitchen moves served back to preparing (409)
+  type: http
+  seq: 29
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{orderId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+body:json {
+  {
+    "status": "preparing"
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq INVALID_STATUS_TRANSITION
+}
+
+docs {
+  Only a ready ticket can go back: once served, it's on the table.
+}

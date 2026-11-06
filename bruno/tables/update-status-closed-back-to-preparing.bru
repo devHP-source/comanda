@@ -1,0 +1,36 @@
+meta {
+  name: Update status - kitchen moves a closed table's ticket back to preparing (409)
+  type: http
+  seq: 18
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{tableOrder1Id}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+body:json {
+  {
+    "status": "preparing"
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq INVALID_STATUS_TRANSITION
+}
+
+tests {
+  test("refused because the table is closed, not because of the status", () => {
+    expect(res.body.message).to.contain("table is closed")
+  })
+}
+
+docs {
+  Ticket 1 is ready, so ready --> preparing would be a valid step for the kitchen on an open table.
+}

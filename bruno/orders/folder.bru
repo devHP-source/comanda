@@ -7,6 +7,6 @@ docs {
   Run auth (adminToken, waiterToken, kitchenToken) first.
   The tickets go to table 50. The last request closes the table, so every run starts and ends with table 50 free.
   "Mark dish sold out" changes a real dish: the last create request puts it back on the menu.
-  The status requests (seq 18-25) walk the waiter's ticket through sent --> preparing --> ready --> served: run them in order.
+  The status requests (seq 18-29) walk the waiter's ticket through sent --> preparing --> ready --> back to preparing --> ready --> served: run them in order.
   "Closed ticket --> 409 INVALID_STATUS_TRANSITION" is tested in tables/.
 }

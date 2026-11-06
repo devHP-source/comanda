@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast, Toaster } from 'sonner'
 import api, { getToken } from '../../../api/client.js'
+import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog.jsx'
 import Icon from '../../../components/Icon/Icon.jsx'
 import KitchenTicket from '../../../components/KitchenTicket/KitchenTicket.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
@@ -37,6 +38,7 @@ const KitchenPage = () => { // /staff/kitchen: tickets in 3 columns, refreshed e
   const [polledAt, setPolledAt] = useState(() => Date.now()) // "12 min" waiting times move on with each poll
   const [pending, setPending] = useState({}) // orderId --> action moved on screen but not sent yet, drawn on top of the server's status
   const [activeColumn, setActiveColumn] = useState('sent') // phones: one column at a time
+  const [ticketToReopen, setTicketToReopen] = useState(null) // ready ticket the cook wants back in preparing (confirm first)
   const pendingRef = useRef(new Map()) // the same actions for the toast callbacks: whoever takes an action out of here (undo or send) wins
   const latestLoad = useRef(0)
   const nextKey = useRef(0)
@@ -130,6 +132,19 @@ const KitchenPage = () => { // /staff/kitchen: tickets in 3 columns, refreshed e
     }
   }, [sendAction])
 
+  const reopen = async () => { // Fix a wrong "Pronto" after its undo is gone: confirmed in the dialog, so sent at once (no undo toast)
+    const { _id, tableNumber, round } = ticketToReopen
+    try {
+      const { data } = await api.patch(`/orders/${_id}/status`, { status: 'preparing' })
+      latestLoad.current++ // a poll already on its way would show it ready again
+      setOrders((current) => current?.map((order) => (order._id === data._id ? data : order)))
+      toast.success(t('kitchen.reopened', { number: tableNumber, round: t('tables.round', { round }) }), { toasterId: TOASTER_ID })
+    } catch (err) {
+      toast.error(tError(err), { toasterId: TOASTER_ID }) // 409: a waiter served it meanwhile, the reload shows it
+      load()
+    }
+  }
+
   const handleRetry = () => {
     setError(null)
     load()
@@ -210,7 +225,13 @@ const KitchenPage = () => { // /staff/kitchen: tickets in 3 columns, refreshed e
                 <ul className={styles.list}>
                   {byColumn[status].map((order) => (
                     <li key={order._id}>
-                      <KitchenTicket ticket={{ ...order, status: columnOf(order) }} now={polledAt} onAdvance={advance} />
+                      <KitchenTicket
+                        ticket={{ ...order, status: columnOf(order) }}
+                        now={polledAt}
+                        isPending={Boolean(pending[order._id])}
+                        onAdvance={advance}
+                        onReopen={setTicketToReopen}
+                      />
                     </li>
                   ))}
                 </ul>
@@ -248,6 +269,18 @@ const KitchenPage = () => { // /staff/kitchen: tickets in 3 columns, refreshed e
       </header>
 
       {content}
+
+      <ConfirmDialog
+        open={Boolean(ticketToReopen)}
+        title={ticketToReopen && t('kitchen.reopenTitle', {
+          number: ticketToReopen.tableNumber,
+          round: t('tables.round', { round: ticketToReopen.round }),
+        })}
+        message={t('kitchen.reopenMessage')}
+        confirmLabel={t('kitchen.reopenConfirm')}
+        onConfirm={reopen}
+        onClose={() => setTicketToReopen(null)}
+      />
 
       <Toaster // bottom: near the cook's hand. expand + visibleToasts: every pending "Annulla" stays visible, no collapsed stack
         id={TOASTER_ID}

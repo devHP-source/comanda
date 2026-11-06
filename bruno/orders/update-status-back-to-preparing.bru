@@ -1,0 +1,31 @@
+meta {
+  name: Update status - kitchen moves ready back to preparing (200)
+  type: http
+  seq: 24
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{orderId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+body:json {
+  {
+    "status": "preparing"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq preparing
+  res.body.waiter.name: isString
+}
+
+docs {
+  The kitchen fixes a wrong "Pronto" after the undo toast is gone. The next request marks it ready again.
+}

@@ -78,10 +78,10 @@ export const getOrders = async (req, res) => { // GET /api/orders?status=sent,pr
 }
 
 
-const TRANSITIONS = { // Target status changes the status the ticket must be in, and who may move it there
-  preparing: { from: "sent", roles: ["kitchen"] },
-  ready: { from: "preparing", roles: ["kitchen"] },
-  served: { from: "ready", roles: ["waiter", "admin"] }, // any waiter, not only the one who sent the ticket
+const TRANSITIONS = { // Target status --> the statuses the ticket may be in, and who may move it there
+  preparing: { from: ["sent", "ready"], roles: ["kitchen"] }, // ready --> preparing: the kitchen fixes a wrong "Pronto" (never once served)
+  ready: { from: ["preparing"], roles: ["kitchen"] },
+  served: { from: ["ready"], roles: ["waiter", "admin"] }, // any waiter, not only the one who sent the ticket
 }
 
 export const updateOrderStatus = async (req, res) => { // PATCH /api/orders/:id/status { status } (all staff, checked by TRANSITIONS)
@@ -98,7 +98,7 @@ export const updateOrderStatus = async (req, res) => { // PATCH /api/orders/:id/
   const order = await Order.findById(req.params.id) // bad id sends "CastError" then 400 INVALID_ID
   if (!order) throw orderError(404, "ORDER_NOT_FOUND", `Order not found: ${req.params.id}`)
 
-  if (order.closedAt || order.status !== rule.from) { // One step at a time, and never on a closed table
+  if (order.closedAt || !rule.from.includes(order.status)) { // One step at a time, and never on a closed table
     const reason = order.closedAt ? "the table is closed" : `the ticket is ${order.status}`
     throw orderError(409, "INVALID_STATUS_TRANSITION", `Can't set ${status}: ${reason}`)
   }

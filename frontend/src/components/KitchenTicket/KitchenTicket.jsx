@@ -9,7 +9,7 @@ const NEXT_STEP = { // The kitchen's one button per ticket: sent --> preparing -
   preparing: { status: 'ready', label: 'kitchen.markReady', icon: 'check' },
 }
 
-const KitchenTicket = ({ ticket, now, onAdvance }) => { // Big card for the kitchen board. Dish names and notes stay Italian (snapshots), only the labels follow the language
+const KitchenTicket = ({ ticket, now, isPending, onAdvance, onReopen }) => { // Big card for the kitchen board. Dish names and notes stay Italian (snapshots), only the labels follow the language
   const { t } = useLanguage()
   const titleId = useId()
   const next = NEXT_STEP[ticket.status]
@@ -59,10 +59,22 @@ const KitchenTicket = ({ ticket, now, onAdvance }) => { // Big card for the kitc
           <Icon name={next.icon} size={20} />
         </button>
       ) : (
-        <p className={styles.waiting}>
-          <Icon name="check" size={20} />
-          {t('kitchen.waitingWaiter')}
-        </p>
+        <>
+          <p className={styles.waiting}>
+            <Icon name="check" size={20} />
+            {t('kitchen.waitingWaiter')}
+          </p>
+          <button
+            type="button"
+            className={styles.reopen}
+            aria-describedby={titleId}
+            disabled={isPending} // a "Pronto" still in its undo toast: the toast's Annulla is the fix
+            onClick={() => onReopen(ticket)}
+          >
+            <span aria-hidden="true">↩</span>
+            {t('kitchen.reopen')}
+          </button>
+        </>
       )}
     </article>
   )

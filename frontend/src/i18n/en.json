@@ -285,6 +285,11 @@
     "start": "Start preparing",
     "markReady": "Mark as ready",
     "waitingWaiter": "Waiting for the waiter",
+    "reopen": "Back to preparing",
+    "reopenTitle": "Move Table {number} · {round} back to preparing?",
+    "reopenMessage": "The ticket goes back to “Preparing” and leaves the waiters' “Ready to serve”.",
+    "reopenConfirm": "Back to preparing",
+    "reopened": "Table {number} · {round} moved back to preparing",
     "empty": "No tickets",
     "toast": {
       "preparing": "Table {number} · {round} preparing",

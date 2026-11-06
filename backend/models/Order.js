@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 import { priceField } from "./price.js"
 
-// sent (waiter) --> preparing --> ready (kitchen) --> served (waiter/admin)
+// sent (waiter) --> preparing --> ready (kitchen) --> served (waiter/admin). Only step back: ready --> preparing (kitchen)
 export const ORDER_STATUSES = ["sent", "preparing", "ready", "served"]
 
 const integer = (min, max) => ({

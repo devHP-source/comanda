@@ -1,0 +1,30 @@
+meta {
+  name: Update status - waiter moves ready back to preparing (403)
+  type: http
+  seq: 23
+}
+
+patch {
+  url: {{baseUrl}}/orders/{{orderId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "status": "preparing"
+  }
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq FORBIDDEN
+}
+
+docs {
+  The ticket is ready: ready --> preparing is a valid step, but only for the kitchen.
+}
