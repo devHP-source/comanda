@@ -1,0 +1,20 @@
+meta {
+  name: Get admin dish - unknown id (404)
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/admin/dishes/000000000000000000000000
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 404
+  res.body.code: eq DISH_NOT_FOUND
+}

@@ -1,0 +1,23 @@
+meta {
+  name: Get admin dish - admin, unpublished (200)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/admin/dishes/{{adminDishId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body._id: eq {{adminDishId}}
+  res.body.code: eq TEST3
+  res.body.isPublished: eq false
+  res.body.price: eq 6.5
+}

@@ -15,9 +15,13 @@ const dishNotFound = (id) => {
   return err
 }
 
+// multipart sends one allergen as a string, several as an array, and can't send an empty list: the admin form sends "" for "none"
+const toAllergenList = (value) => [].concat(value).filter(Boolean)
+
 const applyDishFields = (dish, body) => { // copies only the fields sent: works for create and partial update
   for (const field of plainFields) {
-    if (body[field] !== undefined) dish[field] = body[field]
+    if (body[field] === undefined) continue
+    dish[field] = field === "allergens" ? toAllergenList(body[field]) : body[field]
   }
   for (const field of langFields) {
     if (body[field]?.it !== undefined) dish[field].it = body[field].it
@@ -89,7 +93,14 @@ export const getAdminDishes = async (req, res) => { // GET /api/admin/dishes (ad
   res.json(await findDishPage({}, req.query))
 }
 
-export const createDish = async (req, res) => { // POST /api/dishes (admin): JSON, or multipart with an optional "image" file. price in euros (8.5): the Dish setter stores cents
+export const getAdminDishById = async (req, res) => { // GET /api/admin/dishes/:id (admin): any dish, unpublished too, for the edit form
+  const dish = await Dish.findById(req.params.id)
+  if (!dish) throw dishNotFound(req.params.id)
+
+  res.json(dish)
+}
+
+export const createDish =async (req, res) => { // POST /api/dishes (admin): JSON, or multipart with an optional "image" file. price in euros (8.5): the Dish setter stores cents
   const body = req.body ?? {}
   await checkCategoryExists(body.category)
 

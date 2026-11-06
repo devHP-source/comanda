@@ -1,0 +1,20 @@
+meta {
+  name: Get admin dish - bad id (400)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/admin/dishes/abc
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_ID
+}

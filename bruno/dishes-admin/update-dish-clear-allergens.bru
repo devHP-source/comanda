@@ -1,0 +1,35 @@
+meta {
+  name: Update dish - multipart allergens "" clears the list (200)
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{baseUrl}}/dishes/{{adminDishId}}
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:multipart-form {
+  allergens: 
+}
+
+assert {
+  res.status: eq 200
+  res.body.name.it: eq Piatto per il form
+}
+
+tests {
+  test("allergens come back as an empty list", () => {
+    expect(res.body.allergens).to.eql([])
+  })
+}
+
+docs {
+  Multipart can't send an empty list: the admin form sends allergens="" for "no allergens" and the server reads it as [].
+  The other fields are not sent, so they stay as they were (name.it is checked).
+}

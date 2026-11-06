@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router'
+import { Link, useSearchParams } from 'react-router'
 import { toast } from 'sonner'
 import api, { getErrorCode } from '../../../api/client.js'
 import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog.jsx'
@@ -104,6 +104,7 @@ const AdminDishesPage = () => {
   }
 
   const isPageLoading = result && result.page !== page // old rows stay on screen until the new page arrives
+  const backState = { back: page === 1 ? '/admin/dishes' : `/admin/dishes?page=${page}` } // the form returns to this page after saving
 
   let content
   if (!result && loadError) {
@@ -187,6 +188,14 @@ const AdminDishesPage = () => {
                   </td>
                   <td className={styles.alignEnd}>
                     <span className={styles.actions}>
+                      <Link
+                        to={`/admin/dishes/${dish._id}/edit`}
+                        state={backState}
+                        className={styles.edit}
+                        aria-label={t('adminDishes.editLabel', { code: dish.code, name: dish.name.it })}
+                      >
+                        {t('adminDishes.edit')}
+                      </Link>
                       <button
                         type="button"
                         className={`${styles.toggle} ${dish.isAvailable ? '' : styles.toggleRestore}`}
@@ -231,9 +240,12 @@ const AdminDishesPage = () => {
   return (
     <div className={styles.page}>
       <header className={styles.heading}>
-        <p className={styles.kicker}>{t('adminDishes.kicker')}</p>
-        <h1 className={styles.title}>{t('adminDishes.title')}</h1>
-        <p className={styles.subtitle}>{t('adminDishes.subtitle')}</p>
+        <div>
+          <p className={styles.kicker}>{t('adminDishes.kicker')}</p>
+          <h1 className={styles.title}>{t('adminDishes.title')}</h1>
+          <p className={styles.subtitle}>{t('adminDishes.subtitle')}</p>
+        </div>
+        <Link to="/admin/dishes/new" state={backState} className={styles.newDish}>{t('adminDishes.newDish')}</Link>
       </header>
 
       {content}

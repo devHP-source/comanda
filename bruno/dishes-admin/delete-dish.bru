@@ -1,0 +1,19 @@
+meta {
+  name: Delete dish - cleanup TEST3 (204)
+  type: http
+  seq: 9
+}
+
+delete {
+  url: {{baseUrl}}/dishes/{{adminDishId}}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 204
+}
