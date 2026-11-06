@@ -300,6 +300,34 @@
     "loadError": "We can't load the tickets.",
     "slow": "Loading the tickets…"
   },
+  "availability": {
+    "open": "Sold out",
+    "kicker": "Menu",
+    "title": "Dish availability",
+    "close": "Close",
+    "searchLabel": "Search a dish",
+    "searchPlaceholder": "Dish number or name",
+    "filterLabel": "Show dishes",
+    "filters": {
+      "all": "All",
+      "soldOut": "Sold out"
+    },
+    "soldOut": "Sold out",
+    "markSoldOut": "Mark sold out",
+    "markAvailable": "Make available",
+    "markSoldOutLabel": "Mark {code} · {name} sold out",
+    "markAvailableLabel": "Make {code} · {name} available",
+    "soldOutTitle": "Mark {code} · {name} as sold out?",
+    "soldOutMessage": "Guests will see it as “Sold out” on the menu and it can't be added to tickets anymore.",
+    "availableTitle": "Make {code} · {name} available again?",
+    "availableMessage": "It can be ordered again and guests won't see it as “Sold out” anymore.",
+    "doneSoldOut": "{code} · {name} marked sold out",
+    "doneAvailable": "{code} · {name} available again",
+    "noResults": "No dish found for “{query}”.",
+    "noneSoldOut": "No sold-out dishes.",
+    "loadError": "We can't load the dishes.",
+    "slow": "Loading the dishes…"
+  },
   "errors": {
     "NETWORK_ERROR": "The server isn't responding. Check your connection and try again in a few seconds.",
     "UNKNOWN_ERROR": "Something went wrong. Please try again.",

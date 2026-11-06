@@ -5,7 +5,30 @@
 }
 
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
   margin-bottom: var(--space-6);
+}
+
+.availability { /* opens the "Esaurito" sheet */
+  display: inline-flex;
+  min-height: var(--tap-min);
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  color: var(--color-ink);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+  font-weight: 800;
+}
+
+.availability:hover {
+  background: var(--color-surface-muted);
 }
 
 .greeting {

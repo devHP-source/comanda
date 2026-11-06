@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast, Toaster } from 'sonner'
 import api, { getToken } from '../../../api/client.js'
+import AvailabilitySheet from '../../../components/AvailabilitySheet/AvailabilitySheet.jsx'
 import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog.jsx'
 import Icon from '../../../components/Icon/Icon.jsx'
 import KitchenTicket from '../../../components/KitchenTicket/KitchenTicket.jsx'
@@ -39,6 +40,7 @@ const KitchenPage = () => { // /staff/kitchen: tickets in 3 columns, refreshed e
   const [pending, setPending] = useState({}) // orderId --> action moved on screen but not sent yet, drawn on top of the server's status
   const [activeColumn, setActiveColumn] = useState('sent') // phones: one column at a time
   const [ticketToReopen, setTicketToReopen] = useState(null) // ready ticket the cook wants back in preparing (confirm first)
+  const [isAvailabilityOpen, setIsAvailabilityOpen] = useState(false)
   const pendingRef = useRef(new Map()) // the same actions for the toast callbacks: whoever takes an action out of here (undo or send) wins
   const latestLoad = useRef(0)
   const nextKey = useRef(0)
@@ -256,19 +258,27 @@ const KitchenPage = () => { // /staff/kitchen: tickets in 3 columns, refreshed e
           <p className={styles.service}>{t(`waiter.service.${service}`)} · {today} · {time}</p>
         </div>
 
-        {orders && (
-          <dl className={styles.summary}>
-            {COLUMNS.map((status) => (
-              <div key={status} className={status === 'ready' ? styles.summaryReady : ''}>
-                <dt>{t(`kitchen.summary.${status}`)}</dt>
-                <dd>{byColumn[status].length}</dd>
-              </div>
-            ))}
-          </dl>
-        )}
+        <div className={styles.headerSide}>
+          {orders && (
+            <dl className={styles.summary}>
+              {COLUMNS.map((status) => (
+                <div key={status} className={status === 'ready' ? styles.summaryReady : ''}>
+                  <dt>{t(`kitchen.summary.${status}`)}</dt>
+                  <dd>{byColumn[status].length}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+          <button type="button" className={styles.availability} onClick={() => setIsAvailabilityOpen(true)}>
+            <Icon name="dish" size={20} />
+            {t('availability.open')}
+          </button>
+        </div>
       </header>
 
       {content}
+
+      {isAvailabilityOpen && <AvailabilitySheet onClose={() => setIsAvailabilityOpen(false)} />}
 
       <ConfirmDialog
         open={Boolean(ticketToReopen)}

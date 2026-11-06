@@ -300,6 +300,34 @@
     "loadError": "Non riusciamo a caricare le comande.",
     "slow": "Stiamo caricando le comande…"
   },
+  "availability": {
+    "open": "Esauriti",
+    "kicker": "Menu",
+    "title": "Disponibilità piatti",
+    "close": "Chiudi",
+    "searchLabel": "Cerca un piatto",
+    "searchPlaceholder": "Numero o nome del piatto",
+    "filterLabel": "Mostra i piatti",
+    "filters": {
+      "all": "Tutti",
+      "soldOut": "Esauriti"
+    },
+    "soldOut": "Esaurito",
+    "markSoldOut": "Segna esaurito",
+    "markAvailable": "Rimetti disponibile",
+    "markSoldOutLabel": "Segna esaurito {code} · {name}",
+    "markAvailableLabel": "Rimetti disponibile {code} · {name}",
+    "soldOutTitle": "Segnare esaurito {code} · {name}?",
+    "soldOutMessage": "Nel menu dei clienti apparirà come “Esaurito” e non si potrà più aggiungere alle comande.",
+    "availableTitle": "Rimettere disponibile {code} · {name}?",
+    "availableMessage": "Torna ordinabile e nel menu dei clienti non apparirà più come “Esaurito”.",
+    "doneSoldOut": "{code} · {name} segnato esaurito",
+    "doneAvailable": "{code} · {name} di nuovo disponibile",
+    "noResults": "Nessun piatto trovato per “{query}”.",
+    "noneSoldOut": "Nessun piatto esaurito.",
+    "loadError": "Non riusciamo a caricare i piatti.",
+    "slow": "Stiamo caricando i piatti…"
+  },
   "errors": {
     "NETWORK_ERROR": "Il server non risponde. Controlla la connessione e riprova tra qualche secondo.",
     "UNKNOWN_ERROR": "Qualcosa è andato storto. Riprova.",

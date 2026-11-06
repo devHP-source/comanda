@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import api from '../../../api/client.js'
+import AvailabilitySheet from '../../../components/AvailabilitySheet/AvailabilitySheet.jsx'
 import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog.jsx'
 import Icon from '../../../components/Icon/Icon.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
@@ -45,6 +46,7 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
   const [ticketToServe, setTicketToServe] = useState(null)
   const [selectedNumber, setSelectedNumber] = useState(null)
   const [tableToClose, setTableToClose] = useState(null)
+  const [isAvailabilityOpen, setIsAvailabilityOpen] = useState(false)
   const latestLoad = useRef(0)
 
   const load = useCallback(async () => {
@@ -200,8 +202,14 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <h1 className={styles.greeting}>{t(`waiter.greeting.${greeting}`, { name: firstName })}</h1>
-        <p className={styles.service}>{t(`waiter.service.${service}`)} · {time}</p>
+        <div>
+          <h1 className={styles.greeting}>{t(`waiter.greeting.${greeting}`, { name: firstName })}</h1>
+          <p className={styles.service}>{t(`waiter.service.${service}`)} · {time}</p>
+        </div>
+        <button type="button" className={styles.availability} onClick={() => setIsAvailabilityOpen(true)}>
+          <Icon name="dish" size={20} />
+          {t('availability.open')}
+        </button>
       </header>
 
       {content}
@@ -215,6 +223,8 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
           onCloseTable={setTableToClose}
         />
       )}
+
+      {isAvailabilityOpen && <AvailabilitySheet onClose={() => setIsAvailabilityOpen(false)} />}
 
       <ConfirmDialog
         open={Boolean(tableToClose)}
