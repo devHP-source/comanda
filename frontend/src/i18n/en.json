@@ -266,6 +266,35 @@
     "confirmTitle": "Send {round} to Table {number}?",
     "sent": "Table {number} · {round} sent to the kitchen"
   },
+  "kitchen": {
+    "title": "Kitchen",
+    "summary": {
+      "sent": "To start",
+      "preparing": "Cooking",
+      "ready": "Ready"
+    },
+    "columnsLabel": "Show tickets",
+    "columns": {
+      "sent": { "title": "To start", "subtitle": "New tickets" },
+      "preparing": { "title": "Preparing", "subtitle": "In progress" },
+      "ready": { "title": "Ready", "subtitle": "To serve" }
+    },
+    "sentAt": "Sent at",
+    "waitingFor": "waiting for",
+    "minutes": "{count} min",
+    "start": "Start preparing",
+    "markReady": "Mark as ready",
+    "waitingWaiter": "Waiting for the waiter",
+    "empty": "No tickets",
+    "toast": {
+      "preparing": "Table {number} · {round} preparing",
+      "ready": "Table {number} · {round} marked ready"
+    },
+    "undo": "Undo",
+    "stale": "We can't refresh the tickets. Trying again shortly…",
+    "loadError": "We can't load the tickets.",
+    "slow": "Loading the tickets…"
+  },
   "errors": {
     "NETWORK_ERROR": "The server isn't responding. Check your connection and try again in a few seconds.",
     "UNKNOWN_ERROR": "Something went wrong. Please try again.",

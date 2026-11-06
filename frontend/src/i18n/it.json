@@ -266,6 +266,35 @@
     "confirmTitle": "Inviare la {round} al Tavolo {number}?",
     "sent": "Tavolo {number} · {round} inviata in cucina"
   },
+  "kitchen": {
+    "title": "Cucina",
+    "summary": {
+      "sent": "Da iniziare",
+      "preparing": "In corso",
+      "ready": "Pronte"
+    },
+    "columnsLabel": "Mostra le comande",
+    "columns": {
+      "sent": { "title": "Da iniziare", "subtitle": "Nuove comande" },
+      "preparing": { "title": "In preparazione", "subtitle": "In lavorazione" },
+      "ready": { "title": "Pronto", "subtitle": "Da servire" }
+    },
+    "sentAt": "Inviata alle",
+    "waitingFor": "in attesa da",
+    "minutes": "{count} min",
+    "start": "Inizia preparazione",
+    "markReady": "Segna come pronto",
+    "waitingWaiter": "In attesa del cameriere",
+    "empty": "Nessuna comanda",
+    "toast": {
+      "preparing": "Tavolo {number} · {round} in preparazione",
+      "ready": "Tavolo {number} · {round} segnata pronta"
+    },
+    "undo": "Annulla",
+    "stale": "Non riusciamo ad aggiornare le comande. Riprovo tra poco…",
+    "loadError": "Non riusciamo a caricare le comande.",
+    "slow": "Stiamo caricando le comande…"
+  },
   "errors": {
     "NETWORK_ERROR": "Il server non risponde. Controlla la connessione e riprova tra qualche secondo.",
     "UNKNOWN_ERROR": "Qualcosa è andato storto. Riprova.",

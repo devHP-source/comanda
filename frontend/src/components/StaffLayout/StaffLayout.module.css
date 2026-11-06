@@ -38,6 +38,7 @@
 }
 
 .brandName {
+  display: none;
   font-family: var(--font-serif);
   font-size: 1.1rem;
   font-weight: 700;
@@ -104,5 +105,9 @@
 @media (min-width: 700px) {
   .bar {
     padding: var(--space-2) 2.5rem;
+  }
+
+  .brandName {
+    display: inline;
   }
 }

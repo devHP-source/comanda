@@ -3,6 +3,7 @@ import { Toaster } from 'sonner'
 import PublicLayout from './components/PublicLayout/PublicLayout.jsx'
 import StaffLayout from './components/StaffLayout/StaffLayout.jsx'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx'
+import KitchenPage from './pages/kitchen/KitchenPage/KitchenPage.jsx'
 import DishSheet from './pages/public/DishSheet/DishSheet.jsx'
 import InfoPage from './pages/public/InfoPage/InfoPage.jsx'
 import ListPage from './pages/public/ListPage/ListPage.jsx'
@@ -11,16 +12,7 @@ import NotFoundPage from './pages/public/NotFoundPage/NotFoundPage.jsx'
 import StaffLoginPage from './pages/public/StaffLoginPage/StaffLoginPage.jsx'
 import NewTicketPage from './pages/waiter/NewTicketPage/NewTicketPage.jsx'
 import WaiterPage from './pages/waiter/WaiterPage/WaiterPage.jsx'
-
-const toastStyle = {
-  border: '1px solid var(--color-line)',
-  borderRadius: 'var(--radius-lg)',
-  color: 'var(--color-ink)',
-  background: 'var(--color-surface)',
-  boxShadow: 'var(--shadow-float)',
-  fontFamily: 'var(--font-sans)',
-  fontSize: 'var(--text-sm)',
-}
+import toastStyle from './utils/toastStyle.js'
 
 const App = () => (
   <>
@@ -44,7 +36,7 @@ const App = () => (
             <Route path="staff/waiter/tables/:number/new" element={<NewTicketPage />} />
           </Route>
           <Route element={<ProtectedRoute roles={['kitchen']} />}>
-            <Route path="staff/kitchen" />
+            <Route path="staff/kitchen" element={<KitchenPage />} />
           </Route>
           <Route element={<ProtectedRoute roles={['admin']} />}>
             <Route path="admin" />
