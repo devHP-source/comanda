@@ -1,0 +1,26 @@
+meta {
+  name: Get admin categories - admin (200)
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{baseUrl}}/admin/categories
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body: isArray
+  res.body[0].dishCount: isNumber
+  res.body[0].coverImage: isString
+}
+
+docs {
+  Same list as GET /categories (menu order, coverImage) + dishCount, unpublished dishes included.
+}

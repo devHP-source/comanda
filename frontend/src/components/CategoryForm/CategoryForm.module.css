@@ -1,0 +1,243 @@
+.form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.legend {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+
+.summary {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.card {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-4);
+  margin: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.cardTitle {
+  padding: 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+fieldset.card > .cardTitle { /* a floated legend is no longer drawn on the border: it becomes a normal grid row, like the h2 titles */
+  float: left;
+  width: 100%;
+}
+
+.row {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 700px) {
+  .row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.field {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+}
+
+.orderField {
+  max-width: 24rem;
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.requiredMark {
+  color: var(--color-accent);
+}
+
+.input {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  color: var(--color-ink);
+  background: var(--color-surface-muted);
+  font-size: var(--text-md);
+}
+
+.input:focus-visible {
+  border-color: var(--color-accent);
+  background: var(--color-surface);
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--color-accent);
+}
+
+.orderInput {
+  max-width: 7rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.hint {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.error {
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+/* Cover picker: one tile per dish with a photo, the whole tile is the radio's label */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  gap: var(--space-3);
+}
+
+.tile {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: 2px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  cursor: pointer;
+}
+
+.tile:hover {
+  border-color: var(--color-ink-muted);
+}
+
+.tile:has(.radio:checked) {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.tile:has(.radio:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.radio:focus-visible {
+  outline: none; /* drawn around the whole tile instead */
+}
+
+.tilePhoto {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 4 / 3; /* same crop as the menu */
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+}
+
+.tilePhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tileText {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-height: var(--tap-min);
+  padding: 0 var(--space-1);
+}
+
+.radio {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
+  margin-top: 0.1rem;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+.tileTitle {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.tileCode {
+  color: var(--color-accent);
+  font-weight: 800;
+}
+
+.tileHint {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--color-ink-muted);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+}
+
+.cancel,
+.submit {
+  display: inline-flex;
+  min-height: var(--tap-min);
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-pill);
+  font-weight: 800;
+}
+
+.cancel {
+  border: 1px solid var(--color-line);
+  color: var(--color-ink);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+}
+
+.cancel:hover {
+  background: var(--color-surface-muted);
+}
+
+.submit {
+  min-width: 10rem;
+  border: 0;
+  color: var(--color-white);
+  background: var(--color-accent);
+  box-shadow: var(--shadow-accent);
+  font-size: var(--text-md);
+}
+
+.submit:hover {
+  filter: brightness(1.08);
+}

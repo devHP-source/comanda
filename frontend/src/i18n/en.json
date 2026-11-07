@@ -332,7 +332,8 @@
     "area": "Administration",
     "navLabel": "Admin sections",
     "nav": {
-      "dishes": "Menu & dishes"
+      "dishes": "Menu & dishes",
+      "categories": "Categories"
     },
     "greeting": {
       "morning": "Good morning, {name}",
@@ -370,6 +371,75 @@
     "newDish": "New dish",
     "edit": "Edit",
     "editLabel": "Edit {code} · {name}"
+  },
+  "adminCategories": {
+    "kicker": "Menu",
+    "title": "Categories",
+    "subtitle": "The menu sections, in the order guests see them.",
+    "tableLabel": "Category list",
+    "columns": {
+      "photo": "Preview",
+      "order": "Pos.",
+      "name": "Category",
+      "dishes": "Dishes",
+      "actions": "Actions"
+    },
+    "coverChosen": "Chosen photo",
+    "coverAuto": "Automatic photo",
+    "loadError": "We can't load the categories.",
+    "empty": "No categories in the menu yet.",
+    "newCategory": "New category",
+    "edit": "Edit",
+    "editLabel": "Edit the {name} category",
+    "delete": "Delete",
+    "deleteLabel": "Delete the {name} category",
+    "deleteTitle": "Delete the {name} category?",
+    "deleteMessage": "The category will be deleted for good.",
+    "deleteMessageWithDishes": "It still has {dishes}: deleting will be refused until you move them to another category or delete them.",
+    "deleted": "{name} category deleted"
+  },
+  "categoryForm": {
+    "back": "← Categories",
+    "backToList": "Back to categories",
+    "titleNew": "New category",
+    "titleEdit": "Edit category",
+    "subtitleNew": "It shows up in the menu as soon as it has at least one published dish.",
+    "loadError": "We can't load the category.",
+    "notFound": "This category no longer exists.",
+    "sections": {
+      "main": "Name and position",
+      "cover": "Preview photo"
+    },
+    "nameIt": "Italian name",
+    "nameEn": "English name",
+    "order": "Position in the menu",
+    "orderHint": "Whole number from 0 to 999: categories with the lowest number come first.",
+    "cover": {
+      "hint": "The photo that stands for the category in the menu shortcuts.",
+      "auto": "Automatic",
+      "autoHint": "The photo of the category's first dish.",
+      "dishAlt": "Photo of {code} · {name}",
+      "noPhotos": "No published dish in this category has a photo: the menu shows a placeholder.",
+      "newCategory": "You can pick the photo once this category has some dishes."
+    },
+    "create": "Create category",
+    "save": "Save changes",
+    "created": "{name} category created",
+    "saved": "{name} category saved",
+    "confirm": {
+      "createTitle": "Create the {name} category?",
+      "editTitle": "Save the changes to the {name} category?",
+      "position": "Position {order} in the menu.",
+      "coverAuto": "Preview: automatic photo.",
+      "coverDish": "Preview: photo of {code} · {name}."
+    },
+    "errors": {
+      "nameIt": "Enter the Italian name.",
+      "nameTaken": "A category with this name already exists.",
+      "order": "Enter a whole number from 0 to 999.",
+      "cover": "The chosen dish is no longer in this category. Pick another one.",
+      "invalid": "Invalid value."
+    }
   },
   "dishForm": {
     "back": "← Dishes",
@@ -483,6 +553,7 @@
     "CATEGORY_NOT_FOUND": "Category not found.",
     "CATEGORY_HAS_DISHES": "This category still has dishes: move or delete them first.",
     "INVALID_CATEGORY": "Invalid category.",
+    "INVALID_COVER_DISH": "The dish chosen for the preview isn't in this category.",
 
     "DISH_NOT_FOUND": "Dish not found.",
     "INVALID_AVAILABILITY": "Invalid availability.",

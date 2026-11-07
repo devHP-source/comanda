@@ -89,8 +89,9 @@ export const getDishById = async (req, res) => { // GET /api/dishes/:id (public)
   res.json(dish)
 }
 
-export const getAdminDishes = async (req, res) => { // GET /api/admin/dishes (admin): every dish, unpublished too, always paginated
-  res.json(await findDishPage({}, req.query))
+export const getAdminDishes = async (req, res) => { // GET /api/admin/dishes (admin): every dish, unpublished too, always paginated. ?category=<id> keeps one category (cover photo picker)
+  const filter = req.query.category ? { category: req.query.category } : {} // bad id --> CastError --> 400
+  res.json(await findDishPage(filter, req.query))
 }
 
 export const getAdminDishById = async (req, res) => { // GET /api/admin/dishes/:id (admin): any dish, unpublished too, for the edit form
@@ -127,10 +128,15 @@ export const updateDish = async (req, res) => { // PUT /api/dishes/:id (admin): 
   await checkCategoryExists(body.category)
 
   const oldPublicId = dish.image.publicId
+  const oldCategory = String(dish.category)
   if (removeImage) dish.image = { url: "", publicId: "" } // the menu shows the placeholder
 
   applyDishFields(dish, body)
   await saveDish(dish, req.file)
+
+  if (String(dish.category) !== oldCategory) { // moved to another category: it can't stay the cover of the old one
+    await Category.updateMany({ _id: oldCategory, coverDish: dish._id }, { coverDish: null })
+  }
 
   // Same rule as a replace: the photo leaves Cloudinary only after the dish is saved without it
   if (removeImage && oldPublicId) await deleteImage(oldPublicId).catch(console.error)

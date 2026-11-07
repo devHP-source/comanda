@@ -9,14 +9,12 @@ const categoryNotFound = () => {
 }
 
 
-export const getCategories = async (req, res) => { // GET /api/categories (public): all categories in menu order, each with a coverImage url.
-  const [categories, dishesWithPhoto] = await Promise.all([
-    Category.find().sort({ order: 1 }),
-    Dish.find({ isPublished: true, "image.url": { $ne: "" } }) // unpublished dishes never preview a category
-      .sort({ code: 1 })
-      .collation(byCode)
-      .select("category image"), // coverImage = photo of coverDish, else the first dish of the category with a photo, else "" (the frontend shows a placeholder)
-  ])
+// Adds coverImage to each category: photo of coverDish, else the first dish of the category with a photo, else "" (the frontend shows a placeholder)
+const withCoverImages = async (categories) => {
+  const dishesWithPhoto = await Dish.find({ isPublished: true, "image.url": { $ne: "" } }) // unpublished dishes never preview a category
+    .sort({ code: 1 })
+    .collation(byCode)
+    .select("category image")
 
   const photoByDish = new Map() // dish _id --> url
   const firstPhotoByCategory = new Map() // category _id --> url of its first dish (by code) with a photo
@@ -26,13 +24,40 @@ export const getCategories = async (req, res) => { // GET /api/categories (publi
     if (!firstPhotoByCategory.has(categoryId)) firstPhotoByCategory.set(categoryId, dish.image.url)
   }
 
-  res.json(categories.map((category) => ({
+  return categories.map((category) => ({
     ...category.toJSON(),
     coverImage: photoByDish.get(String(category.coverDish)) || firstPhotoByCategory.get(String(category._id)) || "",
-  })))
+  }))
 }
 
-export const createCategory = async (req, res) => { // POST /api/categories (admin)
+export const getCategories = async (req, res) => { // GET /api/categories (public): all categories in menu order, each with a coverImage url.
+  const categories = await Category.find().sort({ order: 1 })
+  res.json(await withCoverImages(categories))
+}
+
+export const getAdminCategories = async (req, res) => { // GET /api/admin/categories (admin): same list + dishCount (unpublished dishes too) for the categories screen
+  const [categories, counts] = await Promise.all([
+    Category.find().sort({ order: 1 }),
+    Dish.aggregate([{ $group: { _id: "$category", count: { $sum: 1 } } }]),
+  ])
+
+  const countByCategory = new Map(counts.map(({ _id, count }) => [String(_id), count]))
+  const list = await withCoverImages(categories)
+  res.json(list.map((category) => ({ ...category, dishCount: countByCategory.get(String(category._id)) ?? 0 })))
+}
+
+const checkCoverDish = async (dishId, categoryId) => { // null or "" --> automatic preview. Otherwise it must be one of this category's dishes
+  if (dishId === null || dishId === "") return null
+  if (!(await Dish.exists({ _id: dishId, category: categoryId }))) { // a bad id --> CastError --> 400 INVALID_ID in errorHandler
+    const err = new Error(`Dish ${dishId} is not in this category`)
+    err.status = 400
+    err.code = "INVALID_COVER_DISH"
+    throw err
+  }
+  return dishId
+}
+
+export const createCategory = async (req, res) => { // POST /api/categories (admin). No coverDish: a new category has no dishes yet
   const { name, order } = req.body ?? {}
 
   // Only the fields we expect: anything else in the body is ignored
@@ -47,10 +72,11 @@ export const updateCategory = async (req, res) => { // PUT /api/categories/:id (
   const category = await Category.findById(req.params.id)
   if (!category) throw categoryNotFound()
 
-  const { name, order } = req.body ?? {}
+  const { name, order, coverDish } = req.body ?? {}
   if (name?.it !== undefined) category.name.it = name.it
   if (name?.en !== undefined) category.name.en = name.en
   if (order !== undefined) category.order = order
+  if (coverDish !== undefined) category.coverDish = await checkCoverDish(coverDish, category._id)
 
   await category.save() // save() runs the full schema validation
   res.json(category)

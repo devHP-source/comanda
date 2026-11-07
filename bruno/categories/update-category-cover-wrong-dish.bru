@@ -1,0 +1,26 @@
+meta {
+  name: Update category - cover dish not in category (400)
+  type: http
+  seq: 19
+}
+
+put {
+  url: {{baseUrl}}/categories/{{seededCategoryId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "coverDish": "000000000000000000000000"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_COVER_DISH
+}

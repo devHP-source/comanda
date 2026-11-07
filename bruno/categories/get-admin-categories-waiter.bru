@@ -1,0 +1,20 @@
+meta {
+  name: Get admin categories - waiter (403)
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{baseUrl}}/admin/categories
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq FORBIDDEN
+}

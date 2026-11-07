@@ -4,6 +4,8 @@ import AdminLayout from './components/AdminLayout/AdminLayout.jsx'
 import PublicLayout from './components/PublicLayout/PublicLayout.jsx'
 import StaffLayout from './components/StaffLayout/StaffLayout.jsx'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx'
+import AdminCategoriesPage from './pages/admin/AdminCategoriesPage/AdminCategoriesPage.jsx'
+import AdminCategoryFormPage from './pages/admin/AdminCategoryFormPage/AdminCategoryFormPage.jsx'
 import AdminDishFormPage from './pages/admin/AdminDishFormPage/AdminDishFormPage.jsx'
 import AdminDishesPage from'./pages/admin/AdminDishesPage/AdminDishesPage.jsx'
 import KitchenPage from './pages/kitchen/KitchenPage/KitchenPage.jsx'
@@ -49,6 +51,9 @@ const App = () => (
             <Route path="dishes" element={<AdminDishesPage />} />
             <Route path="dishes/new" element={<AdminDishFormPage />} />
             <Route path="dishes/:id/edit" element={<AdminDishFormPage />} />
+            <Route path="categories" element={<AdminCategoriesPage />} />
+            <Route path="categories/new" element={<AdminCategoryFormPage />} />
+            <Route path="categories/:id/edit" element={<AdminCategoryFormPage />} />
           </Route>
         </Route>
       </Route>

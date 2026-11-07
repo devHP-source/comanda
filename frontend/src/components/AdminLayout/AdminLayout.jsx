@@ -8,6 +8,7 @@ import styles from './AdminLayout.module.css'
 
 const NAV_ITEMS = [ // one entry per admin screen, added when that screen exists
   { to: '/admin/dishes', label: 'admin.nav.dishes', icon: 'dish' },
+  { to: '/admin/categories', label: 'admin.nav.categories', icon: 'list' },
 ]
 
 const LOCALES = { it: 'it-IT', en: 'en-GB' }

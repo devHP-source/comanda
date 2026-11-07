@@ -332,7 +332,8 @@
     "area": "Amministrazione",
     "navLabel": "Sezioni dell'amministrazione",
     "nav": {
-      "dishes": "Menu e piatti"
+      "dishes": "Menu e piatti",
+      "categories": "Categorie"
     },
     "greeting": {
       "morning": "Buongiorno, {name}",
@@ -370,6 +371,75 @@
     "newDish": "Nuovo piatto",
     "edit": "Modifica",
     "editLabel": "Modifica {code} · {name}"
+  },
+  "adminCategories": {
+    "kicker": "Menu",
+    "title": "Categorie",
+    "subtitle": "Le sezioni del menu, nell'ordine in cui le vedono i clienti.",
+    "tableLabel": "Elenco delle categorie",
+    "columns": {
+      "photo": "Anteprima",
+      "order": "Pos.",
+      "name": "Categoria",
+      "dishes": "Piatti",
+      "actions": "Azioni"
+    },
+    "coverChosen": "Foto scelta",
+    "coverAuto": "Foto automatica",
+    "loadError": "Non riusciamo a caricare le categorie.",
+    "empty": "Nessuna categoria nel menu.",
+    "newCategory": "Nuova categoria",
+    "edit": "Modifica",
+    "editLabel": "Modifica la categoria {name}",
+    "delete": "Elimina",
+    "deleteLabel": "Elimina la categoria {name}",
+    "deleteTitle": "Eliminare la categoria {name}?",
+    "deleteMessage": "La categoria verrà eliminata definitivamente.",
+    "deleteMessageWithDishes": "Contiene ancora {dishes}: l'eliminazione verrà rifiutata finché non li sposti in un'altra categoria o li elimini.",
+    "deleted": "Categoria {name} eliminata"
+  },
+  "categoryForm": {
+    "back": "← Categorie",
+    "backToList": "Torna alle categorie",
+    "titleNew": "Nuova categoria",
+    "titleEdit": "Modifica categoria",
+    "subtitleNew": "Compare nel menu appena contiene almeno un piatto pubblicato.",
+    "loadError": "Non riusciamo a caricare la categoria.",
+    "notFound": "Questa categoria non esiste più.",
+    "sections": {
+      "main": "Nome e posizione",
+      "cover": "Foto di anteprima"
+    },
+    "nameIt": "Nome in italiano",
+    "nameEn": "Nome in inglese",
+    "order": "Posizione nel menu",
+    "orderHint": "Numero intero da 0 a 999: le categorie con il numero più basso compaiono prima.",
+    "cover": {
+      "hint": "La foto che rappresenta la categoria nelle scorciatoie del menu.",
+      "auto": "Automatica",
+      "autoHint": "La foto del primo piatto della categoria.",
+      "dishAlt": "Foto di {code} · {name}",
+      "noPhotos": "Nessun piatto pubblicato di questa categoria ha una foto: il menu mostra un segnaposto.",
+      "newCategory": "Potrai scegliere la foto dopo aver aggiunto dei piatti a questa categoria."
+    },
+    "create": "Crea categoria",
+    "save": "Salva modifiche",
+    "created": "Categoria {name} creata",
+    "saved": "Categoria {name} salvata",
+    "confirm": {
+      "createTitle": "Creare la categoria {name}?",
+      "editTitle": "Salvare le modifiche alla categoria {name}?",
+      "position": "Posizione {order} nel menu.",
+      "coverAuto": "Anteprima: foto automatica.",
+      "coverDish": "Anteprima: foto di {code} · {name}."
+    },
+    "errors": {
+      "nameIt": "Inserisci il nome in italiano.",
+      "nameTaken": "Esiste già una categoria con questo nome.",
+      "order": "Inserisci un numero intero da 0 a 999.",
+      "cover": "Il piatto scelto non è più in questa categoria. Scegline un altro.",
+      "invalid": "Valore non valido."
+    }
   },
   "dishForm": {
     "back": "← Piatti",
@@ -483,6 +553,7 @@
     "CATEGORY_NOT_FOUND": "Categoria non trovata.",
     "CATEGORY_HAS_DISHES": "Questa categoria contiene ancora dei piatti: spostali o eliminali prima.",
     "INVALID_CATEGORY": "Categoria non valida.",
+    "INVALID_COVER_DISH": "Il piatto scelto per l'anteprima non è in questa categoria.",
 
     "DISH_NOT_FOUND": "Piatto non trovato.",
     "INVALID_AVAILABILITY": "Disponibilità non valida.",

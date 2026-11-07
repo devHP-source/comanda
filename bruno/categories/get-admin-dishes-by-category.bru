@@ -1,0 +1,33 @@
+meta {
+  name: Get admin dishes - by category (200)
+  type: http
+  seq: 17
+}
+
+get {
+  url: {{baseUrl}}/admin/dishes?category={{seededCategoryId}}&limit=100
+  body: none
+  auth: bearer
+}
+
+params:query {
+  category: {{seededCategoryId}}
+  limit: 100
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.data: isArray
+  res.body.data[0].category: eq {{seededCategoryId}}
+}
+
+script:post-response {
+  // A dish of the first category, used by "Update category - cover dish"
+  if (res.status === 200 && res.body.data.length) {
+    bru.setVar("seededCategoryDishId", res.body.data[0]._id)
+  }
+}

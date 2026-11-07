@@ -1,0 +1,30 @@
+meta {
+  name: Update category - clear cover dish (200)
+  type: http
+  seq: 20
+}
+
+put {
+  url: {{baseUrl}}/categories/{{seededCategoryId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "coverDish": null
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.coverDish: isNull
+}
+
+docs {
+  null (or "") = automatic preview: first published dish of the category with a photo. Leaves the seeded category as the seed made it.
+}
