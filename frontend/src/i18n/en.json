@@ -153,6 +153,13 @@
       "kitchen": "Kitchen"
     }
   },
+  "readyBell": {
+    "title": "Ready to serve",
+    "none": "No tickets ready",
+    "countOne": "1 ticket ready to serve",
+    "count": "{count} tickets ready to serve",
+    "readyAt": "at {time}"
+  },
   "tables": {
     "table": "Table",
     "tableNumber": "Table {number}",

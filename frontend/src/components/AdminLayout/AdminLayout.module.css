@@ -149,6 +149,7 @@
 }
 
 .header {
+  position: relative; /* the "Pronto" list on phones opens under the whole header */
   display: flex;
   align-items: center;
   justify-content: space-between;

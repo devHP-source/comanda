@@ -153,6 +153,13 @@
       "kitchen": "Cucina"
     }
   },
+  "readyBell": {
+    "title": "Pronto da servire",
+    "none": "Nessuna comanda pronta",
+    "countOne": "1 comanda pronta da servire",
+    "count": "{count} comande pronte da servire",
+    "readyAt": "alle {time}"
+  },
   "tables": {
     "table": "Tavolo",
     "tableNumber": "Tavolo {number}",
