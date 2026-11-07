@@ -1,0 +1,32 @@
+meta {
+  name: Search admin dishes - no match (200)
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/admin/dishes?q=zzzz
+  body: none
+  auth: bearer
+}
+
+params:query {
+  q: zzzz
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.data: isArray
+  res.body.page: eq 1
+  res.body.totalPages: eq 0
+}
+
+tests {
+  test("no dish matches", function () {
+    expect(res.body.data).to.have.lengthOf(0);
+  });
+}

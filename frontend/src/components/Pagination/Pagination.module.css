@@ -1,0 +1,86 @@
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.pages {
+  display: flex;
+  flex-basis: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  order: -1;
+}
+
+.step,
+.page {
+  display: inline-flex;
+  min-height: var(--tap-min);
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-line);
+  color: var(--color-ink);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.step {
+  flex: 1 1 0;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-pill);
+}
+
+.page {
+  min-width: var(--tap-min);
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-md);
+  font-variant-numeric: tabular-nums;
+}
+
+.step:hover:not(:disabled),
+.page:hover:not(.current) {
+  background: var(--color-surface-muted);
+}
+
+.current,
+.current:active {
+  border-color: var(--color-ink);
+  color: var(--color-white);
+  background: var(--color-ink);
+  cursor: default;
+  transform: none;
+}
+
+.step:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.gap {
+  min-width: 1.25rem;
+  color: var(--color-ink-muted);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Tablet and up: one row, Precedente · numbers · Successiva */
+@media (min-width: 700px) {
+  .pagination {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+
+  .pages {
+    flex-basis: auto;
+    order: 0;
+  }
+
+  .step {
+    flex: 0 0 auto;
+  }
+}

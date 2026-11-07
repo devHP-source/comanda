@@ -57,7 +57,7 @@ const saveDish = async (dish, file) => {
   if (oldPublicId) await deleteImage(oldPublicId).catch(console.error) // Replaced the old photo goes only after the new one is saved, so the dish never points to a deleted image
 }
 
-const findDishPage = async (filter, query) => { // .sort().skip().limit() + countDocuments() --> { data, page, totalPages }
+const findDishPage = async (filter, query) => { // .sort().skip().limit() + countDocuments() --> { data, page, totalPages, total }
   const page = Math.max(1, parseInt(query.page) || 1)
   const limit = Math.min(100, Math.max(1, parseInt(query.limit) || 20))
 
@@ -70,6 +70,7 @@ const findDishPage = async (filter, query) => { // .sort().skip().limit() + coun
     data: dishes,
     page,
     totalPages: Math.ceil(total / limit),
+    total, // dishes matching the filter, all pages together
   }
 }
 
@@ -89,8 +90,38 @@ export const getDishById = async (req, res) => { // GET /api/dishes/:id (public)
   res.json(dish)
 }
 
-export const getAdminDishes = async (req, res) => { // GET /api/admin/dishes (admin): every dish, unpublished too, always paginated. ?category=<id> keeps one category (cover photo picker)
-  const filter = req.query.category ? { category: req.query.category } : {} // bad id --> CastError --> 400
+const MAX_SEARCH_LENGTH = 50
+
+// A regex can't ignore accents, so each vowel (and c, n) matches its accented forms too: "caffe" finds "Caffè"
+const ACCENTED = {
+  a: "aàáâäãAÀÁÂÄÃ",
+  e: "eèéêëEÈÉÊË",
+  i: "iìíîïIÌÍÎÏ",
+  o: "oòóôöõOÒÓÔÖÕ",
+  u: "uùúûüUÙÚÛÜ",
+  c: "cçCÇ",
+  n: "nñNÑ",
+}
+
+const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") // the admin's text is matched literally, never run as a pattern
+
+const searchFilter = (q) => { // code that starts with q, or Italian / English name that contains it (case and accents ignored)
+  const text = q.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase() // "Caffè" typed --> "caffe"
+  const code = new RegExp(`^${escapeRegex(text)}`, "i")
+  const name = new RegExp(escapeRegex(text).replace(/[aeioucn]/g, (letter) => `[${ACCENTED[letter]}]`), "i")
+  return { $or: [{ code }, { "name.it": name }, { "name.en": name }] }
+}
+
+// GET /api/admin/dishes (admin): every dish, unpublished too, always paginated
+// ?category=<id> keeps one category (list filter, cover photo picker), ?q= searches code and names
+export const getAdminDishes = async (req, res) => {
+  const { category } = req.query
+  const q = typeof req.query.q === "string" ? req.query.q.trim().slice(0, MAX_SEARCH_LENGTH) : "" // ?q=a&q=b arrives as an array: ignored
+
+  const filter = {}
+  if (category) filter.category = category // bad id --> CastError --> 400
+  if (q) Object.assign(filter, searchFilter(q))
+
   res.json(await findDishPage(filter, req.query))
 }
 

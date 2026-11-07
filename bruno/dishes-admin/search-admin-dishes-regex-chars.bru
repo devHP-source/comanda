@@ -1,0 +1,34 @@
+meta {
+  name: Search admin dishes - regex characters taken literally (200)
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{baseUrl}}/admin/dishes?q=(.*
+  body: none
+  auth: bearer
+}
+
+params:query {
+  q: (.*
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+docs {
+  The search text is escaped before it becomes a regex: "(.*" looks for those three characters, it doesn't match every dish or crash with a 500.
+}
+
+assert {
+  res.status: eq 200
+  res.body.data: isArray
+}
+
+tests {
+  test("no dish matches the literal text", function () {
+    expect(res.body.data).to.have.lengthOf(0);
+  });
+}

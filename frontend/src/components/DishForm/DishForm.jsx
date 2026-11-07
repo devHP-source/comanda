@@ -117,6 +117,7 @@ const DishForm = ({ dish, categories, backTo }) => {
   const [image, setImage] = useState(null) // new photo not saved yet: { file, previewUrl }
   const [removeImage, setRemoveImage] = useState(false)
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false)
 
   const isEdit = Boolean(dish)
   const currentImageUrl = dish?.image?.url || ''
@@ -199,6 +200,18 @@ const DishForm = ({ dish, categories, backTo }) => {
       setErrors(found)
       pendingFocusRef.current = firstErrorField(found)
     }
+  }
+
+  const deleteDish = async () => { // the saved dish, not the values typed in the form
+    const values = { code: dish.code, name: dish.name.it }
+    try {
+      await api.delete(`/dishes/${dish._id}`)
+      toast.success(t('dishForm.deleted', values))
+    } catch (err) {
+      toast.error(tError(err))
+      if (getErrorCode(err) !== 'DISH_NOT_FOUND') return // 404: already deleted elsewhere, the list is the right place anyway
+    }
+    navigate(backTo) // the list reloads; if this was the last dish of its page, it moves to the page before
   }
 
   const handleConfirmClose = () => { // runs after the dialog has given the focus back, so this focus wins
@@ -433,6 +446,11 @@ const DishForm = ({ dish, categories, backTo }) => {
         </div>
 
         <div className={styles.actions}>
+          {isEdit && (
+            <button type="button" className={styles.delete} onClick={() => setIsDeleteOpen(true)}>
+              {t('dishForm.delete')}
+            </button>
+          )}
           <Link to={backTo} className={styles.cancel}>{t('confirm.cancel')}</Link>
           <button type="submit" className={styles.submit}>{t(isEdit ? 'dishForm.save' : 'dishForm.create')}</button>
         </div>
@@ -446,6 +464,18 @@ const DishForm = ({ dish, categories, backTo }) => {
         onConfirm={save}
         onClose={handleConfirmClose}
       />
+
+      {isEdit && (
+        <ConfirmDialog
+          open={isDeleteOpen}
+          destructive // red confirm button, focus starts on Annulla
+          title={t('dishForm.deleteTitle', { code: dish.code, name: dish.name.it })}
+          message={t('dishForm.deleteMessage')}
+          confirmLabel={t('dishForm.delete')}
+          onConfirm={deleteDish}
+          onClose={() => setIsDeleteOpen(false)}
+        />
+      )}
     </>
   )
 }

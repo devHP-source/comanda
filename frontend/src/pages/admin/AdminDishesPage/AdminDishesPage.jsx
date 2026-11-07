@@ -4,54 +4,137 @@ import { toast } from 'sonner'
 import api, { getErrorCode } from '../../../api/client.js'
 import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog.jsx'
 import DishVisual from '../../../components/DishVisual/DishVisual.jsx'
+import Icon from '../../../components/Icon/Icon.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
+import Pagination from '../../../components/Pagination/Pagination.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import useLanguage from '../../../hooks/useLanguage.js'
 import formatPrice from '../../../utils/formatPrice.js'
 import thumbnailUrl from '../../../utils/thumbnailUrl.js'
 import styles from './AdminDishesPage.module.css'
 
+const LIST_PATH = '/admin/dishes'
 const PAGE_SIZE = 20
 const SKELETON_ROWS = 8
+const SEARCH_DELAY = 300 // ms after the last key before the list reloads
+const MAX_SEARCH_LENGTH = 50 // same limit as the server
 const ROW_THUMBNAIL = 'c_fill,ar_4:3,f_auto,q_auto,w_160' // small photo in the table, same 4:3 crop as the menu
+const CARD_THUMBNAIL = 'c_fill,ar_4:3,f_auto,q_auto,w_240'
 
-const pageFromParams = (searchParams) => Math.max(1, parseInt(searchParams.get('page')) || 1)
+const readFilters = (searchParams) => ({
+  q: (searchParams.get('q') ?? '').trim(),
+  category: searchParams.get('category') ?? '',
+  page: Math.max(1, parseInt(searchParams.get('page')) || 1),
+})
 
-// /admin/dishes: every dish (unpublished too), 20 per page. The page lives in the URL (?page=2), so back/forward and reload keep it
+const toSearchParams = ({ q, category, page }) => { // empty values stay out of the URL: /admin/dishes?q=pollo&page=2
+  const params = {}
+  if (q) params.q = q
+  if (category) params.category = category
+  if (page > 1) params.page = String(page)
+  return params
+}
+
+const DishPhoto = ({ dish, transform }) => (
+  <span className={styles.photo}>
+    {dish.image?.url ? (
+      <img src={thumbnailUrl(dish.image.url, transform)} alt="" loading="lazy" width="64" height="48" />
+    ) : (
+      <DishVisual seed={dish.code} />
+    )}
+  </span>
+)
+
+const EnglishName = ({ dish }) => {
+  const { t } = useLanguage()
+  return dish.name.en?.trim()
+    ? <span className={styles.nameEn} lang="en">{dish.name.en}</span>
+    : <span className={styles.missing}>{t('adminDishes.missingEnglish')}</span>
+}
+
+const DishBadges = ({ dish }) => { // only what differs from a normal dish: sold out, hidden, chef's pick
+  const { t } = useLanguage()
+  if (dish.isAvailable && dish.isPublished && !dish.isFeatured) return null
+
+  return (
+    <span className={styles.badges}>
+      {!dish.isAvailable && <span className={`${styles.badge} ${styles.badgeSoldOut}`}>{t('availability.soldOut')}</span>}
+      {!dish.isPublished && <span className={styles.badge}>{t('adminDishes.unpublished')}</span>}
+      {dish.isFeatured && <span className={`${styles.badge} ${styles.badgeFeatured}`}>{t('adminDishes.featured')}</span>}
+    </span>
+  )
+}
+
+const AvailabilityButton = ({ dish, onClick, className = '' }) => {
+  const { t } = useLanguage()
+  const values = { code: dish.code, name: dish.name.it }
+
+  return (
+    <button
+      type="button"
+      className={`${styles.toggle} ${dish.isAvailable ? '' : styles.toggleRestore} ${className}`}
+      aria-label={t(dish.isAvailable ? 'availability.markSoldOutLabel' : 'availability.markAvailableLabel', values)}
+      onClick={() => onClick(dish)}
+    >
+      {t(dish.isAvailable ? 'availability.markSoldOut' : 'availability.markAvailable')}
+    </button>
+  )
+}
+
+// /admin/dishes: every dish (unpublished too), 20 per page, with search and category filter.
+// Search, category and page live in the URL (?q=&category=&page=), so back/forward, reload and the edit form's "back" keep them
 const AdminDishesPage = () => {
   const { t, pick, tError } = useLanguage()
   const [searchParams, setSearchParams] = useSearchParams()
-  const page = pageFromParams(searchParams)
-  const [result, setResult] = useState(null) // { data, page, totalPages } of the page on screen, null until the first answer
+  const { q, category, page } = readFilters(searchParams)
+  const [searchText, setSearchText] = useState(q) // what is typed; reaches the URL (and the server) after SEARCH_DELAY
+  const [syncedQ, setSyncedQ] = useState(q)
+  const [result, setResult] = useState(null) // { data, page, totalPages, total, key } of the list on screen, null until the first answer
   const [categories, setCategories] = useState([])
   const [loadError, setLoadError] = useState(null)
   const [attempt, setAttempt] = useState(0)
   const [dishToToggle, setDishToToggle] = useState(null)
-  const [dishToDelete, setDishToDelete] = useState(null)
 
-  useEffect(() => { // category names for the table: the admin list sends only the category id
+  if (q !== syncedQ) { // the URL changed without typing (back/forward, "Cancella filtri"): the field follows it
+    setSyncedQ(q)
+    if (q !== searchText.trim()) setSearchText(q)
+  }
+
+  const requestKey = `${q}|${category}|${page}`
+  const hasFilters = Boolean(q || category)
+
+  useEffect(() => { // category names for the filter and the rows: the admin list sends only the category id
     let ignore = false
     api.get('/categories')
       .then(({ data }) => {
         if (!ignore) setCategories(data)
       })
-      .catch(() => {}) // not blocking: the column shows "—" and the dishes still load
+      .catch(() => {}) // not blocking: the rows show "—" and the dishes still load
     return () => {
       ignore = true
     }
   }, [])
 
+  useEffect(() => { // typing waits a moment, then changes the URL. replace: one history entry per search, not per key. A new search starts at page 1
+    const text = searchText.trim()
+    if (text === q) return
+    const timer = setTimeout(() => {
+      setSearchParams(toSearchParams({ q: text, category, page: 1 }), { replace: true })
+    }, SEARCH_DELAY)
+    return () => clearTimeout(timer)
+  }, [searchText, q, category, setSearchParams])
+
   useEffect(() => {
     let ignore = false
-    api.get('/admin/dishes', { params: { page, limit: PAGE_SIZE } })
+    const params = { page, limit: PAGE_SIZE, q: q || undefined, category: category || undefined } // axios leaves undefined values out
+    api.get('/admin/dishes', { params })
       .then(({ data }) => {
         if (ignore) return
         if (data.data.length === 0 && page > 1) { // past the last page (old link, or the last dish of this page was deleted): go to the last real one
-          const lastPage = Math.max(1, data.totalPages)
-          setSearchParams(lastPage === 1 ? {} : { page: String(lastPage) }, { replace: true })
+          setSearchParams(toSearchParams({ q, category, page: Math.max(1, data.totalPages) }), { replace: true })
           return
         }
-        setResult(data)
+        setResult({ ...data, key: requestKey })
         setLoadError(null)
       })
       .catch((err) => {
@@ -60,10 +143,10 @@ const AdminDishesPage = () => {
     return () => {
       ignore = true
     }
-  }, [page, attempt, setSearchParams])
+  }, [q, category, page, requestKey, attempt, setSearchParams])
 
   const categoryNames = useMemo(
-    () => new Map(categories.map((category) => [category._id, pick(category.name)])),
+    () => new Map(categories.map((item) => [item._id, pick(item.name)])),
     [categories, pick],
   )
 
@@ -74,8 +157,23 @@ const AdminDishesPage = () => {
     reload()
   }
 
+  const handleSearchSubmit = (event) => { // Enter searches at once, without waiting for the delay
+    event.preventDefault()
+    const text = searchText.trim()
+    if (text !== q) setSearchParams(toSearchParams({ q: text, category, page: 1 }), { replace: true })
+  }
+
+  const handleCategoryChange = (event) => {
+    setSearchParams(toSearchParams({ q: searchText.trim(), category: event.target.value, page: 1 }))
+  }
+
+  const clearFilters = () => {
+    setSearchText('')
+    setSearchParams({})
+  }
+
   const goToPage = (next) => {
-    setSearchParams(next === 1 ? {} : { page: String(next) })
+    setSearchParams(toSearchParams({ q, category, page: next }))
     window.scrollTo(0, 0)
   }
 
@@ -92,26 +190,32 @@ const AdminDishesPage = () => {
     }
   }
 
-  const deleteDish = async () => {
-    const { _id, code, name } = dishToDelete
-    try {
-      await api.delete(`/dishes/${_id}`)
-      toast.success(t('adminDishes.deleted', { code, name: name.it }))
-    } catch (err) {
-      toast.error(tError(err)) // 404: already deleted, the reload shows it
-    }
-    reload() // the next dishes move up into this page
-  }
+  const isLoading = result && result.key !== requestKey // old rows stay on screen, dimmed, until the new list arrives
+  const listQuery = new URLSearchParams(toSearchParams({ q, category, page })).toString()
+  const backState = { back: listQuery ? `${LIST_PATH}?${listQuery}` : LIST_PATH } // the form returns to this exact list after saving or deleting
 
-  const isPageLoading = result && result.page !== page // old rows stay on screen until the new page arrives
-  const backState = { back: page === 1 ? '/admin/dishes' : `/admin/dishes?page=${page}` } // the form returns to this page after saving
+  const editLink = (dish, className) => (
+    <Link
+      to={`/admin/dishes/${dish._id}/edit`}
+      state={backState}
+      className={className}
+      aria-label={t('adminDishes.editLabel', { code: dish.code, name: dish.name.it })}
+    >
+      {dish.name.it}
+    </Link>
+  )
 
   let content
   if (!result && loadError) {
     content = (
       <div className={styles.loadError} role="alert">
         <p>{t('availability.loadError')}</p>
-        <button type="button" className={styles.retry} onClick={handleRetry}>{t('menu.retry')}</button>
+        <div className={styles.emptyActions}>
+          <button type="button" className={styles.retry} onClick={handleRetry}>{t('menu.retry')}</button>
+          {hasFilters && ( // a broken link (?category=wrong) can't be fixed by retrying
+            <button type="button" className={styles.clearButton} onClick={clearFilters}>{t('adminDishes.clearFilters')}</button>
+          )}
+        </div>
       </div>
     )
   } else if (!result) {
@@ -125,7 +229,15 @@ const AdminDishesPage = () => {
       </LoadingState>
     )
   } else if (result.data.length === 0) {
-    content = <p className={styles.empty}>{t('adminDishes.empty')}</p>
+    content = hasFilters ? (
+      <div className={`${styles.empty} ${isLoading ? styles.loading : ''}`} role="status">
+        <p className={styles.emptyTitle}>{t('adminDishes.noResults')}</p>
+        <p>{t('adminDishes.noResultsHint')}</p>
+        <button type="button" className={styles.clearButton} onClick={clearFilters}>{t('adminDishes.clearFilters')}</button>
+      </div>
+    ) : (
+      <p className={styles.empty}>{t('adminDishes.empty')}</p>
+    )
   } else {
     content = (
       <>
@@ -136,105 +248,74 @@ const AdminDishesPage = () => {
           </p>
         )}
 
-        <div className={styles.tableWrap} role="region" aria-labelledby="dishes-caption" tabIndex={0}>
-          <table className={`${styles.table} ${isPageLoading ? styles.tableLoading : ''}`} aria-busy={Boolean(isPageLoading)}>
-            <caption id="dishes-caption" className="visually-hidden">
-              {t('adminDishes.tableLabel')} · {t('adminDishes.page', { page: result.page, total: result.totalPages })}
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col"><span className="visually-hidden">{t('adminDishes.columns.photo')}</span></th>
-                <th scope="col">{t('adminDishes.columns.code')}</th>
-                <th scope="col">{t('adminDishes.columns.name')}</th>
-                <th scope="col">{t('adminDishes.columns.category')}</th>
-                <th scope="col" className={styles.alignEnd}>{t('adminDishes.columns.price')}</th>
-                <th scope="col">{t('adminDishes.columns.status')}</th>
-                <th scope="col" className={styles.alignEnd}>{t('adminDishes.columns.actions')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {result.data.map((dish) => (
-                <tr key={dish._id} className={dish.isAvailable ? '' : styles.rowSoldOut}>
-                  <td>
-                    <span className={styles.photo}>
-                      {dish.image?.url ? (
-                        <img src={thumbnailUrl(dish.image.url, ROW_THUMBNAIL)} alt="" loading="lazy" width="64" height="48" />
-                      ) : (
-                        <DishVisual seed={dish.code} />
-                      )}
-                    </span>
-                  </td>
-                  <td><span className={styles.code}>{dish.code}</span></td>
-                  <th scope="row" className={styles.name}>
-                    <span className={styles.nameIt}>{dish.name.it}</span>
-                    {dish.name.en?.trim() ? (
-                      <span className={styles.nameEn} lang="en">{dish.name.en}</span>
-                    ) : (
-                      <span className={styles.missing}>{t('adminDishes.missingEnglish')}</span>
-                    )}
-                  </th>
-                  <td className={styles.category}>{categoryNames.get(dish.category) || '—'}</td>
-                  <td className={`${styles.price} ${styles.alignEnd}`}>{formatPrice(dish.price)}</td>
-                  <td>
-                    <span className={styles.badges}>
-                      {dish.isAvailable ? (
-                        <span className={`${styles.badge} ${styles.badgeAvailable}`}>{t('adminDishes.available')}</span>
-                      ) : (
-                        <span className={`${styles.badge} ${styles.badgeSoldOut}`}>{t('availability.soldOut')}</span>
-                      )}
-                      {!dish.isPublished && <span className={styles.badge}>{t('adminDishes.unpublished')}</span>}
-                      {dish.isFeatured && <span className={`${styles.badge} ${styles.badgeFeatured}`}>{t('adminDishes.featured')}</span>}
-                    </span>
-                  </td>
-                  <td className={styles.alignEnd}>
-                    <span className={styles.actions}>
-                      <Link
-                        to={`/admin/dishes/${dish._id}/edit`}
-                        state={backState}
-                        className={styles.edit}
-                        aria-label={t('adminDishes.editLabel', { code: dish.code, name: dish.name.it })}
-                      >
-                        {t('adminDishes.edit')}
-                      </Link>
-                      <button
-                        type="button"
-                        className={`${styles.toggle} ${dish.isAvailable ? '' : styles.toggleRestore}`}
-                        aria-label={t(dish.isAvailable ? 'availability.markSoldOutLabel' : 'availability.markAvailableLabel', { code: dish.code, name: dish.name.it })}
-                        onClick={() => setDishToToggle(dish)}
-                      >
-                        {t(dish.isAvailable ? 'availability.markSoldOut' : 'availability.markAvailable')}
-                      </button>
-                      <button
-                        type="button"
-                        className={styles.delete}
-                        aria-label={t('adminDishes.deleteLabel', { code: dish.code, name: dish.name.it })}
-                        onClick={() => setDishToDelete(dish)}
-                      >
-                        {t('adminDishes.delete')}
-                      </button>
-                    </span>
-                  </td>
+        <div className={isLoading ? styles.loading : ''} aria-busy={Boolean(isLoading)}>
+          <div className={styles.tableWrap}>
+            <table className={styles.table}>
+              <caption className="visually-hidden">
+                {t('adminDishes.tableLabel')} · {t('adminDishes.page', { page: result.page, total: result.totalPages })}
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col"><span className="visually-hidden">{t('adminDishes.columns.photo')}</span></th>
+                  <th scope="col">{t('adminDishes.columns.code')}</th>
+                  <th scope="col">{t('adminDishes.columns.name')}</th>
+                  <th scope="col">{t('adminDishes.columns.category')}</th>
+                  <th scope="col" className={styles.alignEnd}>{t('adminDishes.columns.price')}</th>
+                  <th scope="col" className={styles.alignEnd}>{t('adminDishes.columns.availability')}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {result.data.map((dish) => (
+                  <tr key={dish._id} className={dish.isAvailable ? '' : styles.soldOut}>
+                    <td className={styles.photoCell}><DishPhoto dish={dish} transform={ROW_THUMBNAIL} /></td>
+                    <td><span className={styles.code}>{dish.code}</span></td>
+                    <th scope="row" className={styles.name}>
+                      {editLink(dish, styles.nameLink)}
+                      <EnglishName dish={dish} />
+                      <DishBadges dish={dish} />
+                    </th>
+                    <td className={styles.category}>{categoryNames.get(dish.category) || '—'}</td>
+                    <td className={`${styles.price} ${styles.alignEnd}`}>{formatPrice(dish.price)}</td>
+                    <td className={styles.alignEnd}><AvailabilityButton dish={dish} onClick={setDishToToggle} /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <ul className={styles.cards} aria-label={t('adminDishes.tableLabel')}>
+            {result.data.map((dish) => (
+              <li key={dish._id} className={`${styles.card} ${dish.isAvailable ? '' : styles.soldOut}`}>
+                <DishPhoto dish={dish} transform={CARD_THUMBNAIL} />
+                <div className={styles.cardBody}>
+                  <p className={styles.cardMeta}>
+                    <span className={styles.code}>{dish.code}</span>
+                    <span className={styles.price}>{formatPrice(dish.price)}</span>
+                  </p>
+                  <h2 className={styles.cardName}>{editLink(dish, styles.cardLink)}</h2>
+                  <EnglishName dish={dish} />
+                  <p className={styles.category}>{categoryNames.get(dish.category) || '—'}</p>
+                  <DishBadges dish={dish} />
+                </div>
+                <AvailabilityButton dish={dish} onClick={setDishToToggle} className={styles.cardToggle} />
+              </li>
+            ))}
+          </ul>
         </div>
 
-        {result.totalPages > 1 && (
-          <nav className={styles.pagination} aria-label={t('adminDishes.paginationLabel')}>
-            <button type="button" className={styles.pageButton} disabled={page <= 1} onClick={() => goToPage(page - 1)}>
-              {t('adminDishes.previous')}
-            </button>
-            <p className={styles.pageInfo} aria-live="polite">
-              {t('adminDishes.page', { page, total: result.totalPages })}
-            </p>
-            <button type="button" className={styles.pageButton} disabled={page >= result.totalPages} onClick={() => goToPage(page + 1)}>
-              {t('adminDishes.next')}
-            </button>
-          </nav>
-        )}
+        <Pagination
+          page={result.page}
+          totalPages={result.totalPages}
+          onPageChange={goToPage}
+          label={t('adminDishes.paginationLabel')}
+        />
       </>
     )
+  }
+
+  let countText = ''
+  if (result && !isLoading) {
+    countText = result.total === 1 ? t('adminDishes.countOne') : t('adminDishes.count', { count: result.total })
   }
 
   return (
@@ -248,6 +329,35 @@ const AdminDishesPage = () => {
         <Link to="/admin/dishes/new" state={backState} className={styles.newDish}>{t('adminDishes.newDish')}</Link>
       </header>
 
+      <form role="search" className={styles.filters} onSubmit={handleSearchSubmit}>
+        <div className={styles.searchField}>
+          <label htmlFor="admin-dish-search" className="visually-hidden">{t('adminDishes.searchLabel')}</label>
+          <Icon name="search" size={20} className={styles.searchIcon} />
+          <input
+            id="admin-dish-search"
+            type="search"
+            className={styles.searchInput}
+            value={searchText}
+            onChange={(event) => setSearchText(event.target.value)}
+            placeholder={t('adminDishes.searchPlaceholder')}
+            maxLength={MAX_SEARCH_LENGTH}
+            autoComplete="off"
+            spellCheck={false}
+            enterKeyHint="search"
+          />
+        </div>
+
+        <label htmlFor="admin-dish-category" className="visually-hidden">{t('adminDishes.categoryLabel')}</label>
+        <select id="admin-dish-category" className={styles.categorySelect} value={category} onChange={handleCategoryChange}>
+          <option value="">{t('adminDishes.allCategories')}</option>
+          {categories.map((item) => (
+            <option key={item._id} value={item._id}>{pick(item.name)}</option>
+          ))}
+        </select>
+
+        <p className={styles.count} aria-live="polite">{countText}</p>
+      </form>
+
       {content}
 
       <ConfirmDialog
@@ -260,16 +370,6 @@ const AdminDishesPage = () => {
         confirmLabel={dishToToggle && t(dishToToggle.isAvailable ? 'availability.markSoldOut' : 'availability.markAvailable')}
         onConfirm={toggleAvailability}
         onClose={() => setDishToToggle(null)}
-      />
-
-      <ConfirmDialog
-        open={Boolean(dishToDelete)}
-        destructive
-        title={dishToDelete && t('adminDishes.deleteTitle', { code: dishToDelete.code, name: dishToDelete.name.it })}
-        message={t('adminDishes.deleteMessage')}
-        confirmLabel={t('adminDishes.delete')}
-        onConfirm={deleteDish}
-        onClose={() => setDishToDelete(null)}
       />
     </div>
   )

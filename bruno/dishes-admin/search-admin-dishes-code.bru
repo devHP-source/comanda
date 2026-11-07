@@ -1,0 +1,41 @@
+meta {
+  name: Search admin dishes - code prefix (200)
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/admin/dishes?q=p1&limit=100
+  body: none
+  auth: bearer
+}
+
+params:query {
+  q: p1
+  limit: 100
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.data: isArray
+  res.body.page: eq 1
+}
+
+tests {
+  test("finds the seeded pizzas P1, P10...", function () {
+    expect(res.body.data.length).to.be.above(0);
+  });
+
+  test("a code matches only from the start, case ignored", function () {
+    // "p1" finds P1, P10, P12 but never a code like 1P1; a name match ("Pollo con 1...") is allowed too
+    for (const dish of res.body.data) {
+      const codeMatch = dish.code.toLowerCase().startsWith("p1");
+      const nameMatch = [dish.name.it, dish.name.en].some((name) => (name || "").toLowerCase().includes("p1"));
+      expect(codeMatch || nameMatch, dish.code).to.equal(true);
+    }
+  });
+}

@@ -1,0 +1,40 @@
+meta {
+  name: Search admin dishes - search + category (200)
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{baseUrl}}/admin/dishes?q=pollo&category={{seededCategoryId}}&limit=100
+  body: none
+  auth: bearer
+}
+
+params:query {
+  q: pollo
+  category: {{seededCategoryId}}
+  limit: 100
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+docs {
+  seededCategoryId comes from "Get categories" (categories folder): run it first.
+}
+
+assert {
+  res.status: eq 200
+  res.body.data: isArray
+}
+
+tests {
+  test("both filters apply: same category and pollo in the name", function () {
+    const categoryId = bru.getVar("seededCategoryId");
+    for (const dish of res.body.data) {
+      expect(dish.category).to.equal(categoryId);
+      expect([dish.name.it, dish.name.en].some((name) => (name || "").toLowerCase().includes("pollo")), dish.code).to.equal(true);
+    }
+  });
+}

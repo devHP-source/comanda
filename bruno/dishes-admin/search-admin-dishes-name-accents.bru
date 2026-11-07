@@ -1,0 +1,39 @@
+meta {
+  name: Search admin dishes - name, accents ignored (200)
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/admin/dishes?q=BAMBU&limit=100
+  body: none
+  auth: bearer
+}
+
+params:query {
+  q: BAMBU
+  limit: 100
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.data: isArray
+}
+
+tests {
+  const plain = (text) => (text || "").normalize("NFD").replace(/[̀-ͯ]/g, "") // "bambù" --> "bambu".toLowerCase();
+
+  test("BAMBU finds the seeded dishes named with bambù", function () {
+    expect(res.body.data.length).to.be.above(0);
+  });
+
+  test("every dish has bambu in its Italian or English name", function () {
+    for (const dish of res.body.data) {
+      expect(plain(dish.name.it).includes("bambu") || plain(dish.name.en).includes("bambu"), dish.code).to.equal(true);
+    }
+  });
+}
