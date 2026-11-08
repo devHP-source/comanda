@@ -233,6 +233,10 @@
   padding: var(--space-2) var(--space-4);
 }
 
+.attentionPending {
+  min-height: calc(3.5rem + 2 * var(--space-2));
+}
+
 .readyRow,
 .attentionRow {
   display: grid;

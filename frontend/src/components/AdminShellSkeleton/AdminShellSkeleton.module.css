@@ -1,0 +1,18 @@
+.avatar,
+.fixed {
+  flex: 0 0 auto;
+}
+
+.profileRole {
+  margin-top: var(--space-1);
+}
+
+.logout {
+  width: 5rem;
+}
+
+@media (min-width: 1024px) {
+  .logout {
+    width: 100%;
+  }
+}

@@ -4,10 +4,49 @@ import { toast } from 'sonner'
 import Icon from '../../../components/Icon/Icon.jsx'
 import LanguagePill from '../../../components/LanguagePill/LanguagePill.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
+import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import useAuth from '../../../hooks/useAuth.js'
 import useLanguage from '../../../hooks/useLanguage.js'
 import roleHome from '../../../utils/roleHome.js'
 import styles from './StaffLoginPage.module.css'
+
+const loginFrame = (body) => ( // the page around the card, with the slow line under the card
+  <main className={styles.page}>
+    <div className={styles.topRow}>
+      <Skeleton width="7.5rem" height="1rem" />
+      <Skeleton width="3.5rem" height="var(--tap-min)" radius="var(--radius-pill)" />
+    </div>
+    <div className={styles.loadingColumn}>{body}</div>
+  </main>
+)
+
+const LoginSkeleton = () => ( // A saved token is being checked: the card's shape, in case the form is what's coming
+  <LoadingState slowMessage="auth.checkingSlow" shell={loginFrame}>
+    <div className={styles.card}>
+      <div className={styles.brand}>
+        <span className={styles.brandMark} aria-hidden="true">C</span>
+        <span className={styles.brandName}>Comanda</span>
+      </div>
+
+      <Skeleton width="6rem" height="0.9rem" />
+      <Skeleton width="70%" height="2.25rem" />
+      <div>
+        <Skeleton height="1rem" />
+        <Skeleton width="80%" height="1rem" className={styles.textLine} />
+      </div>
+
+      <div className={styles.form}>
+        {['email', 'password'].map((field) => (
+          <div key={field} className={styles.field}>
+            <Skeleton width="5rem" height="1rem" />
+            <Skeleton height="3rem" radius="var(--radius-md)" />
+          </div>
+        ))}
+        <Skeleton height="3rem" radius="var(--radius-pill)" className={styles.submitSkeleton} />
+      </div>
+    </div>
+  </LoadingState>
+)
 
 const StaffLoginPage = () => {
   const { t, tError } = useLanguage()
@@ -17,13 +56,7 @@ const StaffLoginPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
 
-  if (isChecking) {
-    return (
-      <main className={styles.page}>
-        <LoadingState slowMessage="auth.checkingSlow" />
-      </main>
-    )
-  }
+  if (isChecking) return <LoginSkeleton />
 
   if (user) { // Logged in (just now or before a reload), back to the page that asked for login if it belongs to this role, else the role's screen
     const home = roleHome(user.role)

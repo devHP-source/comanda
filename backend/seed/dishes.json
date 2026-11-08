@@ -584,7 +584,7 @@
     "isFrozen": false,
     "isAvailable": true,
     "isPublished": true,
-    "isFeatured": false
+    "isFeatured": true
   },
 
   {
@@ -1340,7 +1340,7 @@
     "isFrozen": false,
     "isAvailable": true,
     "isPublished": true,
-    "isFeatured": false
+    "isFeatured": true
   },
 
   {
@@ -1529,7 +1529,7 @@
     "isFrozen": false,
     "isAvailable": true,
     "isPublished": true,
-    "isFeatured": false
+    "isFeatured": true
   },
 
   {

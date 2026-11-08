@@ -177,6 +177,19 @@
   border-radius: var(--radius-round);
 }
 
+.loadingColumn { /* the card's skeleton and the slow line under it */
+  width: 100%;
+  max-width: 26rem;
+}
+
+.textLine {
+  margin-top: var(--space-1);
+}
+
+.submitSkeleton {
+  margin-top: var(--space-2);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .spinner {
     animation: spin 700ms linear infinite;

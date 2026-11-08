@@ -5,7 +5,13 @@ import styles from './LoadingState.module.css'
 const SHOW_AFTER_MS = 200 // fast loads never flash a skeleton
 const SLOW_AFTER_MS = 3000 // Render's free tier can take 30–60 s to wake up
 
-const LoadingState = ({ children, slowMessage = 'loading.slow' }) => { // Wraps a screen's skeletons while its data loads
+/*
+* Wraps a screen's skeletons while its data loads. `shell` (optional) draws a full-height page frame around them:
+* the slow line goes inside the frame, under the skeletons, not after the whole page
+* `quiet`: a second loading region on a screen that already has one. Same delay and aria-busy,
+* only the main region says "Caricamento.." and shows the slow line 
+*/
+const LoadingState = ({ children, slowMessage = 'loading.slow', shell, quiet = false }) => {
   const { t } = useLanguage()
   const [phase, setPhase] = useState('waiting') // waiting --> visible --> slow
 
@@ -18,14 +24,34 @@ const LoadingState = ({ children, slowMessage = 'loading.slow' }) => { // Wraps 
     }
   }, [])
 
+  if (quiet) return <div aria-busy="true">{phase !== 'waiting' && children}</div>
+
+  const label = <span className="visually-hidden">{t('loading.label')}</span>
+  const slowLine = (
+    <p className={styles.slow} role="status">
+      {phase === 'slow' && t(slowMessage)}
+    </p>
+  )
+
+  if (shell) {
+    return (
+      <div aria-busy="true">
+        {label}
+        {phase !== 'waiting' && shell(
+          <div className={styles.wrapper}>
+            {children}
+            {slowLine}
+          </div>,
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className={styles.wrapper} aria-busy="true">
-      <span className="visually-hidden">{t('loading.label')}</span>
+      {label}
       {phase !== 'waiting' && children}
-
-      <p className={styles.slow} role="status">
-        {phase === 'slow' && t(slowMessage)}
-      </p>
+      {slowLine}
     </div>
   )
 }

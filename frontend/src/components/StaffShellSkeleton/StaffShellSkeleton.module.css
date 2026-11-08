@@ -1,0 +1,38 @@
+.user {
+  display: grid;
+  min-width: 0;
+  flex: 0 1 6rem;
+  justify-items: end;
+  gap: var(--space-1);
+}
+
+.fixed {
+  flex: 0 0 auto;
+}
+
+/* Greeting / title column: as tall as the real text, which wraps on narrow screens, so the blocks below don't jump */
+.waiterText,
+.kitchenText {
+  min-width: 0;
+  flex: 1;
+}
+
+.waiterText {
+  min-height: 5.1rem;
+}
+
+.kitchenText {
+  min-height: 4.75rem;
+}
+
+@media (min-width: 700px) {
+  .waiterText {
+    min-height: 3.6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .kitchenText {
+    min-height: 3.8rem;
+  }
+}

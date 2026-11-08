@@ -1,0 +1,8 @@
+.code {
+  grid-column: 1 / -1;
+}
+
+.name {
+  display: grid;
+  gap: 0.6rem;
+}

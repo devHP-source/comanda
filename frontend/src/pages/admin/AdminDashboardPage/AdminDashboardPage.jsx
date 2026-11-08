@@ -276,8 +276,10 @@ const AdminDashboardPage = () => {
 
             {!dishes && dishesError && <p className={styles.allGood}>{t('adminDashboard.attention.loadError')}</p>}
             {!dishes && !dishesError && (
-              <div className={styles.rows}>
-                <Skeleton height="3.5rem" radius="var(--radius-md)" />
+              <div className={`${styles.rows} ${styles.attentionPending}`}> {/* keeps its size during the skeleton's 200 ms delay */}
+                <LoadingState slowMessage="availability.slow">
+                  <Skeleton height="3.5rem" radius="var(--radius-md)" />
+                </LoadingState>
               </div>
             )}
 

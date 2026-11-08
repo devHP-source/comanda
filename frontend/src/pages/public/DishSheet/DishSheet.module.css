@@ -1,4 +1,3 @@
-/* Phone: bottom sheet glued to the bottom edge */
 .dialog {
   width: 100%;
   max-width: none;
@@ -12,6 +11,7 @@
   color: var(--color-ink);
   background: var(--glass-bg-fallback);
   box-shadow: var(--shadow-float);
+  --slow-line-clearance: 0px; /* the sheet covers the bottom bar: no need to sit above it */
 }
 
 .dialog[open] { /* only while open: a display value on the closed dialog would show it */

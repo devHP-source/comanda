@@ -2,11 +2,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, Outlet } from 'react-router'
 import api from '../../../api/client.js'
 import CategoryChips from '../../../components/CategoryChips/CategoryChips.jsx'
+import CategoryChipsSkeleton from '../../../components/CategoryChipsSkeleton/CategoryChipsSkeleton.jsx'
 import CategoryShortcuts from '../../../components/CategoryShortcuts/CategoryShortcuts.jsx'
+import CategoryShortcutsSkeleton from '../../../components/CategoryShortcutsSkeleton/CategoryShortcutsSkeleton.jsx'
 import CategorySidebar from '../../../components/CategorySidebar/CategorySidebar.jsx'
 import DishCard from '../../../components/DishCard/DishCard.jsx'
 import DishCardSkeleton from '../../../components/DishCardSkeleton/DishCardSkeleton.jsx'
 import FeaturedDishes from '../../../components/FeaturedDishes/FeaturedDishes.jsx'
+import FeaturedDishesSkeleton from '../../../components/FeaturedDishesSkeleton/FeaturedDishesSkeleton.jsx'
 import Icon from '../../../components/Icon/Icon.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import MenuSearch from '../../../components/MenuSearch/MenuSearch.jsx'
@@ -132,11 +135,20 @@ const MenuPage = () => {
   } else if (!menu) {
     content = (
       <LoadingState slowMessage="menu.slow">
-        <div className={styles.sections}>
-          <div>
-            <Skeleton width="11rem" height="1.8rem" className={styles.headingSkeleton} />
-            <div className={styles.dishGrid}>
-              {Array.from({ length: SKELETON_CARDS }, (_, index) => <DishCardSkeleton key={index} />)}
+        <div>
+          <CategoryShortcutsSkeleton />
+          <FeaturedDishesSkeleton />
+
+          <div className={styles.menuBody}>
+            <CategoryChipsSkeleton />
+
+            <div className={styles.sections}>
+              <div>
+                <Skeleton width="11rem" height="1.8rem" className={styles.headingSkeleton} />
+                <div className={styles.dishGrid}>
+                  {Array.from({ length: SKELETON_CARDS }, (_, index) => <DishCardSkeleton key={index} />)}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -216,7 +228,6 @@ const MenuPage = () => {
         <h1 className={styles.title}>{t('menu.title')}</h1>
         <p className={styles.lead}>{t('menu.lead')}</p>
 
-        {/* Empty until the settings arrive: its min-height keeps the page still */}
         <p className={styles.status}>
           {settings && (
             <>
@@ -230,11 +241,9 @@ const MenuPage = () => {
         </p>
       </section>
 
-      {/* Search first in the DOM, so keyboard users reach it before the 15 categories; on desktop the grid still puts the sidebar on the left */}
       <div className={styles.layout}>
         <div className={`${styles.searchRow} ${styles.searchArea}`}>
           <MenuSearch value={query} onChange={setQuery} className={styles.search} />
-          {/* Tablet and up: the bottom bar is gone, this is the way to the list */}
           <Link to="/list" className={styles.listLink}>
             <Icon name="bookmark" size={18} />
             {t('nav.list')}
@@ -252,12 +261,12 @@ const MenuPage = () => {
           items={navItems}
           activeId={activeId}
           onSelect={handleSelectCategory}
+          isLoading={!menu && !error}
           className={styles.sidebarArea}
         />
         <div className={styles.content}>{content}</div>
       </div>
 
-      {/* /menu/dish/:id: the sheet reuses the loaded menu instead of fetching it again */}
       <Outlet context={menu} />
     </div>
   )

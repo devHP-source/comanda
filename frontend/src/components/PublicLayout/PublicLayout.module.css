@@ -2,6 +2,7 @@
   min-height: 100vh;
   min-height: 100dvh;
   padding-bottom: 6.5rem; /* room for the floating bottom bar */
+  --slow-line-clearance: calc(4.6rem + var(--space-3)); /* the bottom bar's height + its distance from the edge: the loading line sits above it */
 }
 
 .topbar {
@@ -192,6 +193,7 @@
 @media (min-width: 700px) {
   .shell {
     padding-bottom: 3rem;
+    --slow-line-clearance: 0px;
   }
 
   .topbar {

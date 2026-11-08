@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import api from '../../api/client.js'
 import Icon from '../Icon/Icon.jsx'
+import LoadingState from '../LoadingState/LoadingState.jsx'
+import Skeleton from '../Skeleton/Skeleton.jsx'
 import useLanguage from '../../hooks/useLanguage.js'
 import usePolling from '../../hooks/usePolling.js'
 import dishCount from '../../utils/dishCount.js'
@@ -9,11 +11,13 @@ import styles from './ReadyBell.module.css'
 
 const POLL_MS = 5000
 
-// "Pronto" badge in every staff header (waiter, kitchen, admin): count of ready tickets, tap → the list.
-// Read only: "Segna servita" stays on the waiter screen (and the admin dashboard), behind its confirm modal
+/* 
+* "Pronto" badge in every staff header (waiter, kitchen, admin): count of ready tickets, tap --> the list.
+* Read only: "Segna servita" stays on the waiter screen (and the admin dashboard), behind its confirm modal 
+*/
 const ReadyBell = () => {
   const { t } = useLanguage()
-  const [tickets, setTickets] = useState([])
+  const [tickets, setTickets] = useState(null) // null until the first answer: the panel must not say "none ready" yet
   const [isOpen, setIsOpen] = useState(false)
   const wrapRef = useRef(null)
   const buttonRef = useRef(null)
@@ -27,6 +31,7 @@ const ReadyBell = () => {
       if (loadId === latestLoad.current) setTickets(data)
     } catch {
       // keep the last list: a failed poll every 5s must not spam toasts (a 401 is handled by the axios interceptor)
+      setTickets((current) => current ?? []) // first poll failed: no endless skeleton, the next poll fills it in
     }
   }, [])
 
@@ -52,7 +57,7 @@ const ReadyBell = () => {
     }
   }, [isOpen])
 
-  const count = tickets.length
+  const count = tickets?.length ?? 0
   let label = t('readyBell.none')
   if (count === 1) label = t('readyBell.countOne')
   else if (count > 1) label = t('readyBell.count', { count })
@@ -72,12 +77,20 @@ const ReadyBell = () => {
         {count > 0 && <span className={styles.badge} aria-hidden="true">{count}</span>}
       </button>
 
-      <span className="visually-hidden" aria-live="polite">{count > 0 ? label : ''}</span> {/* screen readers hear a new "Pronto" too */}
+      <span className="visually-hidden" aria-live="polite">{count > 0 ? label : ''}</span>
 
       <div id={panelId} className={styles.panel} hidden={!isOpen}>
         <p className={styles.title}>{t('readyBell.title')}</p>
 
-        {count > 0 ? (
+        {!tickets && (
+          <div className={styles.list}>
+            <LoadingState>
+              <Skeleton height="4rem" radius="var(--radius-lg)" />
+            </LoadingState>
+          </div>
+        )}
+
+        {tickets && (count > 0 ? (
           <ul className={styles.list}>
             {tickets.map((ticket) => {
               const dishes = dishCount(ticket)
@@ -102,7 +115,7 @@ const ReadyBell = () => {
             <Icon name="check" size={18} />
             {t('readyBell.none')}
           </p>
-        )}
+        ))}
       </div>
     </div>
   )
