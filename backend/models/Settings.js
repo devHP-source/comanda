@@ -1,11 +1,11 @@
 import mongoose from "mongoose"
 
-const TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/ // "HH:mm", zero-padded: such strings compare correctly as text ("09:30" < "12:00")
+export const TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/ // "HH:mm", zero-padded: such strings compare correctly as text ("09:30" < "12:00")
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/
 
 // "2027-02-30" matches the pattern but Date rolls it over to March 2: a real date comes back unchanged
-const isRealDate = (value) => {
+export const isRealDate = (value) => {
   if (!DATE_PATTERN.test(value)) return false
   const date = new Date(`${value}T00:00:00Z`)
   return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value // month 13 --> Invalid Date
