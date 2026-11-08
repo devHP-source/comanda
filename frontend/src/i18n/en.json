@@ -160,6 +160,15 @@
     "count": "{count} tickets ready to serve",
     "readyAt": "at {time}"
   },
+  "viewAs": {
+    "label": "View as",
+    "empty": "No other active accounts.",
+    "confirmTitle": "Use the {role} account ({email})?",
+    "confirmMessage": "For 30 minutes you'll see the app with {name}'s permissions. Anything you do is recorded under that name.",
+    "lead": "Viewing as",
+    "back": "Back to admin",
+    "expired": "Temporary access has ended: you're back on your own account."
+  },
   "tables": {
     "table": "Table",
     "tableNumber": "Table {number}",

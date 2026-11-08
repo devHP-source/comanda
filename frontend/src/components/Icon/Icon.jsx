@@ -92,6 +92,7 @@ const paths = {
     </>
   ),
   menu: <path d="M4 6h16M4 12h16M4 18h16" />,
+  minus: <path d="M5 12h14" />,
   pencil: (
     <>
       <path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z" />
@@ -105,6 +106,7 @@ const paths = {
       <path d="M3.5 20a5.5 5.5 0 0 1 11 0M14 15a4.5 4.5 0 0 1 6.5 4" />
     </>
   ),
+  plus: <path d="M12 5v14M5 12h14" />,
   search: (
     <>
       <circle cx="10.5" cy="10.5" r="6.5" />

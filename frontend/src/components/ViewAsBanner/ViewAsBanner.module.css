@@ -1,0 +1,79 @@
+/* Fixed height: the staff bar and the screens' sticky parts are offset by exactly this much */
+.banner {
+  position: sticky;
+  z-index: 41; /* above the staff bar, which stops right under it */
+  top: 0;
+  display: flex;
+  height: var(--view-as-height);
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-4);
+  color: var(--color-white);
+  background: var(--color-ink); /* not the accent: on these screens red means "Pronto" */
+}
+
+.icon {
+  display: none; /* phones need the room for the text */
+  flex: 0 0 auto;
+}
+
+/* Phone: "Stai usando l'account di" above, role and email below */
+.text {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  font-size: var(--text-sm);
+  line-height: 1.25;
+}
+
+.lead {
+  font-size: var(--text-xs);
+}
+
+.account {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.back {
+  min-height: var(--tap-min);
+  flex: 0 0 auto;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  color: var(--color-ink);
+  background: var(--color-white);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.back:hover {
+  background: var(--color-surface-muted);
+}
+
+.back:focus-visible {
+  outline-color: var(--color-white); /* the usual accent ring would vanish on this background */
+}
+
+/* Tablet and desktop: everything on one line */
+@media (min-width: 700px) {
+  .banner {
+    padding: 0 2.5rem;
+  }
+
+  .icon {
+    display: grid;
+  }
+
+  .text {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-1);
+  }
+
+  .lead {
+    flex: 0 0 auto;
+    font-size: var(--text-sm);
+  }
+}

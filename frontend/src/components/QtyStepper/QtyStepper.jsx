@@ -1,3 +1,4 @@
+import Icon from '../Icon/Icon.jsx'
 import useLanguage from '../../hooks/useLanguage.js'
 import styles from './QtyStepper.module.css'
 
@@ -14,7 +15,7 @@ const QtyStepper = ({ qty, label, onChange }) => { // − qty + for one ticket l
         aria-label={qty === 1 ? t('newTicket.remove', { name: label }) : t('newTicket.decrease', { name: label })}
         onClick={() => onChange(qty - 1)}
       >
-        −
+        <Icon name="minus" />
       </button>
       <span className={styles.qty} aria-live="polite">{qty}</span>
       <button
@@ -24,7 +25,7 @@ const QtyStepper = ({ qty, label, onChange }) => { // − qty + for one ticket l
         disabled={qty >= MAX_QTY}
         onClick={() => onChange(qty + 1)}
       >
-        +
+        <Icon name="plus" />
       </button>
     </div>
   )

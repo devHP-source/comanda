@@ -3,10 +3,14 @@
   min-height: 100dvh;
 }
 
+.viewingAs {
+  --view-as-offset: var(--view-as-height); /* the bar and the screens' sticky parts move down by the banner */
+}
+
 .bar {
   position: sticky;
   z-index: 40;
-  top: 0;
+  top: var(--view-as-offset, 0px);
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -211,8 +211,8 @@
 
   .readySection {
     position: sticky;
-    top: 5.5rem; /* under the staff bar */
-    max-height: calc(100dvh - 7rem); /* many ready tickets scroll inside the column instead of hiding below the screen */
+    top: calc(5.5rem + var(--view-as-offset, 0px)); /* under the staff bar (and the "View as" banner) */
+    max-height: calc(100dvh - 7rem - var(--view-as-offset, 0px)); /* many ready tickets scroll inside the column instead of hiding below the screen */
     overflow-y: auto;
   }
 

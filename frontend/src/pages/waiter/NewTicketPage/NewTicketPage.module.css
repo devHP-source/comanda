@@ -227,9 +227,6 @@
   border-radius: var(--radius-round);
   color: var(--color-white);
   background: var(--color-accent);
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1;
 }
 
 .add:disabled {
@@ -406,8 +403,8 @@
 
   .ticket {
     position: sticky;
-    top: 5.5rem; /* under the staff bar */
-    max-height: calc(100dvh - 12rem); /* above the send bar: long tickets scroll inside */
+    top: calc(5.5rem + var(--view-as-offset, 0px)); /* under the staff bar (and the "View as" banner) */
+    max-height: calc(100dvh - 12rem - var(--view-as-offset, 0px)); /* above the send bar: long tickets scroll inside */
     overflow-y: auto;
   }
 }

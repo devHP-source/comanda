@@ -160,6 +160,15 @@
     "count": "{count} comande pronte da servire",
     "readyAt": "alle {time}"
   },
+  "viewAs": {
+    "label": "Visualizza come",
+    "empty": "Nessun altro account attivo.",
+    "confirmTitle": "Usare l'account di {role} ({email})?",
+    "confirmMessage": "Per 30 minuti vedrai l'app con i permessi di {name}. Quello che fai resta registrato a questo nome.",
+    "lead": "Stai usando l'account di",
+    "back": "Torna admin",
+    "expired": "Accesso temporaneo scaduto: ora usi di nuovo il tuo account."
+  },
   "tables": {
     "table": "Tavolo",
     "tableNumber": "Tavolo {number}",

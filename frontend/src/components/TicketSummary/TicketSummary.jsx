@@ -1,3 +1,4 @@
+import Icon from '../Icon/Icon.jsx'
 import QtyStepper from '../QtyStepper/QtyStepper.jsx'
 import useLanguage from '../../hooks/useLanguage.js'
 import formatPrice from '../../utils/formatPrice.js'
@@ -51,7 +52,8 @@ const TicketSummary = ({ lines, onQtyChange, onNotesChange, onAddVariant }) => {
                 aria-label={t('newTicket.addVariantFor', { name: label })}
                 onClick={() => onAddVariant(key)}
               >
-                + {t('newTicket.addVariant')}
+                <Icon name="plus" size={18} />
+                {t('newTicket.addVariant')}
               </button>
             )}
           </li>

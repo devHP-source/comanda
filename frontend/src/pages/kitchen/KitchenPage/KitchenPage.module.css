@@ -78,7 +78,7 @@
 .tabs {
   position: sticky;
   z-index: 30;
-  top: 3.75rem; /* under the staff bar */
+  top: calc(3.75rem + var(--view-as-offset, 0px)); /* under the staff bar (and the "View as" banner) */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-1);
@@ -249,7 +249,7 @@
 
   .column {
     display: block;
-    min-height: calc(100dvh - 12rem); /* empty columns still read as columns */
+    min-height: calc(100dvh - 12rem - var(--view-as-offset, 0px)); /* empty columns still read as columns */
     padding: var(--space-3);
     border-radius: var(--radius-card);
     background: var(--color-surface-muted);

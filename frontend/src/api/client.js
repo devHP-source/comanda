@@ -26,6 +26,32 @@ export const clearToken = () => {
   }
 }
 
+const ADMIN_SESSION_KEY = 'comanda_admin_session'
+
+export const getAdminSession = () => { // "View as": the admin's { token, user }, kept aside until "Torna admin"
+  try {
+    return JSON.parse(localStorage.getItem(ADMIN_SESSION_KEY))
+  } catch {
+    return null
+  }
+}
+
+export const setAdminSession = (session) => {
+  try {
+    localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(session))
+  } catch {
+    // storage unavailable: "Torna admin" ends in the login page
+  }
+}
+
+export const clearAdminSession = () => {
+  try {
+    localStorage.removeItem(ADMIN_SESSION_KEY)
+  } catch {
+    // nothing to clear
+  }
+}
+
 let unauthorizedHandler = clearToken // AuthContext registers what "logout" means (reset user, go to login); until then we only drop the token
 
 export const setUnauthorizedHandler = (handler) => {
@@ -43,10 +69,10 @@ api.interceptors.request.use((config) => {
 })
 
 api.interceptors.response.use(
-  (response) => response, // Only a request that carried a token can end a session
-  (error) => {
-    const sentToken = Boolean(error.config?.headers?.Authorization)
-    if (error.response?.status === 401 && sentToken) unauthorizedHandler(error) // a wrong password on login is a 401 too
+  (response) => response,
+  (error) => { // Only the token in use can end a session: a wrong password on login carries none, and a late answer for a token "View as" already replaced must not touch the new one
+    const sentAuthorization = error.config?.headers?.Authorization
+    if (error.response?.status === 401 && sentAuthorization === `Bearer ${getToken()}`) unauthorizedHandler(error)
     return Promise.reject(error)
   },
 )

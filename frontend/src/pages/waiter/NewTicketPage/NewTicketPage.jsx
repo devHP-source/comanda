@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router'
 import { toast } from 'sonner'
 import api, { getErrorCode } from '../../../api/client.js'
 import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog.jsx'
+import Icon from '../../../components/Icon/Icon.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import TicketSummary from '../../../components/TicketSummary/TicketSummary.jsx'
@@ -321,7 +322,7 @@ const TicketEditor = ({ number }) => {
                         aria-label={isSoldOut ? t('newTicket.soldOutLabel', { name: label }) : t('newTicket.addDish', { name: label })}
                         onClick={() => addDish(dish)}
                       >
-                        +
+                        <Icon name="plus" size={22} />
                       </button>
                     </span>
                   </li>

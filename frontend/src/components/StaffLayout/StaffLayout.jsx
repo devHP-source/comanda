@@ -1,6 +1,7 @@
 import { Outlet, useNavigate } from 'react-router'
 import LanguagePill from '../LanguagePill/LanguagePill.jsx'
 import ReadyBell from '../ReadyBell/ReadyBell.jsx'
+import ViewAsBanner from '../ViewAsBanner/ViewAsBanner.jsx'
 import useAuth from '../../hooks/useAuth.js'
 import useLanguage from '../../hooks/useLanguage.js'
 import styles from './StaffLayout.module.css'
@@ -15,9 +16,13 @@ const StaffLayout = () => { // Slim bar shared by every staff screen whose logge
     logout()
     navigate('/staff/login', { replace: true })
   }
+  const isViewingAs = Boolean(user.impersonatedBy) // set by the server on "View as" tokens
+
 // Each screen still draws its own header below it (waiter greeting, kitchen counters)
   return (
-    <div className={styles.shell}>
+    <div className={`${styles.shell} ${isViewingAs ? styles.viewingAs : ''}`}>
+      {isViewingAs && <ViewAsBanner />}
+
       <header className={styles.bar}>
         <div className={styles.brand}>
           <span className={styles.brandMark} aria-hidden="true">C</span>

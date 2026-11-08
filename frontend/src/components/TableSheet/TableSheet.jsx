@@ -115,7 +115,7 @@ const TableSheet = ({ table, tickets, notice, onClose, onServe, onCloseTable }) 
 
         <div className={styles.actions}>
           <Link to={`/staff/waiter/tables/${table.number}/new`} className={styles.newTicket}>
-            <span className={styles.plus} aria-hidden="true">+</span>
+            <Icon name="plus" />
             {t('tableSheet.newTicket')}
           </Link>
           {!isFree && (

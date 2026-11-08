@@ -2,6 +2,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router'
 import Icon from '../Icon/Icon.jsx'
 import LanguagePill from '../LanguagePill/LanguagePill.jsx'
 import ReadyBell from '../ReadyBell/ReadyBell.jsx'
+import ViewAsSwitcher from '../ViewAsSwitcher/ViewAsSwitcher.jsx'
 import useAuth from '../../hooks/useAuth.js'
 import useLanguage from '../../hooks/useLanguage.js'
 import initials from '../../utils/initials.js'
@@ -87,6 +88,7 @@ const AdminLayout = () => { // Admin screens (desktop first): sidebar with the s
             <p className={styles.greeting}>{t(`admin.greeting.${greeting}`, { name: user.name.split(' ')[0] })}</p>
           </div>
           <div className={styles.headerActions}>
+            <ViewAsSwitcher />
             <ReadyBell />
             <LanguagePill />
           </div>

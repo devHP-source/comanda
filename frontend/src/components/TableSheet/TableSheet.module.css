@@ -309,11 +309,6 @@
   text-decoration: none;
 }
 
-.plus {
-  font-size: 1.35rem;
-  line-height: 1;
-}
-
 .closeTable {
   min-height: 3.25rem;
   border: 1px solid var(--color-accent);

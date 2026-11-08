@@ -15,9 +15,6 @@
   border-radius: var(--radius-round);
   color: var(--color-ink);
   background: transparent;
-  font-size: 1.35rem;
-  font-weight: 700;
-  line-height: 1;
 }
 
 .step:hover:not(:disabled) {
