@@ -7,7 +7,8 @@ import useLanguage from '../../hooks/useLanguage.js'
 import { romeNow } from '../../utils/kitchenStatus.js'
 import styles from './AdminLayout.module.css'
 
-const NAV_ITEMS = [ // one entry per admin screen, added when that screen exists
+const NAV_ITEMS = [ // one entry per admin screen, added when that screen exists. `end`: /admin is active only on itself, not on /admin/dishes
+  { to: '/admin', label: 'admin.nav.dashboard', icon: 'dashboard', end: true },
   { to: '/admin/dishes', label: 'admin.nav.dishes', icon: 'dish' },
   { to: '/admin/categories', label: 'admin.nav.categories', icon: 'list' },
 ]
@@ -31,8 +32,7 @@ const initials = (name) => name
   .map((word) => word[0].toUpperCase())
   .join('')
 
-// Admin screens (desktop first): sidebar with the sections + profile, header with date and greeting. Phones and tablets: the sidebar becomes a top block
-const AdminLayout = () => {
+const AdminLayout = () => { // Admin screens (desktop first): sidebar with the sections + profile, header with date and greeting. Phones and tablets: the sidebar becomes a top block
   const { t, lang } = useLanguage()
   const { user, logout } = useAuth()
   const navigate = useNavigate()
@@ -61,6 +61,7 @@ const AdminLayout = () => {
               <li key={item.to}>
                 <NavLink
                   to={item.to}
+                  end={item.end}
                   className={({ isActive }) => `${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
                 >
                   <Icon name={item.icon} size={20} />

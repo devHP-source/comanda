@@ -339,12 +339,48 @@
     "area": "Amministrazione",
     "navLabel": "Sezioni dell'amministrazione",
     "nav": {
+      "dashboard": "Panoramica",
       "dishes": "Menu e piatti",
       "categories": "Categorie"
     },
     "greeting": {
       "morning": "Buongiorno, {name}",
       "evening": "Buonasera, {name}"
+    }
+  },
+  "adminDashboard": {
+    "kicker": "Panoramica",
+    "title": "Il servizio di oggi",
+    "subtitle": "Tavoli e comande si aggiornano ogni 5 secondi.",
+    "statsLabel": "Numeri del servizio",
+    "stats": {
+      "tables": "Tavoli occupati",
+      "tablesDetail": "{count} liberi",
+      "tickets": "Comande aperte",
+      "ticketsDetail": "{count} in cucina",
+      "ready": "Pronte da servire",
+      "readyDetail": "Da portare ai tavoli",
+      "total": "Conti aperti",
+      "totalDetail": "Su {count} tavoli",
+      "totalDetailOne": "Su 1 tavolo"
+    },
+    "room": {
+      "title": "Sala in tempo reale",
+      "subtitle": "Stato di tutti i tavoli",
+      "legendLabel": "Legenda"
+    },
+    "ready": {
+      "subtitle": "Puoi segnarle servite anche da qui"
+    },
+    "attention": {
+      "title": "Richiede attenzione",
+      "subtitle": "Menu e disponibilità",
+      "soldOut": "{count} piatti esauriti",
+      "soldOutOne": "1 piatto esaurito",
+      "missingEnglish": "{count} traduzioni inglesi mancanti",
+      "missingEnglishOne": "1 traduzione inglese mancante",
+      "none": "Menu in ordine: niente da sistemare",
+      "loadError": "Non riusciamo a controllare il menu. Riprovo tra poco…"
     }
   },
   "adminDishes": {

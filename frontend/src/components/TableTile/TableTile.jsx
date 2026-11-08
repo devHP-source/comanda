@@ -2,7 +2,7 @@ import useLanguage from '../../hooks/useLanguage.js'
 import formatPrice from '../../utils/formatPrice.js'
 import styles from './TableTile.module.css'
 
-const TableTile = ({ table, onSelect }) => { // One table of the room grid, from GET /api/tables: { number, status, openTickets, total }. With `onSelect` the tile is a button
+const TableTile = ({ table, onSelect, compact = false }) => { // One table of the room grid, from GET /api/tables: { number, status, openTickets, total }. With `onSelect` the tile is a button; `compact` = smaller tile (admin overview of the whole room)
   const { t } = useLanguage()
   const { number, status, openTickets, total } = table
 
@@ -20,7 +20,7 @@ const TableTile = ({ table, onSelect }) => { // One table of the room grid, from
     </>
   )
 
-  const className = `${styles.tile} ${styles[status]}`
+  const className = `${styles.tile} ${styles[status]} ${compact ? styles.compact : ''}`
 
   if (!onSelect) return <div className={className}>{content}</div>
 

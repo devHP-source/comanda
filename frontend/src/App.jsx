@@ -6,6 +6,7 @@ import StaffLayout from './components/StaffLayout/StaffLayout.jsx'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute.jsx'
 import AdminCategoriesPage from './pages/admin/AdminCategoriesPage/AdminCategoriesPage.jsx'
 import AdminCategoryFormPage from './pages/admin/AdminCategoryFormPage/AdminCategoryFormPage.jsx'
+import AdminDashboardPage from './pages/admin/AdminDashboardPage/AdminDashboardPage.jsx'
 import AdminDishFormPage from './pages/admin/AdminDishFormPage/AdminDishFormPage.jsx'
 import AdminDishesPage from'./pages/admin/AdminDishesPage/AdminDishesPage.jsx'
 import KitchenPage from './pages/kitchen/KitchenPage/KitchenPage.jsx'
@@ -47,7 +48,7 @@ const App = () => (
 
         <Route element={<ProtectedRoute roles={['admin']} />}>
           <Route path="admin" element={<AdminLayout />}>
-            <Route index element={<Navigate to="dishes" replace />} />{/* until the Panoramica dashboard exists */}
+            <Route index element={<AdminDashboardPage />} />
             <Route path="dishes" element={<AdminDishesPage />} />
             <Route path="dishes/new" element={<AdminDishFormPage />} />
             <Route path="dishes/:id/edit" element={<AdminDishFormPage />} />

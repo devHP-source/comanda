@@ -339,12 +339,48 @@
     "area": "Administration",
     "navLabel": "Admin sections",
     "nav": {
+      "dashboard": "Overview",
       "dishes": "Menu & dishes",
       "categories": "Categories"
     },
     "greeting": {
       "morning": "Good morning, {name}",
       "evening": "Good evening, {name}"
+    }
+  },
+  "adminDashboard": {
+    "kicker": "Overview",
+    "title": "Today's service",
+    "subtitle": "Tables and tickets refresh every 5 seconds.",
+    "statsLabel": "Service figures",
+    "stats": {
+      "tables": "Occupied tables",
+      "tablesDetail": "{count} free",
+      "tickets": "Open tickets",
+      "ticketsDetail": "{count} in the kitchen",
+      "ready": "Ready to serve",
+      "readyDetail": "To bring to the tables",
+      "total": "Open bills",
+      "totalDetail": "Across {count} tables",
+      "totalDetailOne": "Across 1 table"
+    },
+    "room": {
+      "title": "Live dining room",
+      "subtitle": "Status of every table",
+      "legendLabel": "Legend"
+    },
+    "ready": {
+      "subtitle": "You can mark them served from here too"
+    },
+    "attention": {
+      "title": "Needs attention",
+      "subtitle": "Menu and availability",
+      "soldOut": "{count} dishes sold out",
+      "soldOutOne": "1 dish sold out",
+      "missingEnglish": "{count} English translations missing",
+      "missingEnglishOne": "1 English translation missing",
+      "none": "Menu all set: nothing to fix",
+      "loadError": "We can't check the menu right now. Retrying shortly…"
     }
   },
   "adminDishes": {

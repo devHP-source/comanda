@@ -88,3 +88,18 @@
     font-size: 1.4rem;
   }
 }
+
+.tile.compact {
+  min-height: 4.75rem;
+  gap: 0.1rem;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+.compact .number {
+  font-size: var(--text-md);
+}
+
+.compact.ready {
+  box-shadow: none;
+}
