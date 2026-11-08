@@ -81,6 +81,18 @@ const AvailabilityButton = ({ dish, onClick, className = '' }) => {
   )
 }
 
+// Pencil in the table row: the same link as the name, visible as a control. It sits above the row's stretched link
+const EditButton = ({ dish, state }) => {
+  const { t } = useLanguage()
+  const label = t('adminDishes.editLabel', { code: dish.code, name: dish.name.it })
+
+  return (
+    <Link to={`/admin/dishes/${dish._id}/edit`} state={state} className={styles.editButton} aria-label={label} title={label}>
+      <Icon name="pencil" size={20} />
+    </Link>
+  )
+}
+
 // /admin/dishes: every dish (unpublished too), 20 per page, with search and category filter.
 // Search, category and page live in the URL (?q=&category=&page=), so back/forward, reload and the edit form's "back" keep them
 const AdminDishesPage = () => {
@@ -261,7 +273,7 @@ const AdminDishesPage = () => {
                   <th scope="col">{t('adminDishes.columns.name')}</th>
                   <th scope="col">{t('adminDishes.columns.category')}</th>
                   <th scope="col" className={styles.alignEnd}>{t('adminDishes.columns.price')}</th>
-                  <th scope="col" className={styles.alignEnd}>{t('adminDishes.columns.availability')}</th>
+                  <th scope="col" className={styles.alignEnd}>{t('adminDishes.columns.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -276,7 +288,12 @@ const AdminDishesPage = () => {
                     </th>
                     <td className={styles.category}>{categoryNames.get(dish.category) || '—'}</td>
                     <td className={`${styles.price} ${styles.alignEnd}`}>{formatPrice(dish.price)}</td>
-                    <td className={styles.alignEnd}><AvailabilityButton dish={dish} onClick={setDishToToggle} /></td>
+                    <td className={styles.alignEnd}>
+                      <span className={styles.rowActions}>
+                        <EditButton dish={dish} state={backState} />
+                        <AvailabilityButton dish={dish} onClick={setDishToToggle} />
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>

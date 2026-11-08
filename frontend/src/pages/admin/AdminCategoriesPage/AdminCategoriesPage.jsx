@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
-import { toast } from 'sonner'
 import api from '../../../api/client.js'
-import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog.jsx'
 import DishVisual from '../../../components/DishVisual/DishVisual.jsx'
+import Icon from '../../../components/Icon/Icon.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import useLanguage from '../../../hooks/useLanguage.js'
@@ -13,13 +12,13 @@ import styles from './AdminCategoriesPage.module.css'
 const SKELETON_ROWS = 8
 const ROW_THUMBNAIL = 'c_fill,ar_4:3,f_auto,q_auto,w_160' // same 4:3 crop as the menu shortcuts
 
-// /admin/categories: every category in menu order (only 15, no pagination), with its preview photo and dish count
+// /admin/categories: every category in menu order (only 15, no pagination), with its preview photo and dish count.
+// Desktop: a table, the name links to the edit form. Phones and tablets: one card per category, the whole card opens the form
 const AdminCategoriesPage = () => {
   const { t, tError } = useLanguage()
   const [categories, setCategories] = useState(null) // null until the first answer
   const [loadError, setLoadError] = useState(null)
   const [attempt, setAttempt] = useState(0)
-  const [categoryToDelete, setCategoryToDelete] = useState(null)
 
   useEffect(() => {
     let ignore = false
@@ -37,25 +36,46 @@ const AdminCategoriesPage = () => {
     }
   }, [attempt])
 
-  const reload = () => setAttempt((current) => current + 1)
-
   const handleRetry = () => {
     setLoadError(null)
-    reload()
+    setAttempt((current) => current + 1)
   }
 
   const dishesLabel = (count) => (count === 1 ? t('menu.dishCountOne') : t('menu.dishCount', { count }))
 
-  const deleteCategory = async () => {
-    const { _id, name } = categoryToDelete
-    try {
-      await api.delete(`/categories/${_id}`)
-      toast.success(t('adminCategories.deleted', { name: name.it }))
-    } catch (err) {
-      toast.error(tError(err)) // 409 CATEGORY_HAS_DISHES: the server is the one that knows the current dish count
-    }
-    reload() // the counts on screen may be out of date either way
-  }
+  // Shared by the table and the cards
+  const photo = (category) => (
+    <span className={styles.photo}>
+      {category.coverImage ? (
+        <img src={thumbnailUrl(category.coverImage, ROW_THUMBNAIL)} alt="" loading="lazy" width="64" height="48" />
+      ) : (
+        <DishVisual seed={category.name.it} />
+      )}
+    </span>
+  )
+
+  const editLink = (category, className) => (
+    <Link
+      to={`/admin/categories/${category._id}/edit`}
+      className={className}
+      aria-label={t('adminCategories.editLabel', { name: category.name.it })}
+    >
+      {category.name.it}
+    </Link>
+  )
+
+  const details = (category) => (
+    <>
+      {category.name.en?.trim() ? (
+        <span className={styles.nameEn} lang="en">{category.name.en}</span>
+      ) : (
+        <span className={styles.missing}>{t('adminDishes.missingEnglish')}</span>
+      )}
+      <span className={styles.coverNote}>
+        {t(category.coverDish ? 'adminCategories.coverChosen' : 'adminCategories.coverAuto')}
+      </span>
+    </>
+  )
 
   let content
   if (!categories && loadError) {
@@ -87,74 +107,61 @@ const AdminCategoriesPage = () => {
           </p>
         )}
 
-        <div className={styles.tableWrap} role="region" aria-labelledby="categories-caption" tabIndex={0}>
+        <div className={styles.tableWrap}>
           <table className={styles.table}>
-            <caption id="categories-caption" className="visually-hidden">{t('adminCategories.tableLabel')}</caption>
+            <caption className="visually-hidden">{t('adminCategories.tableLabel')}</caption>
             <thead>
               <tr>
                 <th scope="col">{t('adminCategories.columns.order')}</th>
                 <th scope="col"><span className="visually-hidden">{t('adminCategories.columns.photo')}</span></th>
                 <th scope="col">{t('adminCategories.columns.name')}</th>
-                <th scope="col">{t('adminCategories.columns.dishes')}</th>
-                <th scope="col" className={styles.alignEnd}>{t('adminCategories.columns.actions')}</th>
+                <th scope="col" className={styles.alignEnd}>{t('adminCategories.columns.dishes')}</th>
+                <th scope="col"><span className="visually-hidden">{t('adminCategories.columns.actions')}</span></th>
               </tr>
             </thead>
             <tbody>
               {categories.map((category) => (
                 <tr key={category._id}>
                   <td><span className={styles.order}>{category.order}</span></td>
-                  <td>
-                    <span className={styles.photo}>
-                      {category.coverImage ? (
-                        <img src={thumbnailUrl(category.coverImage, ROW_THUMBNAIL)} alt="" loading="lazy" width="64" height="48" />
-                      ) : (
-                        <DishVisual seed={category.name.it} />
-                      )}
-                    </span>
-                  </td>
+                  <td className={styles.photoCell}>{photo(category)}</td>
                   <th scope="row" className={styles.name}>
-                    <span className={styles.nameIt}>{category.name.it}</span>
-                    {category.name.en?.trim() ? (
-                      <span className={styles.nameEn} lang="en">{category.name.en}</span>
-                    ) : (
-                      <span className={styles.missing}>{t('adminDishes.missingEnglish')}</span>
-                    )}
-                    <span className={styles.coverNote}>
-                      {t(category.coverDish ? 'adminCategories.coverChosen' : 'adminCategories.coverAuto')}
-                    </span>
+                    {editLink(category, styles.nameLink)}
+                    {details(category)}
                   </th>
-                  <td className={styles.count}>{dishesLabel(category.dishCount)}</td>
-                  <td className={styles.alignEnd}>
-                    <span className={styles.actions}>
-                      <Link
-                        to={`/admin/categories/${category._id}/edit`}
-                        className={styles.edit}
-                        aria-label={t('adminCategories.editLabel', { name: category.name.it })}
-                      >
-                        {t('adminCategories.edit')}
-                      </Link>
-                      <button
-                        type="button"
-                        className={styles.delete}
-                        aria-label={t('adminCategories.deleteLabel', { name: category.name.it })}
-                        onClick={() => setCategoryToDelete(category)}
-                      >
-                        {t('adminCategories.delete')}
-                      </button>
-                    </span>
+                  <td className={`${styles.count} ${styles.alignEnd}`}>{dishesLabel(category.dishCount)}</td>
+                  <td className={styles.actionsCell}>
+                    <Link
+                      to={`/admin/categories/${category._id}/edit`}
+                      className={styles.editButton}
+                      aria-label={t('adminCategories.editLabel', { name: category.name.it })}
+                      title={t('adminCategories.editLabel', { name: category.name.it })}
+                    >
+                      <Icon name="pencil" size={20} />
+                    </Link>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+
+        <ul className={styles.cards} aria-label={t('adminCategories.tableLabel')}>
+          {categories.map((category) => (
+            <li key={category._id} className={styles.card}>
+              {photo(category)}
+              <div className={styles.cardBody}>
+                <p className={styles.cardMeta}>
+                  <span className={styles.order}>{category.order}</span>
+                  <span className={styles.count}>{dishesLabel(category.dishCount)}</span>
+                </p>
+                <h2 className={styles.cardName}>{editLink(category, styles.cardLink)}</h2>
+                {details(category)}
+              </div>
+            </li>
+          ))}
+        </ul>
       </>
     )
-  }
-
-  let deleteMessage = t('adminCategories.deleteMessage')
-  if (categoryToDelete?.dishCount > 0) {
-    deleteMessage = t('adminCategories.deleteMessageWithDishes', { dishes: dishesLabel(categoryToDelete.dishCount) })
   }
 
   return (
@@ -169,16 +176,6 @@ const AdminCategoriesPage = () => {
       </header>
 
       {content}
-
-      <ConfirmDialog
-        open={Boolean(categoryToDelete)}
-        destructive
-        title={categoryToDelete && t('adminCategories.deleteTitle', { name: categoryToDelete.name.it })}
-        message={deleteMessage}
-        confirmLabel={t('adminCategories.delete')}
-        onConfirm={deleteCategory}
-        onClose={() => setCategoryToDelete(null)}
-      />
     </div>
   )
 }

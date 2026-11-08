@@ -341,7 +341,9 @@
     "nav": {
       "dashboard": "Overview",
       "dishes": "Menu & dishes",
-      "categories": "Categories"
+      "categories": "Categories",
+      "staff": "Staff",
+      "settings": "Settings"
     },
     "greeting": {
       "morning": "Good morning, {name}",
@@ -394,7 +396,7 @@
       "name": "Dish",
       "category": "Category",
       "price": "Price",
-      "availability": "Availability"
+      "actions": "Actions"
     },
     "searchLabel": "Search a dish",
     "searchPlaceholder": "Dish number or name",
@@ -437,14 +439,7 @@
     "loadError": "We can't load the categories.",
     "empty": "No categories in the menu yet.",
     "newCategory": "New category",
-    "edit": "Edit",
-    "editLabel": "Edit the {name} category",
-    "delete": "Delete",
-    "deleteLabel": "Delete the {name} category",
-    "deleteTitle": "Delete the {name} category?",
-    "deleteMessage": "The category will be deleted for good.",
-    "deleteMessageWithDishes": "It still has {dishes}: deleting will be refused until you move them to another category or delete them.",
-    "deleted": "{name} category deleted"
+    "editLabel": "Edit the {name} category"
   },
   "categoryForm": {
     "back": "← Categories",
@@ -474,6 +469,11 @@
     "save": "Save changes",
     "created": "{name} category created",
     "saved": "{name} category saved",
+    "delete": "Delete category",
+    "deleteTitle": "Delete the {name} category?",
+    "deleteMessage": "The category will be deleted for good.",
+    "deleteMessageWithDishes": "It still has {dishes}: deleting will be refused until you move them to another category or delete them.",
+    "deleted": "{name} category deleted",
     "confirm": {
       "createTitle": "Create the {name} category?",
       "editTitle": "Save the changes to the {name} category?",
@@ -486,6 +486,89 @@
       "nameTaken": "A category with this name already exists.",
       "order": "Enter a whole number from 0 to 999.",
       "cover": "The chosen dish is no longer in this category. Pick another one.",
+      "invalid": "Invalid value."
+    }
+  },
+  "adminStaff": {
+    "kicker": "Staff",
+    "title": "Staff",
+    "subtitle": "Staff accounts and their roles. Read-only list.",
+    "tableLabel": "Staff accounts",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status"
+    },
+    "count": "{count} accounts · {active} active",
+    "countOne": "1 account · {active} active",
+    "you": "You",
+    "active": "Active",
+    "inactive": "Disabled",
+    "empty": "No staff accounts."
+  },
+  "adminSettings": {
+    "kicker": "Settings",
+    "title": "Restaurant settings",
+    "subtitle": "Hours, online bookings, room and closures. They apply to the menu, the Info page and bookings."
+  },
+  "settingsForm": {
+    "sections": {
+      "hours": "Hours",
+      "bookings": "Online bookings",
+      "room": "Room and capacity",
+      "closures": "Closures"
+    },
+    "fields": {
+      "openingTime": "Opening",
+      "closingTime": "Closing",
+      "lastBookingTime": "Last bookable time",
+      "slotMinutes": "Time between slots (minutes)",
+      "avgDurationMinutes": "Length of a booking (minutes)",
+      "maxPartySizeAuto": "Guests for automatic confirmation",
+      "maxDaysAhead": "Maximum days ahead",
+      "tableCount": "Tables in the room",
+      "seatsPerTable": "Seats per table",
+      "maxOnlineTables": "Tables bookable online",
+      "closedDays": "Closed every week on",
+      "closedDates": "One-off closures",
+      "newClosedDate": "New closing date"
+    },
+    "hints": {
+      "hours": "Kitchen hours, the same on every open day.",
+      "lastBookingTime": "The last time guests can choose online.",
+      "slotMinutes": "How often a booking can start, e.g. 30 → 12:00, 12:30…",
+      "avgDurationMinutes": "How long a booking keeps its tables.",
+      "maxPartySizeAuto": "Bigger groups wait for your confirmation.",
+      "maxDaysAhead": "How many days in advance guests can book.",
+      "maxOnlineTables": "The other tables stay free for walk-ins.",
+      "closedDays": "Select the closing days.",
+      "closedDates": "Single closing days, e.g. holidays."
+    },
+    "roomSummary": "{tables} tables of {seats} seats: {guests} covers in total. {online} tables ({onlineSeats} seats) can be booked online, {walkIn} stay free for walk-ins.",
+    "noClosedDates": "No one-off closures.",
+    "past": "Past",
+    "remove": "Remove",
+    "removeDate": "Remove {date}",
+    "addDate": "Add date",
+    "reset": "Discard changes",
+    "save": "Save settings",
+    "noChanges": "No changes to save.",
+    "saved": "Settings saved",
+    "confirm": {
+      "title": "Save the changes to {sections}?",
+      "message": "The new rules apply at once to the menu, the Info page and new bookings. Bookings already confirmed stay valid."
+    },
+    "errors": {
+      "time": "Enter a valid time.",
+      "closingTime": "Closing must be after opening.",
+      "lastBookingTime": "Must be after opening and not after closing.",
+      "number": "Enter a whole number between {min} and {max}.",
+      "maxOnlineTables": "Enter a whole number between 0 and the tables in the room ({tables}).",
+      "dateInvalid": "Choose a date.",
+      "datePast": "This date has already passed.",
+      "dateTaken": "This date is already in the list.",
+      "dateNotAdded": "Press “Add date” to add it, or clear the field.",
       "invalid": "Invalid value."
     }
   },

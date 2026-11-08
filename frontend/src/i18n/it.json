@@ -341,7 +341,9 @@
     "nav": {
       "dashboard": "Panoramica",
       "dishes": "Menu e piatti",
-      "categories": "Categorie"
+      "categories": "Categorie",
+      "staff": "Personale",
+      "settings": "Impostazioni"
     },
     "greeting": {
       "morning": "Buongiorno, {name}",
@@ -394,7 +396,7 @@
       "name": "Piatto",
       "category": "Categoria",
       "price": "Prezzo",
-      "availability": "Disponibilità"
+      "actions": "Azioni"
     },
     "searchLabel": "Cerca un piatto",
     "searchPlaceholder": "Numero o nome del piatto",
@@ -437,14 +439,7 @@
     "loadError": "Non riusciamo a caricare le categorie.",
     "empty": "Nessuna categoria nel menu.",
     "newCategory": "Nuova categoria",
-    "edit": "Modifica",
-    "editLabel": "Modifica la categoria {name}",
-    "delete": "Elimina",
-    "deleteLabel": "Elimina la categoria {name}",
-    "deleteTitle": "Eliminare la categoria {name}?",
-    "deleteMessage": "La categoria verrà eliminata definitivamente.",
-    "deleteMessageWithDishes": "Contiene ancora {dishes}: l'eliminazione verrà rifiutata finché non li sposti in un'altra categoria o li elimini.",
-    "deleted": "Categoria {name} eliminata"
+    "editLabel": "Modifica la categoria {name}"
   },
   "categoryForm": {
     "back": "← Categorie",
@@ -474,6 +469,11 @@
     "save": "Salva modifiche",
     "created": "Categoria {name} creata",
     "saved": "Categoria {name} salvata",
+    "delete": "Elimina categoria",
+    "deleteTitle": "Eliminare la categoria {name}?",
+    "deleteMessage": "La categoria verrà eliminata definitivamente.",
+    "deleteMessageWithDishes": "Contiene ancora {dishes}: l'eliminazione verrà rifiutata finché non li sposti in un'altra categoria o li elimini.",
+    "deleted": "Categoria {name} eliminata",
     "confirm": {
       "createTitle": "Creare la categoria {name}?",
       "editTitle": "Salvare le modifiche alla categoria {name}?",
@@ -486,6 +486,89 @@
       "nameTaken": "Esiste già una categoria con questo nome.",
       "order": "Inserisci un numero intero da 0 a 999.",
       "cover": "Il piatto scelto non è più in questa categoria. Scegline un altro.",
+      "invalid": "Valore non valido."
+    }
+  },
+  "adminStaff": {
+    "kicker": "Personale",
+    "title": "Personale",
+    "subtitle": "Gli account dello staff con il loro ruolo. Elenco in sola lettura.",
+    "tableLabel": "Account dello staff",
+    "columns": {
+      "name": "Nome",
+      "email": "Email",
+      "role": "Ruolo",
+      "status": "Stato"
+    },
+    "count": "{count} account · {active} attivi",
+    "countOne": "1 account · {active} attivo",
+    "you": "Tu",
+    "active": "Attivo",
+    "inactive": "Disattivato",
+    "empty": "Nessun account dello staff."
+  },
+  "adminSettings": {
+    "kicker": "Impostazioni",
+    "title": "Impostazioni del ristorante",
+    "subtitle": "Orari, prenotazioni online, sala e chiusure. Valgono per il menu, la pagina Info e le prenotazioni."
+  },
+  "settingsForm": {
+    "sections": {
+      "hours": "Orari",
+      "bookings": "Prenotazioni online",
+      "room": "Sala e capienza",
+      "closures": "Chiusure"
+    },
+    "fields": {
+      "openingTime": "Apertura",
+      "closingTime": "Chiusura",
+      "lastBookingTime": "Ultimo orario prenotabile",
+      "slotMinutes": "Intervallo tra gli orari (minuti)",
+      "avgDurationMinutes": "Durata di una prenotazione (minuti)",
+      "maxPartySizeAuto": "Persone per conferma automatica",
+      "maxDaysAhead": "Giorni di anticipo massimo",
+      "tableCount": "Tavoli in sala",
+      "seatsPerTable": "Posti per tavolo",
+      "maxOnlineTables": "Tavoli prenotabili online",
+      "closedDays": "Chiuso ogni settimana il",
+      "closedDates": "Chiusure straordinarie",
+      "newClosedDate": "Nuova data di chiusura"
+    },
+    "hints": {
+      "hours": "Orari della cucina, uguali per tutti i giorni di apertura.",
+      "lastBookingTime": "L'ultimo orario che i clienti possono scegliere online.",
+      "slotMinutes": "Ogni quanti minuti si può prenotare, es: 30 → 12:00, 12:30…",
+      "avgDurationMinutes": "Per quanto tempo una prenotazione occupa i tavoli.",
+      "maxPartySizeAuto": "I gruppi più grandi restano in attesa della tua conferma.",
+      "maxDaysAhead": "Quanti giorni prima si può prenotare.",
+      "maxOnlineTables": "Gli altri tavoli restano per chi arriva senza prenotazione.",
+      "closedDays": "Seleziona i giorni di chiusura.",
+      "closedDates": "Giorni singoli di chiusura, es: ferie o festività."
+    },
+    "roomSummary": "{tables} tavoli da {seats} posti: {guests} coperti in tutto. {online} tavoli ({onlineSeats} posti) si prenotano online, {walkIn} restano per chi arriva senza prenotazione.",
+    "noClosedDates": "Nessuna chiusura straordinaria.",
+    "past": "Passata",
+    "remove": "Rimuovi",
+    "removeDate": "Rimuovi {date}",
+    "addDate": "Aggiungi data",
+    "reset": "Annulla modifiche",
+    "save": "Salva impostazioni",
+    "noChanges": "Nessuna modifica da salvare.",
+    "saved": "Impostazioni salvate",
+    "confirm": {
+      "title": "Salvare le modifiche a {sections}?",
+      "message": "Le nuove regole valgono subito per il menu, la pagina Info e le prossime prenotazioni. Le prenotazioni già confermate restano valide."
+    },
+    "errors": {
+      "time": "Inserisci un orario valido.",
+      "closingTime": "La chiusura deve essere dopo l'apertura.",
+      "lastBookingTime": "Deve essere dopo l'apertura e non oltre la chiusura.",
+      "number": "Inserisci un numero intero tra {min} e {max}.",
+      "maxOnlineTables": "Inserisci un numero intero tra 0 e il numero di tavoli in sala ({tables}).",
+      "dateInvalid": "Scegli una data.",
+      "datePast": "Questa data è già passata.",
+      "dateTaken": "Questa data è già nella lista.",
+      "dateNotAdded": "Premi «Aggiungi data» per inserirla, oppure svuota il campo.",
       "invalid": "Valore non valido."
     }
   },

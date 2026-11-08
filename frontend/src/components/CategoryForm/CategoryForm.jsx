@@ -69,6 +69,7 @@ const CategoryForm = ({ category, dishes, nextOrder, backTo }) => {
   const [values, setValues] = useState(initial)
   const [errors, setErrors] = useState({}) // field --> i18n key
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false)
 
   const isEdit = Boolean(category)
 
@@ -120,6 +121,18 @@ const CategoryForm = ({ category, dishes, nextOrder, backTo }) => {
       setErrors(found)
       pendingFocusRef.current = firstErrorField(found)
     }
+  }
+
+  const deleteCategory = async () => { // the saved category, not the values typed in the form
+    const name = category.name.it
+    try {
+      await api.delete(`/categories/${category._id}`)
+      toast.success(t('categoryForm.deleted', { name }))
+    } catch (err) {
+      toast.error(tError(err)) // 409 CATEGORY_HAS_DISHES: the server is the one that knows the current dish count
+      if (getErrorCode(err) !== 'CATEGORY_NOT_FOUND') return // 404: already deleted elsewhere, the list is the right place anyway
+    }
+    navigate(backTo)
   }
 
   const handleConfirmClose = () => { // runs after the dialog has given the focus back, so this focus wins
@@ -262,6 +275,11 @@ const CategoryForm = ({ category, dishes, nextOrder, backTo }) => {
         </fieldset>
 
         <div className={styles.actions}>
+          {isEdit && (
+            <button type="button" className={styles.delete} onClick={() => setIsDeleteOpen(true)}>
+              {t('categoryForm.delete')}
+            </button>
+          )}
           <Link to={backTo} className={styles.cancel}>{t('confirm.cancel')}</Link>
           <button type="submit" className={styles.submit}>{t(isEdit ? 'categoryForm.save' : 'categoryForm.create')}</button>
         </div>
@@ -275,6 +293,22 @@ const CategoryForm = ({ category, dishes, nextOrder, backTo }) => {
         onConfirm={save}
         onClose={handleConfirmClose}
       />
+
+      {isEdit && (
+        <ConfirmDialog
+          open={isDeleteOpen}
+          destructive // red confirm button, focus starts on Annulla
+          title={t('categoryForm.deleteTitle', { name: category.name.it })}
+          message={category.dishCount > 0
+            ? t('categoryForm.deleteMessageWithDishes', {
+              dishes: category.dishCount === 1 ? t('menu.dishCountOne') : t('menu.dishCount', { count: category.dishCount }),
+            })
+            : t('categoryForm.deleteMessage')}
+          confirmLabel={t('categoryForm.delete')}
+          onConfirm={deleteCategory}
+          onClose={() => setIsDeleteOpen(false)}
+        />
+      )}
     </>
   )
 }

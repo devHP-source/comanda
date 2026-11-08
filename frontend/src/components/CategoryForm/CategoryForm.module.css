@@ -207,6 +207,7 @@ fieldset.card > .cardTitle { /* a floated legend is no longer drawn on the borde
   padding-top: var(--space-2);
 }
 
+.delete,
 .cancel,
 .submit {
   display: inline-flex;
@@ -227,6 +228,19 @@ fieldset.card > .cardTitle { /* a floated legend is no longer drawn on the borde
 
 .cancel:hover {
   background: var(--color-surface-muted);
+}
+
+.delete { /* edit form only, far from the save button */
+  margin-right: auto;
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  background: transparent;
+  font-size: var(--text-sm);
+}
+
+.delete:hover {
+  color: var(--color-white);
+  background: var(--color-accent);
 }
 
 .submit {

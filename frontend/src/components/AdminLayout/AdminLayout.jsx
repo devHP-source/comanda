@@ -4,6 +4,7 @@ import LanguagePill from '../LanguagePill/LanguagePill.jsx'
 import ReadyBell from '../ReadyBell/ReadyBell.jsx'
 import useAuth from '../../hooks/useAuth.js'
 import useLanguage from '../../hooks/useLanguage.js'
+import initials from '../../utils/initials.js'
 import { romeNow } from '../../utils/kitchenStatus.js'
 import styles from './AdminLayout.module.css'
 
@@ -11,6 +12,8 @@ const NAV_ITEMS = [ // one entry per admin screen, added when that screen exists
   { to: '/admin', label: 'admin.nav.dashboard', icon: 'dashboard', end: true },
   { to: '/admin/dishes', label: 'admin.nav.dishes', icon: 'dish' },
   { to: '/admin/categories', label: 'admin.nav.categories', icon: 'list' },
+  { to: '/admin/staff', label: 'admin.nav.staff', icon: 'people' },
+  { to: '/admin/settings', label: 'admin.nav.settings', icon: 'settings' },
 ]
 
 const LOCALES = { it: 'it-IT', en: 'en-GB' }
@@ -24,13 +27,6 @@ const todayLabel = (lang) => { // "Venerdì 6 novembre", on the restaurant's clo
   }).format(new Date())
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
-
-const initials = (name) => name
-  .split(' ')
-  .filter(Boolean)
-  .slice(0, 2)
-  .map((word) => word[0].toUpperCase())
-  .join('')
 
 const AdminLayout = () => { // Admin screens (desktop first): sidebar with the sections + profile, header with date and greeting. Phones and tablets: the sidebar becomes a top block
   const { t, lang } = useLanguage()
