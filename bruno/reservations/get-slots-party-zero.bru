@@ -1,0 +1,21 @@
+meta {
+  name: Get slots - party of zero (400)
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/reservations/slots?date={{openDate}}&partySize=0
+  body: none
+  auth: none
+}
+
+params:query {
+  date: {{openDate}}
+  partySize: 0
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_PARTY_SIZE
+}

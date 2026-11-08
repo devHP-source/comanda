@@ -1,0 +1,27 @@
+meta {
+  name: Get slots - past date (400)
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/reservations/slots?date={{pastDate}}&partySize=2
+  body: none
+  auth: none
+}
+
+params:query {
+  date: {{pastDate}}
+  partySize: 2
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq BOOKING_IN_PAST
+}
+
+script:pre-request {
+  const date = new Date()
+  date.setUTCDate(date.getUTCDate() - 2)
+  bru.setVar("pastDate", date.toISOString().slice(0, 10))
+}

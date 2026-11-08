@@ -1,0 +1,21 @@
+meta {
+  name: Get slots - impossible date (400)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/reservations/slots?date=2027-02-30&partySize=2
+  body: none
+  auth: none
+}
+
+params:query {
+  date: 2027-02-30
+  partySize: 2
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_DATE
+}

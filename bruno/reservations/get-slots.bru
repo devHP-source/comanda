@@ -1,0 +1,51 @@
+meta {
+  name: Get slots - open day (200)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/reservations/slots?date={{openDate}}&partySize=2
+  body: none
+  auth: none
+}
+
+params:query {
+  date: {{openDate}}
+  partySize: 2
+}
+
+assert {
+  res.status: eq 200
+  res.body.partySize: eq 2
+  res.body.slots: isArray
+}
+
+script:pre-request {
+  // The first Wednesday at least 2 days ahead: open with the default closedDays
+  const date = new Date()
+  date.setUTCDate(date.getUTCDate() + 2)
+  while (date.getUTCDay() !== 3) date.setUTCDate(date.getUTCDate() + 1)
+  bru.setVar("openDate", date.toISOString().slice(0, 10))
+}
+
+tests {
+  test("returns the date it was asked for", () => {
+    expect(res.body.date).to.equal(bru.getVar("openDate"))
+  })
+
+  test("slots go from opening to the last booking time, one every 30 minutes", () => {
+    expect(res.body.slots[0]).to.equal("12:00")
+    expect(res.body.slots[1]).to.equal("12:30")
+    expect(res.body.slots[res.body.slots.length - 1]).to.equal("20:30")
+    expect(res.body.slots).to.have.lengthOf(18)
+  })
+
+  test("capacity numbers stay private", () => {
+    expect(Object.keys(res.body).sort()).to.deep.equal(["date", "partySize", "slots"])
+  })
+}
+
+docs {
+  Booking form: the valid free times for this date and party size.
+}

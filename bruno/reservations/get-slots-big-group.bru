@@ -1,0 +1,30 @@
+meta {
+  name: Get slots - big group (200)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/reservations/slots?date={{openDate}}&partySize=40
+  body: none
+  auth: none
+}
+
+params:query {
+  date: {{openDate}}
+  partySize: 40
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("every slot of the day is offered", () => {
+    expect(res.body.slots).to.have.lengthOf(18)
+  })
+}
+
+docs {
+  More guests than maxPartySizeAuto: no capacity count, the admin decides (pending booking). Needs openDate from "Get slots - open day".
+}

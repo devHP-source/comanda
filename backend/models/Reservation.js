@@ -5,6 +5,8 @@ import { TIME_PATTERN, isRealDate } from "./Settings.js"
 // awaiting_verification (email link not clicked yet, holds no seats) --> confirmed. Big groups: pending --> confirmed/rejected
 export const RESERVATION_STATUSES = ["awaiting_verification", "confirmed", "pending", "rejected", "cancelled"]
 
+export const MAX_PARTY_SIZE = 200 // the whole restaurant a bigger number is only bad input
+
 const VERIFY_WINDOW_MS = 30 * 60 * 1000
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/ // the labels can't contain dots: a very long public input can't slow the regex down
@@ -57,7 +59,7 @@ const reservationSchema = new mongoose.Schema(
       required: true,
       match: [TIME_PATTERN, "time must be HH:mm"],
     },
-    partySize: { ...positiveInteger, max: 200 }, // the whole restaurant: a bigger number is only bad input
+    partySize: { ...positiveInteger, max: MAX_PARTY_SIZE },
     tablesNeeded: positiveInteger, // Math.ceil(partySize / seatsPerTable), saved so that a later Settings change can't alter old bookings
     notes: {
       type: String,

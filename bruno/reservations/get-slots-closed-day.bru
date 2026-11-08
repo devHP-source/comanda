@@ -1,0 +1,29 @@
+meta {
+  name: Get slots - closed day (400)
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/reservations/slots?date={{mondayDate}}&partySize=2
+  body: none
+  auth: none
+}
+
+params:query {
+  date: {{mondayDate}}
+  partySize: 2
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq RESTAURANT_CLOSED
+}
+
+script:pre-request {
+  // The first Monday at least 2 days ahead: the weekly closing day
+  const date = new Date()
+  date.setUTCDate(date.getUTCDate() + 2)
+  while (date.getUTCDay() !== 1) date.setUTCDate(date.getUTCDate() + 1)
+  bru.setVar("mondayDate", date.toISOString().slice(0, 10))
+}
