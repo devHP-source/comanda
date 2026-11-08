@@ -111,8 +111,18 @@ export const getFreeSlots = async (settings, date, partySize) => {
 }
 
 // What to suggest when the chosen time is full: closest first, on a tie the earlier one
-export const getNearestFreeSlots = async (settings, date, time, partySize, limit = 3) => {
-  const freeSlots = await getFreeSlots(settings, date, partySize)
+const pickNearestSlots = (slots, time, limit = 3) => {
   const distance = (slot) => Math.abs(toMinutes(slot) - toMinutes(time))
-  return freeSlots.sort((a, b) => distance(a) - distance(b)).slice(0, limit)
+  return [...slots].sort((a, b) => distance(a) - distance(b)).slice(0, limit)
+}
+
+// Big groups always pass: getFreeSlots doesn't count tables for them
+export const assertSlotHasRoom = async (settings, date, time, partySize) => {
+  const freeSlots = await getFreeSlots(settings, date, partySize)
+  if (freeSlots.includes(time)) return
+
+  const err = availabilityError("SLOT_FULL", "This time is fully booked")
+  err.status = 409
+  err.errors = { slots: pickNearestSlots(freeSlots, time) } // sent as "errors" by errorHandler
+  throw err
 }

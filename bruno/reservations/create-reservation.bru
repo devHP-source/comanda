@@ -1,0 +1,49 @@
+meta {
+  name: Create reservation - form (201)
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}/reservations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bruno",
+    "surname": "Test",
+    "email": "  Guest@Comanda.test ",
+    "phone": "+393331234567",
+    "date": "{{openDate}}",
+    "time": "20:00",
+    "partySize": 5,
+    "notes": "Seggiolone per un bambino"
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.status: eq awaiting_verification
+  res.body.source: eq form
+  res.body.email: eq guest@comanda.test
+  res.body.tablesNeeded: eq 2
+}
+
+tests {
+  test("expires in about 30 minutes", () => {
+    const minutes = (new Date(res.body.expiresAt) - Date.now()) / 60000
+    expect(minutes).to.be.within(29, 30.5)
+  })
+
+  test("the tokens are never sent to the client", () => {
+    expect(res.body).to.not.have.property("verifyToken")
+    expect(res.body).to.not.have.property("cancelToken")
+  })
+}
+
+docs {
+  The form without Google: the verify link is printed in the backend console. Needs openDate from "Get slots - open day".
+  Max 10 bookings saved per IP every 15 minutes (429 TOO_MANY_REQUESTS); requests that fail validation don't count, and a server restart resets the count.
+}

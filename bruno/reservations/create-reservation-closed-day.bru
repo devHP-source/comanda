@@ -1,0 +1,32 @@
+meta {
+  name: Create reservation - closed day (400)
+  type: http
+  seq: 18
+}
+
+post {
+  url: {{baseUrl}}/reservations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bruno",
+    "surname": "Test",
+    "email": "guest@comanda.test",
+    "phone": "+393331234567",
+    "date": "{{mondayDate}}",
+    "time": "20:00",
+    "partySize": 2
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq RESTAURANT_CLOSED
+}
+
+docs {
+  Needs mondayDate from "Get slots - closed day".
+}

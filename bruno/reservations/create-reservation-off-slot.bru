@@ -1,0 +1,32 @@
+meta {
+  name: Create reservation - time between slots (400)
+  type: http
+  seq: 17
+}
+
+post {
+  url: {{baseUrl}}/reservations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bruno",
+    "surname": "Test",
+    "email": "guest@comanda.test",
+    "phone": "+393331234567",
+    "date": "{{openDate}}",
+    "time": "20:15",
+    "partySize": 2
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_TIME
+}
+
+docs {
+  Needs openDate from "Get slots - open day".
+}

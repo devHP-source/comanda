@@ -11,3 +11,15 @@ export const loginLimiter = rateLimit({ // slows down password guessing on POST 
     code: "TOO_MANY_REQUESTS"
   },
 })
+
+export const reservationLimiter = rateLimit({ // every booking saved will send an email: POST /api/reservations
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 10, // max 10 bookings saved per IP in the window
+  skipFailedRequests: true, // a guest fixing a typo in the form isn't penalized
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: {
+    message: "Too many booking requests, try again later",
+    code: "TOO_MANY_REQUESTS"
+  },
+})

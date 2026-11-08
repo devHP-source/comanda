@@ -1,0 +1,37 @@
+meta {
+  name: Create reservation - client can't choose status (201)
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{baseUrl}}/reservations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bruno",
+    "surname": "Furbo",
+    "email": "guest@comanda.test",
+    "phone": "+393331234567",
+    "date": "{{openDate}}",
+    "time": "20:00",
+    "partySize": 2,
+    "status": "confirmed",
+    "source": "google",
+    "tablesNeeded": 1000
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.status: eq awaiting_verification
+  res.body.source: eq form
+  res.body.tablesNeeded: eq 1
+}
+
+docs {
+  Needs openDate from "Get slots - open day".
+}

@@ -1,0 +1,39 @@
+meta {
+  name: Create reservation - slot full (409)
+  type: http
+  seq: 21
+}
+
+post {
+  url: {{baseUrl}}/reservations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bruno",
+    "surname": "Pieno",
+    "email": "guest@comanda.test",
+    "phone": "+393331234567",
+    "date": "{{openDate}}",
+    "time": "20:00",
+    "partySize": 2
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq SLOT_FULL
+  res.body.errors.slots: isArray
+}
+
+tests {
+  test("the whole day is full, so nothing can be suggested", () => {
+    expect(res.body.errors.slots).to.have.lengthOf(0)
+  })
+}
+
+docs {
+  Needs "Slot full - setup" just before it and openDate from "Get slots - open day". On a partly full day errors.slots holds up to 3 free times, nearest first.
+}

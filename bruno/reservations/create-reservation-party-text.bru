@@ -1,0 +1,32 @@
+meta {
+  name: Create reservation - party size as text (400)
+  type: http
+  seq: 19
+}
+
+post {
+  url: {{baseUrl}}/reservations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bruno",
+    "surname": "Test",
+    "email": "guest@comanda.test",
+    "phone": "+393331234567",
+    "date": "{{openDate}}",
+    "time": "20:00",
+    "partySize": "4"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_PARTY_SIZE
+}
+
+docs {
+  Needs openDate from "Get slots - open day".
+}
