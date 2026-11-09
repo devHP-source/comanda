@@ -12,6 +12,7 @@ import AdminDishesPage from'./pages/admin/AdminDishesPage/AdminDishesPage.jsx'
 import AdminSettingsPage from './pages/admin/AdminSettingsPage/AdminSettingsPage.jsx'
 import AdminStaffPage from './pages/admin/AdminStaffPage/AdminStaffPage.jsx'
 import KitchenPage from './pages/kitchen/KitchenPage/KitchenPage.jsx'
+import BookingPage from './pages/public/BookingPage/BookingPage.jsx'
 import DishSheet from './pages/public/DishSheet/DishSheet.jsx'
 import InfoPage from './pages/public/InfoPage/InfoPage.jsx'
 import ListPage from './pages/public/ListPage/ListPage.jsx'
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="dish/:id" element={<DishSheet />} />
         </Route>
         <Route path="list" element={<ListPage />} />
+        <Route path="book" element={<BookingPage />} />
         <Route path="info" element={<InfoPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>

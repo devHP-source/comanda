@@ -77,6 +77,11 @@ const reservationSchema = new mongoose.Schema(
       enum: RESERVATION_STATUSES,
       default: "awaiting_verification",
     },
+    lang: { // the language of this guest's emails: the admin's answer to a big group comes later, with no guest request to read it from
+      type: String,
+      enum: ["it", "en"],
+      default: "it",
+    },
     verifyToken: { // only bookings that go through the email link have one. Kept after confirming, so a second click isn't told the link is invalid
       type: String,
       unique: true,

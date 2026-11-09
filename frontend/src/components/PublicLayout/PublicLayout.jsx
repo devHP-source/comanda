@@ -5,12 +5,16 @@ import useLanguage from '../../hooks/useLanguage.js'
 import useList from '../../hooks/useList.js'
 import styles from './PublicLayout.module.css'
 
-const topLinks = [ // Home and Prenota join both bars when their pages exist
-  { 
-    to: '/menu', 
-    label: 'nav.menu' 
+const topLinks = [ // Home joins this bar when its page exists
+  {
+    to: '/menu',
+    label: 'nav.menu'
   },
-  { 
+  {
+    to: '/book',
+    label: 'nav.book'
+  },
+  {
     to: '/info', 
     label: 'nav.about' 
   },
@@ -27,6 +31,11 @@ const bottomLinks = [
     label: 'nav.list',
     icon: 'bookmark',
     showsListCount: true
+  },
+  {
+    to: '/book',
+    label: 'nav.book',
+    icon: 'calendar'
   },
   { 
     to: '/info', 

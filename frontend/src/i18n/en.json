@@ -11,6 +11,7 @@
     "mobile": "Navigation",
     "menu": "Menu",
     "list": "My list",
+    "book": "Book",
     "info": "Info",
     "about": "About & contact"
   },
@@ -40,6 +41,66 @@
   "confirm": {
     "cancel": "Cancel",
     "confirm": "Confirm"
+  },
+  "booking": {
+    "eyebrow": "Book",
+    "title": "Book a table",
+    "lead": "Choose a day and time, then leave us your contact details.",
+    "slow": "Just a few more seconds, we're opening the bookings…",
+    "loadError": "We can't load the bookings right now.",
+    "requiredLegend": "* required field",
+    "whenTitle": "When",
+    "contactTitle": "Your details",
+    "partySize": "Guests",
+    "date": "Day",
+    "time": "Time",
+    "pickDateFirst": "Choose a day to see the free times.",
+    "noSlots": "No free times on this day. Please try another one.",
+    "bigGroupNote": "For groups of more than {max} guests the booking is a request: the restaurant will answer by email.",
+    "name": "First name",
+    "surname": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "phonePrefix": "Country code",
+    "phoneOther": "Other",
+    "phoneOtherHint": "Type the full number, starting with + and your country code.",
+    "notes": "Notes",
+    "notesHint": "Optional: allergies, high chair, other requests.",
+    "submit": "Book the table",
+    "submitGroup": "Send the request",
+    "privacy": "Your details are used only to manage your booking.",
+    "guestCount": "{count} guests",
+    "guestCountOne": "1 guest",
+    "backToMenu": "Back to the menu",
+    "fieldErrors": {
+      "time": "Choose a time.",
+      "name": "Enter your first name.",
+      "surname": "Enter your last name.",
+      "email": "Enter a valid email, e.g. name@example.com.",
+      "phone": "Enter a valid number: digits only, 6 to 15 including the country code.",
+      "phoneOther": "Enter the full number: + followed by 8 to 15 digits, e.g. +31612345678.",
+      "notes": "Notes can be at most 500 characters long."
+    },
+    "slotFull": {
+      "nearest": "This time has just filled up. The nearest free times are:",
+      "none": "This time has just filled up and there are no other free times. Please try another day."
+    },
+    "confirm": {
+      "title": "Book for {date} at {time}?",
+      "titleGroup": "Send the request for {date} at {time}?",
+      "message": "{guests}. We'll send an email to {email} to confirm the booking.",
+      "messageGroup": "{guests}. The restaurant will review the request and answer at {email}."
+    },
+    "result": {
+      "awaiting_verification": {
+        "title": "Check your email",
+        "text": "We've sent a link to {email}. Open it within 30 minutes to confirm: until then the table isn't held for you."
+      },
+      "pending": {
+        "title": "Request received",
+        "text": "The restaurant will review the request for your group and answer at {email}."
+      }
+    }
   },
   "menu": {
     "eyebrow": "Welcome to Comanda",
@@ -714,6 +775,18 @@
     "DISH_UNAVAILABLE": "One or more dishes are sold out or unavailable.",
     "ORDER_NOT_FOUND": "Ticket not found.",
     "INVALID_STATUS": "Invalid status.",
-    "INVALID_STATUS_TRANSITION": "This ticket has already been updated. Refresh the page."
+    "INVALID_STATUS_TRANSITION": "This ticket has already been updated. Refresh the page.",
+
+    "INVALID_PARTY_SIZE": "Enter a valid number of guests.",
+    "INVALID_DATE": "Choose a valid date.",
+    "INVALID_TIME": "This time can't be booked. Please choose another one.",
+    "BOOKING_IN_PAST": "This date or time has already passed.",
+    "BOOKING_TOO_FAR": "Bookings for this date aren't open yet.",
+    "RESTAURANT_CLOSED": "The restaurant is closed on this date. Please choose another day.",
+    "SLOT_FULL": "This time is fully booked.",
+    "RESERVATION_NOT_FOUND": "This link is not valid or has expired.",
+    "RESERVATION_NOT_CANCELLABLE": "This booking can't be cancelled.",
+    "RESERVATION_ALREADY_STARTED": "This booking has already started or passed.",
+    "INVALID_RESERVATION_TRANSITION": "This booking has already been updated. Refresh the page."
   }
 }

@@ -31,8 +31,8 @@ export const getSlots = async (req, res) => { // GET /api/reservations/slots?dat
   res.json({ date, partySize, slots: await getFreeSlots(settings, date, partySize) })
 }
 
-export const createReservation = async (req, res) => { // POST /api/reservations (public, form without Google): { name, surname, email, phone, date, time, partySize, notes }
-  const { name, surname, email, phone, date, time, partySize, notes } = req.body ?? {} // only these fields: status, source and tokens are never read from the client
+export const createReservation = async (req, res) => { // POST /api/reservations (public, form without Google): { name, surname, email, phone, date, time, partySize, notes, lang }
+  const { name, surname, email, phone, date, time, partySize, notes, lang } = req.body ?? {} // only these fields: status, source and tokens are never read from the client
 
   assertPartySize(partySize)
 
@@ -49,6 +49,7 @@ export const createReservation = async (req, res) => { // POST /api/reservations
     time,
     partySize,
     notes,
+    lang,
     tablesNeeded: getTablesNeeded(settings, partySize),
     source: "form",
     status: partySize > settings.maxPartySizeAuto ? "pending" : "awaiting_verification", // big groups: the admin decides

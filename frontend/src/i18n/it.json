@@ -11,6 +11,7 @@
     "mobile": "Navigazione",
     "menu": "Menu",
     "list": "La mia lista",
+    "book": "Prenota",
     "info": "Info",
     "about": "Chi siamo & contatti"
   },
@@ -40,6 +41,66 @@
   "confirm": {
     "cancel": "Annulla",
     "confirm": "Conferma"
+  },
+  "booking": {
+    "eyebrow": "Prenota",
+    "title": "Prenota un tavolo",
+    "lead": "Scegli il giorno e l'orario, poi lasciaci i tuoi contatti.",
+    "slow": "Ancora qualche secondo, stiamo aprendo le prenotazioni…",
+    "loadError": "Non riusciamo a caricare le prenotazioni in questo momento.",
+    "requiredLegend": "* campo obbligatorio",
+    "whenTitle": "Quando",
+    "contactTitle": "I tuoi dati",
+    "partySize": "Persone",
+    "date": "Giorno",
+    "time": "Orario",
+    "pickDateFirst": "Scegli un giorno per vedere gli orari liberi.",
+    "noSlots": "Nessun orario libero in questo giorno. Prova con un altro.",
+    "bigGroupNote": "Per i gruppi oltre {max} persone la prenotazione è una richiesta: il ristorante ti risponderà via email.",
+    "name": "Nome",
+    "surname": "Cognome",
+    "email": "Email",
+    "phone": "Telefono",
+    "phonePrefix": "Prefisso internazionale",
+    "phoneOther": "Altro",
+    "phoneOtherHint": "Scrivi il numero completo, iniziando con + e il prefisso del tuo Paese.",
+    "notes": "Note",
+    "notesHint": "Facoltativo: allergie, seggiolone, altre richieste.",
+    "submit": "Prenota il tavolo",
+    "submitGroup": "Invia la richiesta",
+    "privacy": "I tuoi dati sono usati solo per gestire la prenotazione.",
+    "guestCount": "{count} persone",
+    "guestCountOne": "1 persona",
+    "backToMenu": "Torna al menu",
+    "fieldErrors": {
+      "time": "Scegli un orario.",
+      "name": "Inserisci il tuo nome.",
+      "surname": "Inserisci il tuo cognome.",
+      "email": "Inserisci un'email valida, es: nome@esempio.it.",
+      "phone": "Inserisci un numero valido: solo cifre, da 6 a 15 compreso il prefisso.",
+      "phoneOther": "Inserisci il numero completo: + seguito da 8 a 15 cifre, es: +31612345678.",
+      "notes": "Le note possono avere al massimo 500 caratteri."
+    },
+    "slotFull": {
+      "nearest": "Questo orario si è appena riempito. Gli orari liberi più vicini sono:",
+      "none": "Questo orario si è appena riempito e non ci sono altri orari liberi. Prova con un altro giorno."
+    },
+    "confirm": {
+      "title": "Prenotare per il {date} alle {time}?",
+      "titleGroup": "Inviare la richiesta per il {date} alle {time}?",
+      "message": "{guests}. Ti invieremo un'email a {email} per confermare la prenotazione.",
+      "messageGroup": "{guests}. Il ristorante valuterà la richiesta e ti risponderà a {email}."
+    },
+    "result": {
+      "awaiting_verification": {
+        "title": "Controlla la tua email",
+        "text": "Abbiamo inviato un link a {email}. Aprilo entro 30 minuti per confermare: fino ad allora il tavolo non è riservato."
+      },
+      "pending": {
+        "title": "Richiesta ricevuta",
+        "text": "Il ristorante valuterà la richiesta per il tuo gruppo e ti risponderà a {email}."
+      }
+    }
   },
   "menu": {
     "eyebrow": "Benvenuto da Comanda",
@@ -714,6 +775,18 @@
     "DISH_UNAVAILABLE": "Uno o più piatti sono esauriti o non disponibili.",
     "ORDER_NOT_FOUND": "Comanda non trovata.",
     "INVALID_STATUS": "Stato non valido.",
-    "INVALID_STATUS_TRANSITION": "La comanda è già stata aggiornata. Aggiorna la pagina."
+    "INVALID_STATUS_TRANSITION": "La comanda è già stata aggiornata. Aggiorna la pagina.",
+
+    "INVALID_PARTY_SIZE": "Inserisci un numero di persone valido.",
+    "INVALID_DATE": "Scegli una data valida.",
+    "INVALID_TIME": "Questo orario non è prenotabile. Scegline un altro.",
+    "BOOKING_IN_PAST": "Questa data o questo orario sono già passati.",
+    "BOOKING_TOO_FAR": "Non è ancora possibile prenotare per questa data.",
+    "RESTAURANT_CLOSED": "Il ristorante è chiuso in questa data. Scegli un altro giorno.",
+    "SLOT_FULL": "Questo orario è al completo.",
+    "RESERVATION_NOT_FOUND": "Questo link non è valido o è scaduto.",
+    "RESERVATION_NOT_CANCELLABLE": "Questa prenotazione non può essere annullata.",
+    "RESERVATION_ALREADY_STARTED": "Questa prenotazione è già iniziata o passata.",
+    "INVALID_RESERVATION_TRANSITION": "La prenotazione è già stata aggiornata. Aggiorna la pagina."
   }
 }

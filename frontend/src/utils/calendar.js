@@ -6,6 +6,12 @@ const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1) // "lu
 export const weekdayName = (weekday, lang) =>
   capitalize(new Intl.DateTimeFormat(lang, { weekday: 'long', timeZone: 'UTC' }).format(new Date(Date.UTC(2026, 0, 4 + weekday))))
 
+// ("2026-12-30", 3) → "2027-01-02". In UTC every day is 24 hours long, even when Italy changes the clocks
+export const addDays = (isoDate, days) => {
+  const [year, month, day] = isoDate.split('-').map(Number)
+  return new Date(Date.UTC(year, month - 1, day + days)).toISOString().slice(0, 10)
+}
+
 // "2027-08-16" → "16 agosto 2027" / "16 August 2027"
 export const formatDate = (isoDate, lang) => {
   const [year, month, day] = isoDate.split('-').map(Number)
