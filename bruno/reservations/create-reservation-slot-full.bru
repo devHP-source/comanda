@@ -1,39 +1,77 @@
 meta {
-  name: Create reservation - slot full (409)
+  name: Create reservation - slot full (409), settings restored (200)
   type: http
   seq: 21
 }
 
-post {
-  url: {{baseUrl}}/reservations
+put {
+  url: {{baseUrl}}/settings
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
 }
 
 body:json {
   {
-    "name": "Bruno",
-    "surname": "Pieno",
-    "email": "guest@comanda.test",
-    "phone": "+393331234567",
-    "date": "{{openDate}}",
-    "time": "20:00",
-    "partySize": 2
+    "maxOnlineTables": 36
   }
 }
 
+script:pre-request {
+  // This request's own call (above) is the restore, and it always follows this script: a run that stops or fails can't leave the restaurant with 0 online tables
+  const axios = require("axios")
+  const baseUrl = bru.getEnvVar("baseUrl")
+  const headers = { Authorization: `Bearer ${bru.getVar("adminToken")}` }
+
+  const call = async (send) => { // axios throws on a 4xx: here that's the answer we want to look at
+    try {
+      const { status, data } = await send()
+      return { status, body: data }
+    } catch (err) {
+      return { status: err.response?.status ?? err.message, body: err.response?.data ?? {} }
+    }
+  }
+
+  const booking = {
+    name: "Bruno",
+    surname: "Pieno",
+    email: "guest@comanda.test",
+    phone: "+393331234567",
+    date: bru.getVar("openDate"),
+    time: "20:00",
+    partySize: 2,
+  }
+
+  const closed = await call(() => axios.put(`${baseUrl}/settings`, { maxOnlineTables: 0 }, { headers }))
+  const create = closed.status === 200
+    ? await call(() => axios.post(`${baseUrl}/reservations`, booking))
+    : closed
+
+  bru.setVar("slotFullCreate", create)
+}
+
 assert {
-  res.status: eq 409
-  res.body.code: eq SLOT_FULL
-  res.body.errors.slots: isArray
+  res.status: eq 200
+  res.body.maxOnlineTables: eq 36
 }
 
 tests {
+  test("the booking was refused with 409 SLOT_FULL", () => {
+    const create = bru.getVar("slotFullCreate")
+    expect(create.status).to.equal(409)
+    expect(create.body.code).to.equal("SLOT_FULL")
+    expect(create.body.errors.slots).to.be.an("array")
+  })
+
   test("the whole day is full, so nothing can be suggested", () => {
-    expect(res.body.errors.slots).to.have.lengthOf(0)
+    expect(bru.getVar("slotFullCreate").body.errors.slots).to.have.lengthOf(0)
   })
 }
 
 docs {
-  Needs "Slot full - setup" just before it and openDate from "Get slots - open day". On a partly full day errors.slots holds up to 3 free times, nearest first.
+  With no online tables every slot is full, without needing confirmed bookings: the script closes the online tables and sends the booking, then this request restores them. On a partly full day errors.slots holds up to 3 free times, nearest first.
+  Needs adminToken from "Login - admin" and openDate from "Get slots - open day".
 }

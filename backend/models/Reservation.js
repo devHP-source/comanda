@@ -77,7 +77,7 @@ const reservationSchema = new mongoose.Schema(
       enum: RESERVATION_STATUSES,
       default: "awaiting_verification",
     },
-    verifyToken: { // only bookings waiting for the email link have one
+    verifyToken: { // only bookings that go through the email link have one. Kept after confirming, so a second click isn't told the link is invalid
       type: String,
       unique: true,
       sparse: true,

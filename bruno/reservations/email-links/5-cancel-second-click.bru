@@ -1,0 +1,26 @@
+meta {
+  name: 5. Cancel - second click (200)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/reservations/cancel/{{process.env.CANCEL_TOKEN}}
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  if (bru.getProcessEnv("RUN_EMAIL_LINKS") !== "true") {
+    bru.runner.skipRequest()
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq cancelled
+}
+
+docs {
+  Also proves that cancelling didn't replace the cancel token. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+}

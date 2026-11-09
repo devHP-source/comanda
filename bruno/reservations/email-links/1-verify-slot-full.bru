@@ -1,0 +1,67 @@
+meta {
+  name: 1. Verify - now full (409), settings restored (200)
+  type: http
+  seq: 1
+}
+
+put {
+  url: {{baseUrl}}/settings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "maxOnlineTables": 36
+  }
+}
+
+script:pre-request {
+  if (bru.getProcessEnv("RUN_EMAIL_LINKS") !== "true") {
+    bru.runner.skipRequest()
+  } else {
+    // This request's own call (above) is the restore, and it always follows this script: a run that stops or fails can't leave the restaurant with 0 online tables
+    const axios = require("axios")
+    const baseUrl = bru.getEnvVar("baseUrl")
+    const headers = { Authorization: `Bearer ${bru.getVar("adminToken")}` }
+
+    const call = async (send) => { // axios throws on a 4xx: here that's the answer we want to look at
+      try {
+        const { status, data } = await send()
+        return { status, body: data }
+      } catch (err) {
+        return { status: err.response?.status ?? err.message, body: err.response?.data ?? {} }
+      }
+    }
+
+    const closed = await call(() => axios.put(`${baseUrl}/settings`, { maxOnlineTables: 0 }, { headers }))
+    const verify = closed.status === 200
+      ? await call(() => axios.get(`${baseUrl}/reservations/verify/${bru.getProcessEnv("VERIFY_TOKEN")}`))
+      : closed
+
+    bru.setVar("slotFullVerify", verify)
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.maxOnlineTables: eq 36
+}
+
+tests {
+  test("the verify link answered 409 SLOT_FULL with suggested times", () => {
+    const verify = bru.getVar("slotFullVerify")
+    expect(verify.status).to.equal(409)
+    expect(verify.body.code).to.equal("SLOT_FULL")
+    expect(verify.body.errors.slots).to.be.an("array")
+  })
+}
+
+docs {
+  The restaurant fills up after the booking was made: the script closes the online tables and clicks the link, then this request restores them. With 0 online tables errors.slots is empty; on a partly full day it holds up to 3 free times.
+  The booking stays awaiting_verification: request 2 confirms it with the same link. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+}

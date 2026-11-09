@@ -1,0 +1,26 @@
+meta {
+  name: 3. Verify - second click (200)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/reservations/verify/{{process.env.VERIFY_TOKEN}}
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  if (bru.getProcessEnv("RUN_EMAIL_LINKS") !== "true") {
+    bru.runner.skipRequest()
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq confirmed
+}
+
+docs {
+  Clicking the link again changes nothing, and no new cancel link is printed. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+}

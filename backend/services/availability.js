@@ -73,6 +73,11 @@ const slotHasRoom = (bookings, slot, tablesNeeded, { avgDurationMinutes, maxOnli
 
 export const getTablesNeeded = (settings, partySize) => Math.ceil(partySize / settings.seatsPerTable)
 
+export const hasBookingStarted = (date, time) => {
+  const now = romeNow()
+  return `${date} ${time}` <= `${now.date} ${now.time}` // "YYYY-MM-DD HH:mm" strings sort in time order
+}
+
 export const assertBookableDate = (settings, date) => {
   if (!isRealDate(date)) throw availabilityError("INVALID_DATE", "date must be a real date as YYYY-MM-DD")
 

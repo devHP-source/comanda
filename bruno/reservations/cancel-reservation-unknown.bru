@@ -1,0 +1,16 @@
+meta {
+  name: Cancel link - unknown token (404)
+  type: http
+  seq: 24
+}
+
+post {
+  url: {{baseUrl}}/reservations/cancel/not-a-real-token
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+  res.body.code: eq RESERVATION_NOT_FOUND
+}

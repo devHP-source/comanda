@@ -1,0 +1,37 @@
+meta {
+  name: 2. Verify - confirmed (200)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/reservations/verify/{{process.env.VERIFY_TOKEN}}
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  if (bru.getProcessEnv("RUN_EMAIL_LINKS") !== "true") {
+    bru.runner.skipRequest()
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq confirmed
+}
+
+tests {
+  test("a confirmed booking never expires", () => {
+    expect(res.body).to.not.have.property("expiresAt")
+  })
+
+  test("the tokens are never sent to the client", () => {
+    expect(res.body).to.not.have.property("verifyToken")
+    expect(res.body).to.not.have.property("cancelToken")
+  })
+}
+
+docs {
+  Prints the cancel link in the backend console: copy its token into bruno/.env as CANCEL_TOKEN. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+}

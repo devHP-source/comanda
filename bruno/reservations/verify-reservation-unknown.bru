@@ -1,0 +1,20 @@
+meta {
+  name: Verify link - unknown token (404)
+  type: http
+  seq: 23
+}
+
+get {
+  url: {{baseUrl}}/reservations/verify/not-a-real-token
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+  res.body.code: eq RESERVATION_NOT_FOUND
+}
+
+docs {
+  Same answer for a link that has expired (30 minutes) and for one whose booking was cancelled.
+}

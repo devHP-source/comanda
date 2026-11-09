@@ -1,0 +1,33 @@
+meta {
+  name: 4. Cancel - cancelled (200)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/reservations/cancel/{{process.env.CANCEL_TOKEN}}
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  if (bru.getProcessEnv("RUN_EMAIL_LINKS") !== "true") {
+    bru.runner.skipRequest()
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq cancelled
+}
+
+tests {
+  test("the tokens are never sent to the client", () => {
+    expect(res.body).to.not.have.property("verifyToken")
+    expect(res.body).to.not.have.property("cancelToken")
+  })
+}
+
+docs {
+  Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+}
