@@ -1,0 +1,24 @@
+meta {
+  name: List reservations - impossible date (400)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/reservations?date=2026-13-40
+  body: none
+  auth: bearer
+}
+
+params:query {
+  date: 2026-13-40
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_DATE
+}

@@ -8,7 +8,7 @@ docs {
 
   To run them, one at a time and in order:
   1. Add RUN_EMAIL_LINKS=true to bruno/.env.
-  2. Send "Login - admin" for adminToken, then "Create reservation - form", and copy the token at the end of the printed verify link into bruno/.env as VERIFY_TOKEN (it lasts 30 minutes).
+  2. Send "Login - admin" for adminToken, "Get slots - open day" for openDate, then "Create reservation - form", and copy the token at the end of the printed verify link into bruno/.env as VERIFY_TOKEN (it lasts 30 minutes).
   3. Send requests 1 and 2. Request 2 prints the cancel link: copy its token into bruno/.env as CANCEL_TOKEN.
   4. Send the remaining requests.
   5. Remove RUN_EMAIL_LINKS from bruno/.env, or the next full run will fail on the used tokens.

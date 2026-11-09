@@ -1,0 +1,26 @@
+meta {
+  name: Update status - bad id (400)
+  type: http
+  seq: 10
+}
+
+patch {
+  url: {{baseUrl}}/reservations/not-an-id/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "status": "confirmed"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_ID
+}

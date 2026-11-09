@@ -1,0 +1,30 @@
+meta {
+  name: Update status - unverified booking can't be confirmed (409)
+  type: http
+  seq: 12
+}
+
+patch {
+  url: {{baseUrl}}/reservations/{{awaitingReservationId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "status": "confirmed"
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq INVALID_RESERVATION_TRANSITION
+}
+
+docs {
+  Only the email link can confirm it. Needs request 1 (Setup).
+}

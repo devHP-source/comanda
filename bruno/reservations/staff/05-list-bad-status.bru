@@ -1,0 +1,24 @@
+meta {
+  name: List reservations - unknown status (400)
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/reservations?status=pending,nope
+  body: none
+  auth: bearer
+}
+
+params:query {
+  status: pending,nope
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_STATUS
+}

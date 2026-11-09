@@ -1,0 +1,30 @@
+meta {
+  name: Update status - status not settable (400)
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{baseUrl}}/reservations/{{pendingReservationId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "status": "awaiting_verification"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_STATUS
+}
+
+docs {
+  awaiting_verification is a real status, but only POST /api/reservations can set it.
+}

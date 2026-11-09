@@ -1,0 +1,26 @@
+meta {
+  name: Update status - confirmed twice (409)
+  type: http
+  seq: 14
+}
+
+patch {
+  url: {{baseUrl}}/reservations/{{pendingReservationId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "status": "confirmed"
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq INVALID_RESERVATION_TRANSITION
+}

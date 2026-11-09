@@ -1,0 +1,20 @@
+meta {
+  name: List reservations - kitchen (403)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/reservations
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{kitchenToken}}
+}
+
+assert {
+  res.status: eq 403
+  res.body.code: eq FORBIDDEN
+}

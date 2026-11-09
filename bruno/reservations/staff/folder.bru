@@ -1,0 +1,10 @@
+meta {
+  name: staff
+  seq: 26
+}
+
+docs {
+  Staff list and status changes. Self-contained: request 1 logs in, computes openDate and creates the bookings the others use, so the folder works on its own and whatever order the app runs folders in. Run the requests in order. Expects the default settings.
+
+  The POST limit is 10 bookings per IP every 15 minutes, and a server restart resets the count. This folder saves 3, the rest of reservations 2: two full runs fit in the window.
+}

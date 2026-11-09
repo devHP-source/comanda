@@ -1,0 +1,31 @@
+meta {
+  name: Update status - confirmed to cancelled (200)
+  type: http
+  seq: 15
+}
+
+patch {
+  url: {{baseUrl}}/reservations/{{pendingReservationId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "status": "cancelled"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq cancelled
+  res.body.handledBy.name: isString
+}
+
+docs {
+  Also frees the tables held by request 13, so repeated runs don't fill the restaurant.
+}

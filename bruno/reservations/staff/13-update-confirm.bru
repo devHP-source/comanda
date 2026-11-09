@@ -1,0 +1,42 @@
+meta {
+  name: Update status - pending to confirmed (200)
+  type: http
+  seq: 13
+}
+
+patch {
+  url: {{baseUrl}}/reservations/{{pendingReservationId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "status": "confirmed"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq confirmed
+  res.body.handledBy.name: isString
+}
+
+tests {
+  test("the tokens are never sent to the client", () => {
+    expect(res.body).to.not.have.property("verifyToken")
+    expect(res.body).to.not.have.property("cancelToken")
+  })
+
+  test("a confirmed booking never expires", () => {
+    expect(res.body).to.not.have.property("expiresAt")
+  })
+}
+
+docs {
+  Needs request 1 (Setup).
+}

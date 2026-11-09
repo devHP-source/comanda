@@ -1,0 +1,45 @@
+meta {
+  name: List reservations - admin, date and status filters (200)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/reservations?date={{openDate}}&status=pending,awaiting_verification&limit=100
+  body: none
+  auth: bearer
+}
+
+params:query {
+  date: {{openDate}}
+  status: pending,awaiting_verification
+  limit: 100
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.data: isArray
+}
+
+tests {
+  test("only that date and those statuses", () => {
+    for (const booking of res.body.data) {
+      expect(booking.date).to.equal(bru.getVar("openDate"))
+      expect(["pending", "awaiting_verification"]).to.include(booking.status)
+    }
+  })
+
+  test("finds the bookings created by this run", () => {
+    const ids = res.body.data.map((booking) => booking._id)
+    expect(ids).to.include(bru.getVar("pendingReservationId"))
+    expect(ids).to.include(bru.getVar("awaitingReservationId"))
+  })
+}
+
+docs {
+  status is a comma list, as in GET /api/orders. Needs request 1 (Setup).
+}

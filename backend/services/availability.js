@@ -21,7 +21,7 @@ const availabilityError = (code, message) => {
   return err
 }
 
-const romeNow = () => {
+export const romeNow = () => {
   const parts = Object.fromEntries(romeClock.formatToParts(new Date()).map(({ type, value }) => [type, value]))
   return { date: `${parts.year}-${parts.month}-${parts.day}`, time: `${parts.hour}:${parts.minute}` }
 }

@@ -1,0 +1,51 @@
+meta {
+  name: List reservations - admin, one page (200)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/reservations?page=1&limit=5
+  body: none
+  auth: bearer
+}
+
+params:query {
+  page: 1
+  limit: 5
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.data: isArray
+  res.body.page: eq 1
+  res.body.totalPages: isNumber
+  res.body.total: isNumber
+}
+
+tests {
+  test("respects the limit", () => {
+    expect(res.body.data.length).to.be.at.most(5)
+  })
+
+  test("latest day first, service order inside a day", () => {
+    const days = res.body.data.map((booking) => booking.date)
+    expect(days).to.deep.equal([...days].sort().reverse())
+
+    for (const day of new Set(days)) {
+      const times = res.body.data.filter((booking) => booking.date === day).map((booking) => booking.time)
+      expect(times).to.deep.equal([...times].sort())
+    }
+  })
+
+  test("the tokens are never sent to the client", () => {
+    for (const booking of res.body.data) {
+      expect(booking).to.not.have.property("verifyToken")
+      expect(booking).to.not.have.property("cancelToken")
+    }
+  })
+}

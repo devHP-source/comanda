@@ -1,0 +1,27 @@
+meta {
+  name: Update status - pending to rejected (200)
+  type: http
+  seq: 18
+}
+
+patch {
+  url: {{baseUrl}}/reservations/{{rejectReservationId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "status": "rejected"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq rejected
+  res.body.handledBy.name: isString
+}

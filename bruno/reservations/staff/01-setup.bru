@@ -1,0 +1,88 @@
+meta {
+  name: Setup - login, open date, bookings to handle (201 pending)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/reservations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bruno",
+    "surname": "Gruppo",
+    "email": "big-group@comanda.test",
+    "phone": "+393331234567",
+    "date": "{{openDate}}",
+    "time": "20:00",
+    "partySize": 11
+  }
+}
+
+script:pre-request {
+  // Everything this folder uses is created here: the app runs a subfolder before its parent's requests, so nothing from outside can be relied on
+  const axios = require("axios")
+  const baseUrl = bru.getEnvVar("baseUrl")
+
+  const login = async (role) => {
+    const { data } = await axios.post(`${baseUrl}/auth/login`, {
+      email: bru.getProcessEnv(`SEED_${role}_EMAIL`),
+      password: bru.getProcessEnv(`SEED_${role}_PASSWORD`),
+    })
+    return data.token
+  }
+
+  bru.setVar("adminToken", await login("ADMIN"))
+  bru.setVar("waiterToken", await login("WAITER"))
+  bru.setVar("kitchenToken", await login("KITCHEN"))
+
+  // The first Wednesday at least 2 days ahead: open with the default closedDays
+  const date = new Date()
+  date.setUTCDate(date.getUTCDate() + 2)
+  while (date.getUTCDay() !== 3) date.setUTCDate(date.getUTCDate() + 1)
+  const openDate = date.toISOString().slice(0, 10)
+  bru.setVar("openDate", openDate)
+
+  const book = async (surname, partySize) => {
+    const { data } = await axios.post(`${baseUrl}/reservations`, {
+      name: "Bruno",
+      surname,
+      email: "guest@comanda.test",
+      phone: "+393331234567",
+      date: openDate,
+      time: "20:00",
+      partySize,
+    })
+    return data._id
+  }
+
+  bru.setVar("awaitingReservationId", await book("Verifica", 5))
+  bru.setVar("rejectReservationId", await book("Rifiuto", 12))
+}
+
+script:post-response {
+  // This request's own booking: confirmed, then cancelled, by the requests below
+  if (res.status === 201) {
+    bru.setVar("pendingReservationId", res.body._id)
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.status: eq pending
+  res.body.tablesNeeded: eq 3
+}
+
+tests {
+  test("a pending booking never expires", () => {
+    expect(res.body).to.not.have.property("expiresAt")
+  })
+}
+
+docs {
+  Logs in the three roles, computes openDate and creates the 3 bookings this folder uses: this request's big group (more guests than maxPartySizeAuto: waits for the admin, no verify link), one more to reject and one unverified. They stay in the database until deleted.
+  If this request fails, the rest of the folder fails too: check bruno/.env, and the POST limit (429 TOO_MANY_REQUESTS, see the folder docs).
+}

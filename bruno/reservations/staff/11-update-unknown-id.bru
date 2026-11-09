@@ -1,0 +1,26 @@
+meta {
+  name: Update status - unknown id (404)
+  type: http
+  seq: 11
+}
+
+patch {
+  url: {{baseUrl}}/reservations/000000000000000000000000/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "status": "confirmed"
+  }
+}
+
+assert {
+  res.status: eq 404
+  res.body.code: eq RESERVATION_NOT_FOUND
+}

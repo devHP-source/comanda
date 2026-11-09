@@ -90,7 +90,7 @@ const reservationSchema = new mongoose.Schema(
       select: false,
     },
     expiresAt: Date, // the TTL index below deletes the booking at this moment
-    handledBy: { // the admin who confirmed or rejected it
+    handledBy: { // the admin who last changed its status
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },

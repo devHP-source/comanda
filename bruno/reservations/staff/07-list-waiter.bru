@@ -1,0 +1,55 @@
+meta {
+  name: List reservations - waiter, today's confirmed only (200)
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/reservations?date={{openDate}}&status=pending
+  body: none
+  auth: bearer
+}
+
+params:query {
+  date: {{openDate}}
+  status: pending
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.date: isString
+  res.body.data: isArray
+}
+
+tests {
+  test("only today's bookings (Europe/Rome), whatever the filters say", () => {
+    expect(res.body.date).to.not.equal(bru.getVar("openDate")) // the date asked for in the URL is ignored
+
+    for (const booking of res.body.data) {
+      expect(booking.date).to.equal(res.body.date)
+    }
+  })
+
+  test("the guest's email is never sent to a waiter", () => {
+    for (const booking of res.body.data) {
+      expect(booking).to.not.have.property("email")
+    }
+  })
+
+  test("only the fields a waiter needs", () => {
+    const fields = ["_id", "date", "name", "notes", "partySize", "phone", "surname", "tablesNeeded", "time"]
+
+    for (const booking of res.body.data) {
+      expect(Object.keys(booking).sort()).to.deep.equal(fields)
+    }
+  })
+}
+
+docs {
+  The list can be empty: this collection never makes bookings for today, and on Mondays the restaurant is closed. With an empty list the two field checks have nothing to look at, so they pass without proving anything.
+  To really test them: in Compass set a booking to status confirmed with today's date, then send this request.
+}
