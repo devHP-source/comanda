@@ -4,6 +4,7 @@ import api, { getErrorCode } from '../../api/client.js'
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog.jsx'
 import LoadingState from '../LoadingState/LoadingState.jsx'
 import Skeleton from '../Skeleton/Skeleton.jsx'
+import Turnstile from '../Turnstile/Turnstile.jsx'
 import useLanguage from '../../hooks/useLanguage.js'
 import { addDays, formatDate } from '../../utils/calendar.js'
 import { romeNow } from '../../utils/kitchenStatus.js'
@@ -36,6 +37,8 @@ const BookingForm = ({ settings, onBooked }) => {
   const [slotAttempt, setSlotAttempt] = useState(0)
   const [nearestTimes, setNearestTimes] = useState(null) // after SLOT_FULL: the closest free times
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState(null)
+  const [captchaKey, setCaptchaKey] = useState(0) // a new key = a new widget = a new token
   const timeRef = useRef(null)
   const phoneRef = useRef(null)
 
@@ -131,9 +134,12 @@ const BookingForm = ({ settings, onBooked }) => {
         partySize: guests,
         notes: form.notes.trim(),
         lang,
+        turnstileToken: captchaToken,
       })
       onBooked(data)
     } catch (error) {
+      setCaptchaToken(null)
+      setCaptchaKey((current) => current + 1) // the token works once, and the server may already have used it
       handleBookingError(error)
     }
   }
@@ -337,7 +343,15 @@ const BookingForm = ({ settings, onBooked }) => {
         </div>
       )}
 
-      <button type="submit" className={styles.submit}>
+      <Turnstile key={captchaKey} onToken={setCaptchaToken} />
+      {!captchaToken && <p id="book-captcha-hint" className={styles.captchaHint}>{t('booking.captcha.waiting')}</p>}
+
+      <button
+        type="submit"
+        className={styles.submit}
+        disabled={!captchaToken}
+        aria-describedby={captchaToken ? undefined : 'book-captcha-hint'}
+      >
         {t(isBigGroup ? 'booking.submitGroup' : 'booking.submit')}
       </button>
       <p className={styles.privacy}>{t('booking.privacy')}</p>

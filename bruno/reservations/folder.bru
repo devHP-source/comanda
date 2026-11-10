@@ -3,7 +3,18 @@ meta {
   seq: 15
 }
 
+script:pre-request {
+  // A new address before every request: the per-email limit (3 open bookings per hour) never trips on a normal run, however many runs in a row
+  bru.setVar("guestEmail", `guest-${Date.now()}@comanda.test`)
+}
+
 docs {
   Public requests: no token needed, except "Create reservation - slot full" (admin). The staff/ subfolder logs in by itself. Expects the default settings (run the whole settings folder, its last request restores them).
   Dates are computed before each request and kept at least 2 days from today, so a run near midnight can't fail.
+
+  Bot protection: every booking sends turnstileToken from the environment (Cloudflare's dummy token XXXX.DUMMY.TOKEN.XXXX). The server checks it first, before any rule or query.
+  - local: the test secret in backend/.env accepts the dummy token, so every request runs.
+  - render (liveCaptcha = true): the real secret refuses it. "Create reservation - form" expects 400 CAPTCHA_FAILED (live proof that a request without a real token is stopped), "party size as text" still fails on its own (checked before the token), and every other booking request skips itself, as do the staff requests that need a saved booking. A real booking on the live site is tested by hand in the browser.
+
+  Per-IP limit: 10 bookings saved per IP every 15 minutes (429 TOO_MANY_REQUESTS); failed requests don't count. A full local run saves 8 (staff/ 3, this folder 5: form, extra fields and the 3 of "email limit"). To run the collection twice in a row, restart the backend in between (type rs in the nodemon terminal): the per-IP count lives in memory, the per-email limit in MongoDB, so the second run still proves the fresh addresses work.
 }

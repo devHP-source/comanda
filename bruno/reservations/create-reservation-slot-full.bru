@@ -11,7 +11,7 @@ put {
 }
 
 auth:bearer {
-  token: {{adminToken}}
+  token: {{slotFullAdminToken}}
 }
 
 body:json {
@@ -21,36 +21,58 @@ body:json {
 }
 
 script:pre-request {
-  // This request's own call (above) is the restore, and it always follows this script: a run that stops or fails can't leave the restaurant with 0 online tables
-  const axios = require("axios")
-  const baseUrl = bru.getEnvVar("baseUrl")
-  const headers = { Authorization: `Bearer ${bru.getVar("adminToken")}` }
+  // This request's own call (above) is the restore, and it always follows this script: a run that stops or fails can't leave the restaurant with 0 online tables.
+  // Self-contained: it logs in as admin and computes its own date, so no other request (or an old, expired token) can break it.
+  // The script never throws: every call goes through call(), so the restore always runs.
+  if (bru.getEnvVar("liveCaptcha") === "true") {
+    bru.runner.skipRequest() // render: the dummy token is refused before the capacity check. Nothing was changed, so there is nothing to restore
+  } else {
+    const axios = require("axios")
+    const baseUrl = bru.getEnvVar("baseUrl")
 
-  const call = async (send) => { // axios throws on a 4xx: here that's the answer we want to look at
-    try {
-      const { status, data } = await send()
-      return { status, body: data }
-    } catch (err) {
-      return { status: err.response?.status ?? err.message, body: err.response?.data ?? {} }
+    const call = async (send) => { // axios throws on a 4xx: here that's the answer we want to look at
+      try {
+        const { status, data } = await send()
+        return { status, body: data }
+      } catch (err) {
+        return { status: err.response?.status ?? err.message, body: err.response?.data ?? {} }
+      }
+    }
+
+    const login = await call(() => axios.post(`${baseUrl}/auth/login`, {
+      email: bru.getProcessEnv("SEED_ADMIN_EMAIL"),
+      password: bru.getProcessEnv("SEED_ADMIN_PASSWORD"),
+    }))
+    bru.setVar("slotFullAdminToken", login.body.token ?? "") // used by the restore above too
+
+    if (login.status !== 200) {
+      bru.setVar("slotFullCreate", { status: `admin login failed: ${login.status}`, body: login.body }) // nothing was closed, so nothing to restore
+    } else {
+      // The first Wednesday at least 2 days ahead: open with the default closedDays
+      const date = new Date()
+      date.setUTCDate(date.getUTCDate() + 2)
+      while (date.getUTCDay() !== 3) date.setUTCDate(date.getUTCDate() + 1)
+
+      const booking = {
+        name: "Bruno",
+        surname: "Pieno",
+        email: bru.getVar("guestEmail"),
+        phone: "+393331234567",
+        date: date.toISOString().slice(0, 10),
+        time: "20:00",
+        partySize: 2,
+        turnstileToken: bru.getEnvVar("turnstileToken"),
+      }
+
+      const headers = { Authorization: `Bearer ${login.body.token}` }
+      const closed = await call(() => axios.put(`${baseUrl}/settings`, { maxOnlineTables: 0 }, { headers }))
+      const create = closed.status === 200
+        ? await call(() => axios.post(`${baseUrl}/reservations`, booking))
+        : { status: `closing the online tables failed: ${closed.status}`, body: closed.body }
+
+      bru.setVar("slotFullCreate", create)
     }
   }
-
-  const booking = {
-    name: "Bruno",
-    surname: "Pieno",
-    email: "guest@comanda.test",
-    phone: "+393331234567",
-    date: bru.getVar("openDate"),
-    time: "20:00",
-    partySize: 2,
-  }
-
-  const closed = await call(() => axios.put(`${baseUrl}/settings`, { maxOnlineTables: 0 }, { headers }))
-  const create = closed.status === 200
-    ? await call(() => axios.post(`${baseUrl}/reservations`, booking))
-    : closed
-
-  bru.setVar("slotFullCreate", create)
 }
 
 assert {
@@ -67,11 +89,11 @@ tests {
   })
 
   test("the whole day is full, so nothing can be suggested", () => {
-    expect(bru.getVar("slotFullCreate").body.errors.slots).to.have.lengthOf(0)
+    expect(bru.getVar("slotFullCreate").body.errors?.slots).to.have.lengthOf(0)
   })
 }
 
 docs {
-  With no online tables every slot is full, without needing confirmed bookings: the script closes the online tables and sends the booking, then this request restores them. On a partly full day errors.slots holds up to 3 free times, nearest first.
-  Needs adminToken from "Login - admin" and openDate from "Get slots - open day".
+  With no online tables every slot is full, without needing confirmed bookings: the script closes the online tables and sends the booking, then this request restores them (maxOnlineTables 36). On a partly full day errors.slots holds up to 3 free times, nearest first.
+  Self-contained: logs in as admin by itself (SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD from bruno/.env, its own slotFullAdminToken) and computes its own open date, so it works alone, in any run order, and never with an expired token. The restore uses the same fresh token, and the script never throws, so the restore always runs once the tables were closed; if the login fails nothing was closed, and the tests say why.
 }

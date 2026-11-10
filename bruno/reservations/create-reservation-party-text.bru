@@ -14,11 +14,12 @@ body:json {
   {
     "name": "Bruno",
     "surname": "Test",
-    "email": "guest@comanda.test",
+    "email": "{{guestEmail}}",
     "phone": "+393331234567",
     "date": "{{openDate}}",
     "time": "20:00",
-    "partySize": "4"
+    "partySize": "4",
+    "turnstileToken": "{{turnstileToken}}"
   }
 }
 
@@ -28,5 +29,5 @@ assert {
 }
 
 docs {
-  Needs openDate from "Get slots - open day".
+  The party size is checked before the captcha token, so this request runs on render too. Needs openDate from "Get slots - open day".
 }

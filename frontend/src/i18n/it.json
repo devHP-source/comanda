@@ -69,6 +69,11 @@
     "submit": "Prenota il tavolo",
     "submitGroup": "Invia la richiesta",
     "privacy": "I tuoi dati sono usati solo per gestire la prenotazione.",
+    "captcha": {
+      "label": "Verifica di sicurezza",
+      "waiting": "Attendi la verifica di sicurezza qui sopra per poter prenotare.",
+      "blocked": "Non riusciamo a caricare la verifica di sicurezza. Se usi un ad-blocker, disattivalo per questa pagina e riprova."
+    },
     "guestCount": "{count} persone",
     "guestCountOne": "1 persona",
     "backToMenu": "Torna al menu",
@@ -855,6 +860,9 @@
     "RESERVATION_NOT_CANCELLABLE": "Questa prenotazione non può essere annullata.",
     "RESERVATION_ALREADY_STARTED": "Questa prenotazione è già iniziata o passata.",
     "INVALID_RESERVATION_TRANSITION": "La prenotazione è già stata aggiornata. Aggiorna la pagina.",
-    "EMAIL_SEND_FAILED": "Non siamo riusciti a inviare l'email di conferma. Riprova tra qualche minuto."
+    "EMAIL_SEND_FAILED": "Non siamo riusciti a inviare l'email di conferma. Riprova tra qualche minuto.",
+    "CAPTCHA_FAILED": "La verifica di sicurezza non è riuscita. Completala di nuovo e riprova.",
+    "CAPTCHA_UNAVAILABLE": "La verifica di sicurezza non è disponibile in questo momento. Riprova tra qualche minuto.",
+    "TOO_MANY_BOOKINGS": "Ci sono già troppe prenotazioni in attesa per questa email. Controlla la tua casella o riprova tra un'ora."
   }
 }

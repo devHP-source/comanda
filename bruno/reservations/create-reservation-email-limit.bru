@@ -1,0 +1,69 @@
+meta {
+  name: Create reservation - 4th open booking for one email (429)
+  type: http
+  seq: 20
+}
+
+post {
+  url: {{baseUrl}}/reservations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bruno",
+    "surname": "Limite",
+    "email": "{{limitEmail}}",
+    "phone": "+393331234567",
+    "date": "{{openDate}}",
+    "time": "20:00",
+    "partySize": 2,
+    "turnstileToken": "{{turnstileToken}}"
+  }
+}
+
+script:pre-request {
+  if (bru.getEnvVar("liveCaptcha") === "true") {
+    bru.runner.skipRequest() // the 3 bookings below can't be saved with the dummy token on render
+  } else {
+    const axios = require("axios")
+    const limitEmail = `limit-${Date.now()}@comanda.test` // its own address: only this request's bookings count
+    bru.setVar("limitEmail", limitEmail)
+
+    const statuses = []
+    for (let i = 1; i <= 3; i++) {
+      try {
+        const { status } = await axios.post(`${bru.getEnvVar("baseUrl")}/reservations`, {
+          name: "Bruno",
+          surname: `Limite ${i}`,
+          email: limitEmail,
+          phone: "+393331234567",
+          date: bru.getVar("openDate"),
+          time: "20:00",
+          partySize: 2,
+          turnstileToken: bru.getEnvVar("turnstileToken"),
+        })
+        statuses.push(status)
+      } catch (err) {
+        statuses.push(err.response?.status ?? err.message)
+      }
+    }
+    bru.setVar("emailLimitStatuses", statuses)
+  }
+}
+
+assert {
+  res.status: eq 429
+  res.body.code: eq TOO_MANY_BOOKINGS
+}
+
+tests {
+  test("the first 3 bookings for the address were saved", () => {
+    expect(bru.getVar("emailLimitStatuses")).to.deep.equal([201, 201, 201])
+  })
+}
+
+docs {
+  The script books 3 times with one fresh address, this request is the 4th: at most 3 open bookings (awaiting_verification or pending) per email in the last hour. Saves 3 bookings towards the per-IP limit (see the folder docs). Skipped on render. Needs openDate from "Get slots - open day".
+}

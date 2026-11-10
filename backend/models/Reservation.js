@@ -117,8 +117,9 @@ reservationSchema.pre("validate", function () {
   if (this.status !== "awaiting_verification") {
     this.expiresAt = undefined // left in place, the TTL index would delete a confirmed booking
   } else if (this.isNew) { // isNew: a normal query doesn't load verifyToken, so a later save must not replace it
-    this.verifyToken = generateToken()
-    this.expiresAt = new Date(Date.now() + VERIFY_WINDOW_MS)
+    // Only when still empty: validate() then save() runs this hook twice, and the token must stay the one the email will carry
+    if (!this.verifyToken) this.verifyToken = generateToken()
+    if (!this.expiresAt) this.expiresAt = new Date(Date.now() + VERIFY_WINDOW_MS)
   }
 })
 

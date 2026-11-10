@@ -1,5 +1,5 @@
 meta {
-  name: Create reservation - form (201)
+  name: Create reservation - form (201, or 400 CAPTCHA_FAILED on render)
   type: http
   seq: 12
 }
@@ -14,36 +14,48 @@ body:json {
   {
     "name": "Bruno",
     "surname": "Test",
-    "email": "  Guest@Comanda.test ",
+    "email": "  {{guestEmail}} ",
     "phone": "+393331234567",
     "date": "{{openDate}}",
     "time": "20:00",
     "partySize": 5,
-    "notes": "Seggiolone per un bambino"
+    "notes": "Seggiolone per un bambino",
+    "turnstileToken": "{{turnstileToken}}"
   }
 }
 
-assert {
-  res.status: eq 201
-  res.body.status: eq awaiting_verification
-  res.body.source: eq form
-  res.body.email: eq guest@comanda.test
-  res.body.tablesNeeded: eq 2
-}
-
 tests {
-  test("expires in about 30 minutes", () => {
-    const minutes = (new Date(res.body.expiresAt) - Date.now()) / 60000
-    expect(minutes).to.be.within(29, 30.5)
-  })
+  if (bru.getEnvVar("liveCaptcha") === "true") {
+    test("render: the real secret refuses the dummy token, nothing is saved", () => {
+      expect(res.status).to.equal(400)
+      expect(res.body.code).to.equal("CAPTCHA_FAILED")
+    })
+  } else {
+    test("201 awaiting_verification from the form", () => {
+      expect(res.status).to.equal(201)
+      expect(res.body.status).to.equal("awaiting_verification")
+      expect(res.body.source).to.equal("form")
+      expect(res.body.tablesNeeded).to.equal(2)
+    })
 
-  test("the tokens are never sent to the client", () => {
-    expect(res.body).to.not.have.property("verifyToken")
-    expect(res.body).to.not.have.property("cancelToken")
-  })
+    test("the email is trimmed", () => {
+      expect(res.body.email).to.equal(bru.getVar("guestEmail"))
+    })
+
+    test("expires in about 30 minutes", () => {
+      const minutes = (new Date(res.body.expiresAt) - Date.now()) / 60000
+      expect(minutes).to.be.within(29, 30.5)
+    })
+
+    test("the tokens are never sent to the client", () => {
+      expect(res.body).to.not.have.property("verifyToken")
+      expect(res.body).to.not.have.property("cancelToken")
+      expect(res.body).to.not.have.property("turnstileToken")
+    })
+  }
 }
 
 docs {
-  The form without Google: the verify link is printed in the backend console. Needs openDate from "Get slots - open day".
-  Max 10 bookings saved per IP every 15 minutes (429 TOO_MANY_REQUESTS); requests that fail validation don't count, and a server restart resets the count.
+  The form without Google. Needs openDate from "Get slots - open day". The email gets spaces around it to check the server trims it (guestEmail is already lowercase).
+  On render the request is the live captcha check: see the folder docs.
 }

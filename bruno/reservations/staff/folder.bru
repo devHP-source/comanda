@@ -6,5 +6,6 @@ meta {
 docs {
   Staff list and status changes. Self-contained: request 1 logs in, computes openDate and creates the bookings the others use, so the folder works on its own and whatever order the app runs folders in. Run the requests in order. Expects the default settings.
 
-  The POST limit is 10 bookings per IP every 15 minutes, and a server restart resets the count. This folder saves 3, the rest of reservations 2: two full runs fit in the window.
+  The POST limit is 10 bookings per IP every 15 minutes, and a server restart resets the count. This folder saves 3, the rest of reservations 5: one full run fits in the window; restart the backend (rs) before a second run.
+  On render (liveCaptcha = true) request 1 only logs in and computes openDate, so the requests that need its bookings (4, 12 to 16, 18) skip themselves.
 }

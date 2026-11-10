@@ -199,6 +199,24 @@
   box-shadow: var(--shadow-accent);
 }
 
+.submit:disabled {
+  color: var(--color-ink-muted);
+  background: var(--color-line);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.submit:disabled:active {
+  transform: none;
+}
+
+.captchaHint {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  text-align: center;
+}
+
 .privacy {
   color: var(--color-ink-muted);
   font-size: var(--text-sm);

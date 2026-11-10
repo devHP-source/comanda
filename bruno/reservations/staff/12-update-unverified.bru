@@ -20,6 +20,10 @@ body:json {
   }
 }
 
+script:pre-request {
+  if (bru.getEnvVar("liveCaptcha") === "true") bru.runner.skipRequest() // render: request 1 can't save bookings with the dummy token (folder docs)
+}
+
 assert {
   res.status: eq 409
   res.body.code: eq INVALID_RESERVATION_TRANSITION

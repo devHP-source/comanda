@@ -18,5 +18,7 @@ docs {
   7. Remove RUN_EMAIL_LINKS from bruno/.env, or the next full run will fail on the used tokens.
 
   Request 1 sets maxOnlineTables to 0 and back to 36 inside one single request: there is no separate setup request that could run alone.
-  This folder saves 3 bookings: with the rest of the collection (5), still under the POST limit of 10 per IP every 15 minutes.
+  This folder saves 3 bookings: run it on its own, or restart the backend (rs) first, since a full run of the collection already saves 8 of the 10 allowed per IP every 15 minutes.
+  Local environment only: the bookings send the dummy captcha token, which only the test secret accepts.
+  The 3 bookings are open bookings for EMAIL_LINKS_TO, the most one address can have in an hour (429 TOO_MANY_BOOKINGS after that): to repeat the folder within the hour, use another address (e.g. you+2@gmail.com).
 }

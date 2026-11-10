@@ -14,11 +14,12 @@ body:json {
   {
     "name": "Bruno",
     "surname": "Gruppo",
-    "email": "big-group@comanda.test",
+    "email": "{{bigGroupEmail}}",
     "phone": "+393331234567",
     "date": "{{openDate}}",
     "time": "20:00",
-    "partySize": 11
+    "partySize": 11,
+    "turnstileToken": "{{turnstileToken}}"
   }
 }
 
@@ -46,21 +47,30 @@ script:pre-request {
   const openDate = date.toISOString().slice(0, 10)
   bru.setVar("openDate", openDate)
 
-  const book = async (surname, partySize) => {
-    const { data } = await axios.post(`${baseUrl}/reservations`, {
-      name: "Bruno",
-      surname,
-      email: "guest@comanda.test",
-      phone: "+393331234567",
-      date: openDate,
-      time: "20:00",
-      partySize,
-    })
-    return data._id
-  }
+  if (bru.getEnvVar("liveCaptcha") === "true") {
+    bru.runner.skipRequest() // render: no booking can be saved with the dummy token. The logins above still serve the role checks (folder docs)
+  } else {
+    // Fresh addresses on every run: the per-email limit (3 open bookings per hour) never trips
+    const guestEmail = `guest-${Date.now()}@comanda.test`
+    bru.setVar("bigGroupEmail", `big-group-${Date.now()}@comanda.test`)
 
-  bru.setVar("awaitingReservationId", await book("Verifica", 5))
-  bru.setVar("rejectReservationId", await book("Rifiuto", 12))
+    const book = async (surname, partySize) => {
+      const { data } = await axios.post(`${baseUrl}/reservations`, {
+        name: "Bruno",
+        surname,
+        email: guestEmail,
+        phone: "+393331234567",
+        date: openDate,
+        time: "20:00",
+        partySize,
+        turnstileToken: bru.getEnvVar("turnstileToken"),
+      })
+      return data._id
+    }
+
+    bru.setVar("awaitingReservationId", await book("Verifica", 5))
+    bru.setVar("rejectReservationId", await book("Rifiuto", 12))
+  }
 }
 
 script:post-response {
@@ -85,4 +95,5 @@ tests {
 docs {
   Logs in the three roles, computes openDate and creates the 3 bookings this folder uses: this request's big group (more guests than maxPartySizeAuto: waits for the admin, no verify link), one more to reject and one unverified. They stay in the database until deleted.
   If this request fails, the rest of the folder fails too: check bruno/.env, and the POST limit (429 TOO_MANY_REQUESTS, see the folder docs).
+  On render (liveCaptcha = true) it logs in and computes openDate, then skips itself: the requests that need its bookings skip too, the role and filter checks still run.
 }

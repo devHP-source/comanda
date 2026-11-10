@@ -14,12 +14,17 @@ body:json {
   {
     "name": "Bruno",
     "surname": "Test",
-    "email": "guest@comanda.test",
+    "email": "{{guestEmail}}",
     "phone": "+393331234567",
     "date": "{{mondayDate}}",
     "time": "20:00",
-    "partySize": 2
+    "partySize": 2,
+    "turnstileToken": "{{turnstileToken}}"
   }
+}
+
+script:pre-request {
+  if (bru.getEnvVar("liveCaptcha") === "true") bru.runner.skipRequest() // render: the dummy token is refused before this request's own check could run (folder docs)
 }
 
 assert {

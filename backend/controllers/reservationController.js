@@ -3,6 +3,7 @@ import { isRealDate } from "../models/Settings.js"
 import { assertBookableDate, assertBookableSlot, assertSlotHasRoom, getFreeSlots, getTablesNeeded, hasBookingStarted, romeNow } from "../services/availability.js"
 import { sendBigGroupNotice, sendBookingDeclinedEmail, sendConfirmationEmail, sendVerifyEmail } from "../services/email.js"
 import { getSettings } from "../services/settings.js"
+import { verifyTurnstile } from "../services/turnstile.js"
 
 const reservationError = (status, code, message) => {
   const err = new Error(message)
@@ -41,16 +42,32 @@ export const getSlots = async (req, res) => { // GET /api/reservations/slots?dat
   res.json({ date, partySize, slots: await getFreeSlots(settings, date, partySize) })
 }
 
-export const createReservation = async (req, res) => { // POST /api/reservations (public, form without Google): { name, surname, email, phone, date, time, partySize, notes, lang }
-  const { name, surname, email, phone, date, time, partySize, notes, lang } = req.body ?? {} // only these fields: status, source and tokens are never read from the client
+const EMAIL_LIMIT = 3 // open bookings (each one sent an email) per address in the last hour
+const EMAIL_LIMIT_WINDOW_MS = 60 * 60 * 1000
+
+const assertEmailUnderLimit = async (email) => { // on top of the per-IP limit: one address can't be flooded with emails from many IPs
+  const openBookings = await Reservation.countDocuments({
+    email,
+    status: { $in: ["awaiting_verification", "pending"] },
+    createdAt: { $gte: new Date(Date.now() - EMAIL_LIMIT_WINDOW_MS) },
+  })
+
+  if (openBookings >= EMAIL_LIMIT) {
+    throw reservationError(429, "TOO_MANY_BOOKINGS", `At most ${EMAIL_LIMIT} open bookings per email address in one hour`)
+  }
+}
+
+export const createReservation = async (req, res) => { // POST /api/reservations (public, form without Google): { name, surname, email, phone, date, time, partySize, notes, lang, turnstileToken }
+  const { name, surname, email, phone, date, time, partySize, notes, lang, turnstileToken } = req.body ?? {} // only these fields: status, source and tokens are never read from the client
 
   assertPartySize(partySize)
+  await verifyTurnstile(turnstileToken, req.ip) // first: a request without a valid token runs no query at all. The token is never saved
 
   const settings = await getSettings()
   assertBookableSlot(settings, date, time)
   await assertSlotHasRoom(settings, date, time, partySize) // tells the guest now if it's already full. An unverified booking still holds no tables: the real check runs when the email link is clicked
 
-  const reservation = await Reservation.create({
+  const reservation = new Reservation({
     name,
     surname,
     email,
@@ -65,9 +82,13 @@ export const createReservation = async (req, res) => { // POST /api/reservations
     status: partySize > settings.maxPartySizeAuto ? "pending" : "awaiting_verification", // big groups: the admin decides
   })
 
+  await reservation.validate() // 400 VALIDATION_FAILED before counting: the limit query needs the cleaned email (trimmed, lowercased)
+  await assertEmailUnderLimit(reservation.email)
+  await reservation.save()
+
   if (reservation.status === "awaiting_verification") {
     try {
-      await sendVerifyEmail(reservation) // verifyToken is still in memory after create()
+      await sendVerifyEmail(reservation) // verifyToken is still in memory after save()
     } catch (err) {
       await Reservation.deleteOne({ _id: reservation._id }) // a booking whose link never arrived can't be confirmed: remove it so the guest can simply try again
       throw err // 502 EMAIL_SEND_FAILED

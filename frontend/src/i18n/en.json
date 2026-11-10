@@ -69,6 +69,11 @@
     "submit": "Book the table",
     "submitGroup": "Send the request",
     "privacy": "Your details are used only to manage your booking.",
+    "captcha": {
+      "label": "Security check",
+      "waiting": "Please wait for the security check above before booking.",
+      "blocked": "We can't load the security check. If you use an ad-blocker, turn it off for this page and try again."
+    },
     "guestCount": "{count} guests",
     "guestCountOne": "1 guest",
     "backToMenu": "Back to the menu",
@@ -855,6 +860,9 @@
     "RESERVATION_NOT_CANCELLABLE": "This booking can't be cancelled.",
     "RESERVATION_ALREADY_STARTED": "This booking has already started or passed.",
     "INVALID_RESERVATION_TRANSITION": "This booking has already been updated. Refresh the page.",
-    "EMAIL_SEND_FAILED": "We couldn't send the confirmation email. Please try again in a few minutes."
+    "EMAIL_SEND_FAILED": "We couldn't send the confirmation email. Please try again in a few minutes.",
+    "CAPTCHA_FAILED": "The security check failed. Please complete it again and retry.",
+    "CAPTCHA_UNAVAILABLE": "The security check isn't available right now. Please try again in a few minutes.",
+    "TOO_MANY_BOOKINGS": "There are already too many pending bookings for this email. Check your inbox or try again in an hour."
   }
 }
