@@ -19,6 +19,17 @@ auth:bearer {
   token: {{adminToken}}
 }
 
+script:pre-request {
+  // Today on the restaurant's clock, from the server: Safe Mode has no Intl, and the machine running Bruno may not be in Italy.
+  // The waiter's list always answers with that date (logins from request 1)
+  const axios = require("axios")
+  const { data } = await axios.get(`${bru.getEnvVar("baseUrl")}/reservations`, {
+    headers: { Authorization: `Bearer ${bru.getVar("waiterToken")}` },
+    params: { limit: 1 },
+  })
+  bru.setVar("romeToday", data.date)
+}
+
 assert {
   res.status: eq 200
   res.body.data: isArray
@@ -32,14 +43,17 @@ tests {
     expect(res.body.data.length).to.be.at.most(5)
   })
 
-  test("latest day first, service order inside a day", () => {
-    const days = res.body.data.map((booking) => booking.date)
-    expect(days).to.deep.equal([...days].sort().reverse())
-
-    for (const day of new Set(days)) {
-      const times = res.body.data.filter((booking) => booking.date === day).map((booking) => booking.time)
-      expect(times).to.deep.equal([...times].sort())
+  test("no date filter: from today (Europe/Rome) on", () => {
+    const today = bru.getVar("romeToday")
+    expect(today).to.match(/^\d{4}-\d{2}-\d{2}$/)
+    for (const booking of res.body.data) {
+      expect(booking.date >= today).to.equal(true)
     }
+  })
+
+  test("soonest first: by date, then by time", () => {
+    const moments = res.body.data.map((booking) => `${booking.date} ${booking.time}`)
+    expect(moments).to.deep.equal([...moments].sort())
   })
 
   test("the tokens are never sent to the client", () => {

@@ -481,6 +481,7 @@
       "dashboard": "Overview",
       "dishes": "Menu & dishes",
       "categories": "Categories",
+      "reservations": "Reservations",
       "staff": "Staff",
       "settings": "Settings"
     },
@@ -630,6 +631,54 @@
       "cover": "The chosen dish is no longer in this category. Pick another one.",
       "invalid": "Invalid value."
     }
+  },
+  "adminReservations": {
+    "kicker": "Dining room",
+    "title": "Reservations",
+    "subtitle": "Without a date: from today on, soonest first. Pick a past day to look back.",
+    "tableLabel": "Reservation list",
+    "columns": {
+      "when": "Date and time",
+      "guest": "Guest",
+      "party": "Guests",
+      "notes": "Notes",
+      "status": "Status"
+    },
+    "dateLabel": "Date",
+    "today": "Today",
+    "todayLabel": "Show today's reservations",
+    "statusLabel": "Status",
+    "allStatuses": "All statuses",
+    "statusFilter": {
+      "pending": "To decide",
+      "confirmed": "Confirmed",
+      "awaiting_verification": "Awaiting verification",
+      "rejected": "Rejected",
+      "cancelled": "Cancelled"
+    },
+    "status": {
+      "pending": "To decide",
+      "confirmed": "Confirmed",
+      "awaiting_verification": "Awaiting verification",
+      "rejected": "Rejected",
+      "cancelled": "Cancelled"
+    },
+    "count": "{count} reservations",
+    "countOne": "1 reservation",
+    "countUpcoming": "{count} reservations from today on",
+    "countUpcomingOne": "1 reservation from today on",
+    "tables": "{count} tables",
+    "tablesOne": "1 table",
+    "callLabel": "Call {name}",
+    "handledBy": "Handled by {name}",
+    "empty": "No reservations from today on.",
+    "noResults": "No reservations found",
+    "noResultsHint": "Try another date or another status.",
+    "clearFilters": "Clear filters",
+    "paginationLabel": "Reservation pages",
+    "page": "Page {page} of {total}",
+    "loadError": "We can't load the reservations.",
+    "slow": "Loading the reservations…"
   },
   "adminStaff": {
     "kicker": "Staff",

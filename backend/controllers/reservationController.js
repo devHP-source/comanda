@@ -164,7 +164,9 @@ const adminListFilter = ({ date, status }) => { // both filters are optional, st
 
   if (date !== undefined) {
     if (!isRealDate(date)) throw reservationError(400, "INVALID_DATE", "date must be a real date as YYYY-MM-DD")
-    filter.date = date
+    filter.date = date // any day, past ones included: the only way to look back
+  } else {
+    filter.date = { $gte: romeNow().date } // no date: today (Europe/Rome) onward. "YYYY-MM-DD" strings compare in calendar order
   }
 
   if (status !== undefined) {
@@ -181,7 +183,7 @@ const adminListFilter = ({ date, status }) => { // both filters are optional, st
 
 const WAITER_FIELDS = "_id name surname date time partySize tablesNeeded notes phone" // data minimization: never the guest's email
 
-export const getReservations = async (req, res) => { // GET /api/reservations (admin: ?date=&status=&page=&limit=, every field. Waiter: today's confirmed bookings, whatever the filters say, WAITER_FIELDS only)
+export const getReservations = async (req, res) => { // GET /api/reservations (admin: ?date=&status=&page=&limit=, every field, no date = from today on. Waiter: today's confirmed bookings, whatever the filters say, WAITER_FIELDS only)
   const isAdmin = req.user.role === "admin"
   const filter = isAdmin
     ? adminListFilter(req.query)
@@ -191,7 +193,7 @@ export const getReservations = async (req, res) => { // GET /api/reservations (a
   const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 20))
 
   const query = Reservation.find(filter)
-    .sort({ date: -1, time: 1, _id: 1 }) // latest day first so old bookings don't bury the new ones, service order inside a day. _id: rows with the same time can't jump between pages
+    .sort({ date: 1, time: 1, _id: 1 }) // soonest first, service order inside a day. _id: rows with the same time can't jump between pages
     .skip((page - 1) * limit)
     .limit(limit)
 

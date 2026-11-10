@@ -481,6 +481,7 @@
       "dashboard": "Panoramica",
       "dishes": "Menu e piatti",
       "categories": "Categorie",
+      "reservations": "Prenotazioni",
       "staff": "Personale",
       "settings": "Impostazioni"
     },
@@ -630,6 +631,54 @@
       "cover": "Il piatto scelto non è più in questa categoria. Scegline un altro.",
       "invalid": "Valore non valido."
     }
+  },
+  "adminReservations": {
+    "kicker": "Sala",
+    "title": "Prenotazioni",
+    "subtitle": "Senza una data: da oggi in poi, dalla più vicina. Scegli un giorno passato per rivederlo.",
+    "tableLabel": "Elenco delle prenotazioni",
+    "columns": {
+      "when": "Data e ora",
+      "guest": "Cliente",
+      "party": "Persone",
+      "notes": "Note",
+      "status": "Stato"
+    },
+    "dateLabel": "Data",
+    "today": "Oggi",
+    "todayLabel": "Mostra le prenotazioni di oggi",
+    "statusLabel": "Stato",
+    "allStatuses": "Tutti gli stati",
+    "statusFilter": {
+      "pending": "Da decidere",
+      "confirmed": "Confermate",
+      "awaiting_verification": "In attesa di verifica",
+      "rejected": "Rifiutate",
+      "cancelled": "Annullate"
+    },
+    "status": {
+      "pending": "Da decidere",
+      "confirmed": "Confermata",
+      "awaiting_verification": "In attesa di verifica",
+      "rejected": "Rifiutata",
+      "cancelled": "Annullata"
+    },
+    "count": "{count} prenotazioni",
+    "countOne": "1 prenotazione",
+    "countUpcoming": "{count} prenotazioni da oggi in poi",
+    "countUpcomingOne": "1 prenotazione da oggi in poi",
+    "tables": "{count} tavoli",
+    "tablesOne": "1 tavolo",
+    "callLabel": "Chiama {name}",
+    "handledBy": "Gestita da {name}",
+    "empty": "Nessuna prenotazione da oggi in poi.",
+    "noResults": "Nessuna prenotazione trovata",
+    "noResultsHint": "Prova con un'altra data o un altro stato.",
+    "clearFilters": "Cancella filtri",
+    "paginationLabel": "Pagine delle prenotazioni",
+    "page": "Pagina {page} di {total}",
+    "loadError": "Non riusciamo a caricare le prenotazioni.",
+    "slow": "Stiamo caricando le prenotazioni…"
   },
   "adminStaff": {
     "kicker": "Personale",

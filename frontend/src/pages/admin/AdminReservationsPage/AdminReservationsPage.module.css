@@ -1,0 +1,462 @@
+.page {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.kicker {
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.title {
+  margin-top: var(--space-1);
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+
+.subtitle {
+  margin-top: var(--space-1);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+
+/* Date and status filters */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3) var(--space-4);
+}
+
+.field {
+  display: grid;
+  min-width: 0;
+  flex: 1 1 100%;
+  gap: var(--space-1);
+}
+
+.fieldLabel {
+  color: var(--color-ink-muted);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.dateRow {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.control {
+  width: 100%;
+  min-width: 0;
+  min-height: 3rem;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  color: var(--color-ink);
+  background: var(--color-surface);
+  font-size: var(--text-md); /* 16px or more: iOS doesn't zoom in on focus */
+}
+
+.dateRow .control {
+  flex: 1;
+}
+
+.todayButton,
+.clearFilters {
+  min-height: 3rem;
+  flex: 0 0 auto;
+  padding: 0 var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  color: var(--color-ink);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.todayButton:hover,
+.clearFilters:hover {
+  background: var(--color-surface-muted);
+}
+
+.todayButton[aria-pressed='true'] {
+  border-color: var(--color-ink);
+  color: var(--color-white);
+  background: var(--color-ink);
+}
+
+.count {
+  flex: 1 1 100%;
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.count:empty {
+  display: none;
+}
+
+@media (min-width: 700px) {
+  .field {
+    flex: 0 1 18rem;
+  }
+}
+
+.loading {
+  opacity: 0.55;
+}
+
+/* Shared row parts */
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: var(--radius-pill);
+  color: var(--color-ink-muted);
+  background: var(--color-surface-muted);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.badge_pending {
+  color: var(--tone-amber);
+  background: var(--tone-amber-bg);
+}
+
+.badge_confirmed {
+  color: var(--tone-green);
+  background: var(--tone-green-bg);
+}
+
+.badge_awaiting_verification {
+  color: var(--tone-blue);
+  background: var(--tone-blue-bg);
+}
+
+/* rejected and cancelled keep the neutral grey: nothing left to do */
+
+.time {
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.day {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.muted {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+
+.contact {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere; /* long emails wrap instead of widening the page */
+}
+
+.phone {
+  display: inline-flex;
+  min-height: var(--tap-min);
+  align-items: center;
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-decoration: underline;
+  text-decoration-color: var(--color-line);
+  text-underline-offset: 0.2em;
+}
+
+.phone:hover {
+  color: var(--color-accent);
+  text-decoration-color: currentColor;
+}
+
+.handledBy {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--color-ink-muted);
+  font-size: var(--text-xs);
+}
+
+/* Phones and tablets: cards */
+.tableWrap {
+  display: none;
+}
+
+.cards {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.card {
+  display: grid;
+  align-content: start;
+  gap: var(--space-1);
+  min-width: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.cardWhen {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.cardWhen .time {
+  font-size: var(--text-lg);
+}
+
+.cardName {
+  margin-top: var(--space-1);
+  font-size: var(--text-md);
+  font-weight: 700;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.cardParty {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.cardContact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--space-3);
+}
+
+.cardNotes {
+  margin-top: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--color-canvas);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+  white-space: pre-line; /* keeps the guest's line breaks */
+}
+
+@media (min-width: 700px) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Desktop: a table that fits the content width, never wider */
+@media (min-width: 1024px) {
+  .cards {
+    display: none;
+  }
+
+  .tableWrap {
+    display: block;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-card);
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* the column widths below hold, long text wraps inside its cell */
+}
+
+.table th,
+.table td {
+  padding: var(--space-3) var(--space-2);
+  border-bottom: 1px solid var(--color-line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+.table thead th {
+  color: var(--color-ink-muted);
+  background: var(--color-surface-muted);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.colWhen {
+  width: 7.5rem;
+}
+
+.colParty {
+  width: 7rem;
+}
+
+.colStatus {
+  width: 10rem;
+}
+
+/* guest and notes share what is left */
+
+.table .day,
+.table .time,
+.table .party,
+.table .muted {
+  display: block;
+}
+
+.table .time {
+  font-size: var(--text-md);
+}
+
+.guest {
+  font-weight: 400;
+}
+
+.guestName {
+  display: block;
+  font-size: var(--text-md);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.table .contact {
+  display: block;
+}
+
+.table .phone {
+  min-height: 0; /* desktop: a mouse doesn't need the 44px tap height */
+}
+
+.party {
+  font-weight: 600;
+}
+
+.notes {
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+@media (min-width: 1320px) {
+  .table th,
+  .table td {
+    padding: var(--space-3);
+  }
+}
+
+/* Loading, empty and error states */
+.skeletons {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-8) var(--space-4);
+  border: 1px dashed var(--color-line);
+  border-radius: var(--radius-lg);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.emptyTitle {
+  color: var(--color-ink);
+  font-size: var(--text-md);
+  font-weight: 700;
+}
+
+.emptyActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.clearButton {
+  min-height: var(--tap-min);
+  margin-top: var(--space-2);
+  padding: 0 var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  color: var(--color-ink);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.clearButton:hover {
+  background: var(--color-surface-muted);
+}
+
+.emptyActions .clearButton {
+  margin-top: 0;
+}
+
+.loadError {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  padding: var(--space-8) var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.retry {
+  min-height: var(--tap-min);
+  padding: 0 var(--space-6);
+  border: 0;
+  border-radius: var(--radius-pill);
+  color: var(--color-white);
+  background: var(--color-accent);
+  font-size: var(--text-md);
+  font-weight: 700;
+}
+
+.stale { /* a later page failed: the rows on screen are the previous ones */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.staleRetry {
+  min-height: var(--tap-min);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-pill);
+  color: var(--color-accent);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}

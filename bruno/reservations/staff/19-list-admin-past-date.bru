@@ -1,0 +1,40 @@
+meta {
+  name: List reservations - admin, past date (200)
+  type: http
+  seq: 19
+}
+
+get {
+  url: {{baseUrl}}/reservations?date=2026-01-07&limit=100
+  body: none
+  auth: bearer
+}
+
+params:query {
+  date: 2026-01-07
+  limit: 100
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.data: isArray
+  res.body.total: isNumber
+}
+
+tests {
+  test("a past day is still reachable: only that day, by time", () => {
+    const times = res.body.data.map((booking) => booking.time)
+    for (const booking of res.body.data) {
+      expect(booking.date).to.equal("2026-01-07")
+    }
+    expect(times).to.deep.equal([...times].sort())
+  })
+}
+
+docs {
+  Without a date the admin list starts from today, so a date filter is the only way to see past bookings. The list is usually empty (no bookings on that day): this checks that a past date isn't refused (no 400 BOOKING_IN_PAST here, unlike the booking form).
+}
