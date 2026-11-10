@@ -4,7 +4,7 @@ import styles from './CategoryShortcuts.module.css'
 
 const SHORTCUT_IMAGE = 'c_fill,ar_1:1,f_auto,q_auto,w_160' // round 4rem photo, sharp on 2x screens
 
-const CategoryShortcuts = ({ items, onSelect }) => { // Mobile and tablet: round category photos at the top of the menu, a tap jumps to the section
+const CategoryShortcuts = ({ items, activeId, onSelect }) => { // Mobile and tablet: round category photos at the top of the menu, a tap opens that category
   const { t } = useLanguage()
 
   return (
@@ -12,7 +12,12 @@ const CategoryShortcuts = ({ items, onSelect }) => { // Mobile and tablet: round
       <ul className={`${styles.strip} hide-scrollbar`}>
         {items.map((item) => (
           <li key={item.id}>
-            <button type="button" className={styles.shortcut} onClick={() => onSelect(item.id)}>
+            <button
+              type="button"
+              className={styles.shortcut}
+              aria-current={item.id === activeId ? 'true' : undefined}
+              onClick={() => onSelect(item.id)}
+            >
               {item.image ? (
                 <img
                   className={styles.image}

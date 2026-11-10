@@ -1,4 +1,4 @@
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import DishVisual from '../DishVisual/DishVisual.jsx'
 import Icon from '../Icon/Icon.jsx'
 import useLanguage from '../../hooks/useLanguage.js'
@@ -8,6 +8,7 @@ import styles from './FeaturedDishes.module.css'
 
 const FeaturedDishes = ({ dishes }) => { // "Consigliati dallo chef": swipeable row on mobile and tablet, grid on desktop
   const { t, pick } = useLanguage()
+  const { search } = useLocation() // keeps ?category=, so closing the sheet comes back to the same category
 
   return (
     <section className={styles.section} aria-labelledby="featured-title">
@@ -41,7 +42,7 @@ const FeaturedDishes = ({ dishes }) => { // "Consigliati dallo chef": swipeable 
                 {dish.code}
               </p>
               <h3 className={styles.name}>
-                <Link to={`/menu/dish/${dish._id}`} state={{ fromMenu: true }} className={styles.link}>
+                <Link to={{ pathname: `/menu/dish/${dish._id}`, search }} state={{ fromMenu: true }} className={styles.link}>
                   {pick(dish.name)}
                 </Link>
                 {dish.isFrozen && (

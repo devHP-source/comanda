@@ -24,7 +24,12 @@ body:json {
 assert {
   res.status: eq 201
   res.body.name.it: eq Test categoria
+  res.body.isCompact: eq false
   res.body._id: isString
+}
+
+docs {
+  isCompact not sent --> false (dishes shown as cards with photos).
 }
 
 script:post-response {

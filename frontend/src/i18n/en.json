@@ -168,7 +168,7 @@
     "noteFrozen": "* Frozen product, or frozen at source.",
     "noteAllergens": "For allergies and intolerances, ask our staff.",
     "categories": "Categories",
-    "jumpTo": "Jump to a category",
+    "chooseCategory": "Choose a category",
     "featuredKicker": "Picked for you",
     "featuredTitle": "Chef's recommendations",
     "searchLabel": "Search the menu",
@@ -575,6 +575,8 @@
     "nameEn": "English name",
     "order": "Position in the menu",
     "orderHint": "Whole number from 0 to 999: categories with the lowest number come first.",
+    "compact": "Compact list",
+    "compactHint": "In the menu, its dishes show as rows without photos (number, name, price). Good for drinks.",
     "cover": {
       "hint": "The photo that stands for the category in the menu shortcuts.",
       "auto": "Automatic",
@@ -596,6 +598,7 @@
       "createTitle": "Create the {name} category?",
       "editTitle": "Save the changes to the {name} category?",
       "position": "Position {order} in the menu.",
+      "compact": "Compact list without photos.",
       "coverAuto": "Preview: automatic photo.",
       "coverDish": "Preview: photo of {code} · {name}."
     },

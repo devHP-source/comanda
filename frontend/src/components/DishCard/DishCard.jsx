@@ -1,4 +1,4 @@
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import BookmarkButton from '../BookmarkButton/BookmarkButton.jsx'
 import DishVisual from '../DishVisual/DishVisual.jsx'
 import useLanguage from '../../hooks/useLanguage.js'
@@ -10,6 +10,7 @@ const CARD_THUMBNAIL = 'c_fill,ar_1:1,f_auto,q_auto,w_300' // square crop: the p
 
 const DishCard = ({ dish }) => { // One menu row: text on the left, photo on the right
   const { t, pick } = useLanguage()
+  const { search } = useLocation() // keeps ?category=, so closing the sheet comes back to the same category
   const description = pick(dish.description)
   const isSoldOut = !dish.isAvailable
 
@@ -22,7 +23,7 @@ const DishCard = ({ dish }) => { // One menu row: text on the left, photo on the
         </p>
 
         <h3 className={styles.title}>
-          <Link to={`/menu/dish/${dish._id}`} state={{ fromMenu: true }} className={styles.link}>
+          <Link to={{ pathname: `/menu/dish/${dish._id}`, search }} state={{ fromMenu: true }} className={styles.link}>
             {pick(dish.name)}
           </Link>
           {dish.isFrozen && ( // Italian law: frozen products carry an asterisk, explained in the menu note

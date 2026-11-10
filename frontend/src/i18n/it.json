@@ -168,7 +168,7 @@
     "noteFrozen": "* Prodotto surgelato o congelato all'origine.",
     "noteAllergens": "Per allergie e intolleranze chiedi al personale.",
     "categories": "Categorie",
-    "jumpTo": "Vai alla categoria",
+    "chooseCategory": "Scegli la categoria",
     "featuredKicker": "Scelti per te",
     "featuredTitle": "Consigliati dallo chef",
     "searchLabel": "Cerca nel menu",
@@ -575,6 +575,8 @@
     "nameEn": "Nome in inglese",
     "order": "Posizione nel menu",
     "orderHint": "Numero intero da 0 a 999: le categorie con il numero più basso compaiono prima.",
+    "compact": "Lista compatta",
+    "compactHint": "Nel menu i piatti compaiono come righe senza foto (numero, nome, prezzo). Adatta alle bevande.",
     "cover": {
       "hint": "La foto che rappresenta la categoria nelle scorciatoie del menu.",
       "auto": "Automatica",
@@ -596,6 +598,7 @@
       "createTitle": "Creare la categoria {name}?",
       "editTitle": "Salvare le modifiche alla categoria {name}?",
       "position": "Posizione {order} nel menu.",
+      "compact": "Lista compatta senza foto.",
       "coverAuto": "Anteprima: foto automatica.",
       "coverDish": "Anteprima: foto di {code} · {name}."
     },

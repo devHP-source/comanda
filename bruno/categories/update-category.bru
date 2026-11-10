@@ -16,7 +16,8 @@ auth:bearer {
 
 body:json {
   {
-    "name": { "en": "Test category (edited)" }
+    "name": { "en": "Test category (edited)" },
+    "isCompact": true
   }
 }
 
@@ -24,4 +25,9 @@ assert {
   res.status: eq 200
   res.body.name.it: eq Test categoria
   res.body.name.en: eq Test category (edited)
+  res.body.isCompact: eq true
+}
+
+docs {
+  Only the fields sent change: name.it stays. isCompact true --> compact list without photos in the menu (like Bevande).
 }

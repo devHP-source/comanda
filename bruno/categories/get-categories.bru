@@ -14,10 +14,12 @@ assert {
   res.status: eq 200
   res.body: isArray
   res.body[0].coverImage: isString
+  res.body[0].isCompact: isBoolean
 }
 
 docs {
   coverImage = photo of coverDish, else the first published dish of the category with a photo, else "" (placeholder).
+  isCompact = true only for categories shown as a compact list without photos (Bevande).
 }
 
 script:post-response {

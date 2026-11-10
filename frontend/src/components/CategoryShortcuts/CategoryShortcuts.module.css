@@ -45,6 +45,17 @@
   background: var(--placeholder-dark);
 }
 
+/* The category on screen: accent label + ring around the photo (not only a color change) */
+.shortcut[aria-current='true'] {
+  color: var(--color-accent);
+}
+
+.shortcut[aria-current='true'] .image {
+  box-shadow:
+    0 0 0 2px var(--color-accent),
+    0 0 0 5px var(--color-accent-soft);
+}
+
 .label {
   overflow-wrap: anywhere;
 }

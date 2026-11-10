@@ -51,8 +51,14 @@ const DishSheet = () => {
   }, [])
 
   const handleClose = () => { // native close: Esc, Android back, backdrop, close button
-    if (location.state?.fromMenu) navigate(-1) // back to the menu entry, so the browser's back button doesn't reopen the dish
-    else navigate('/menu', { replace: true }) // opened from a shared link: there is no menu entry behind it
+    if (location.state?.fromMenu) {
+      navigate(-1) // back to the menu entry, so the browser's back button doesn't reopen the dish
+      return
+    }
+    // Opened from a shared link: there is no menu entry behind it. Stay on the category shown behind the sheet
+    const params = new URLSearchParams(location.search)
+    if (!params.has('category') && dish) params.set('category', dish.category)
+    navigate({ pathname: '/menu', search: params.toString() }, { replace: true })
   }
 
   const handleBackdropClick = (event) => { // the content fills the dialog, so a click on the dialog itself is on the backdrop

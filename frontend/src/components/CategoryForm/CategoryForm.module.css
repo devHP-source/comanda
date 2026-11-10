@@ -98,6 +98,36 @@ fieldset.card > .cardTitle { /* a floated legend is no longer drawn on the borde
   font-variant-numeric: tabular-nums;
 }
 
+/* "Lista compatta" checkbox for the whole row is its label */
+.flag {
+  display: flex;
+  min-height: var(--tap-min);
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: 0 0 auto;
+  margin-top: 0.1rem;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+.flagText {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.checkLabel {
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
 .hint {
   color: var(--color-ink-muted);
   font-size: var(--text-sm);

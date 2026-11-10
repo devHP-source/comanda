@@ -27,6 +27,7 @@ const initialValues = (category, nextOrder, options) => ({
   nameIt: category?.name.it ?? '',
   nameEn: category?.name.en ?? '',
   order: String(category?.order ?? nextOrder),
+  isCompact: category?.isCompact ?? false,
   // A saved cover that can't show any more (unpublished, photo removed) starts as "Automatica", which is what the menu shows anyway
   coverDish: options.some((dish) => dish._id === category?.coverDish) ? category.coverDish : '',
 })
@@ -83,8 +84,8 @@ const CategoryForm = ({ category, dishes, nextOrder, backTo }) => {
   }
 
   const handleChange = (event) => {
-    const { name, value } = event.target
-    setValues((current) => ({ ...current, [name]: value }))
+    const { name, value, type, checked } = event.target
+    setValues((current) => ({ ...current, [name]: type === 'checkbox' ? checked : value }))
     clearError(name)
   }
 
@@ -104,6 +105,7 @@ const CategoryForm = ({ category, dishes, nextOrder, backTo }) => {
     const body = {
       name: { it: values.nameIt.trim(), en: values.nameEn.trim() },
       order: Number(values.order.trim()),
+      isCompact: values.isCompact,
     }
     if (isEdit && values.coverDish !== initial.coverDish) body.coverDish = values.coverDish || null // only when changed: null = automatic
 
@@ -173,7 +175,11 @@ const CategoryForm = ({ category, dishes, nextOrder, backTo }) => {
       ? t('categoryForm.confirm.coverDish', { code: chosenDish.code, name: chosenDish.name.it })
       : t('categoryForm.confirm.coverAuto')
   }
-  const confirmMessage = [t('categoryForm.confirm.position', { order: values.order.trim() }), coverNote].filter(Boolean).join(' ')
+  const confirmMessage = [
+    t('categoryForm.confirm.position', { order: values.order.trim() }),
+    values.isCompact && t('categoryForm.confirm.compact'),
+    coverNote,
+  ].filter(Boolean).join(' ')
 
   const hasErrors = Object.keys(errors).length > 0
   const autoPhoto = options[0]?.image.url // what "Automatica" shows: the first dish with a photo, by code
@@ -266,6 +272,22 @@ const CategoryForm = ({ category, dishes, nextOrder, backTo }) => {
             />
             {fieldMessages('order', t('categoryForm.orderHint'))}
           </div>
+
+          <label className={styles.flag}>
+            <input
+              id="category-isCompact"
+              name="isCompact"
+              type="checkbox"
+              className={styles.checkbox}
+              checked={values.isCompact}
+              onChange={handleChange}
+              aria-describedby="category-isCompact-hint"
+            />
+            <span className={styles.flagText}>
+              <span className={styles.checkLabel}>{t('categoryForm.compact')}</span>
+              <span id="category-isCompact-hint" className={styles.hint}>{t('categoryForm.compactHint')}</span>
+            </span>
+          </label>
         </section>
 
         <fieldset className={styles.card} aria-describedby={describedBy('coverDish', true)}>

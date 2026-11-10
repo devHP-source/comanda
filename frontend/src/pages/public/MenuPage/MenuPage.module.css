@@ -138,6 +138,20 @@
   gap: var(--space-3);
 }
 
+/* Compact categories (Bevande): one card, one line per dish */
+.compactList {
+  display: grid;
+  padding: var(--space-2);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.compactList > li + li {
+  border-top: 1px solid var(--color-line);
+}
+
 /* Error, empty and no-results states */
 .message {
   display: grid;
@@ -278,5 +292,21 @@
 
   .dishGrid {
     grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  }
+}
+
+/* Wide screens: the compact list in 2 columns, so a short line isn't stretched across the whole page */
+@media (min-width: 1320px) {
+  .compactList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-6);
+  }
+
+  .compactList > li + li {
+    border-top: 0;
+  }
+
+  .compactList > li:nth-child(n + 3) { /* a line above every row except the first one of each column */
+    border-top: 1px solid var(--color-line);
   }
 }

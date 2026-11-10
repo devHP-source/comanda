@@ -7,6 +7,7 @@ const categorySchema = new mongoose.Schema(
       en: { type: String, trim: true, default: "" },
     },
     order: { type: Number, default: 0 }, // position in the menu
+    isCompact: { type: Boolean, default: false }, // menu shows it as a compact list without photos (Bevande)
     coverDish: { // dish whose photo previews the category (optional). GET /api/categories turns it into coverImage
       type: mongoose.Schema.Types.ObjectId,
       ref: "Dish",

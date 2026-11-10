@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Link, Outlet } from 'react-router'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Link, Outlet, useLocation, useMatch, useSearchParams } from 'react-router'
 import api from '../../../api/client.js'
 import CategoryChips from '../../../components/CategoryChips/CategoryChips.jsx'
 import CategoryChipsSkeleton from '../../../components/CategoryChipsSkeleton/CategoryChipsSkeleton.jsx'
@@ -8,6 +8,7 @@ import CategoryShortcutsSkeleton from '../../../components/CategoryShortcutsSkel
 import CategorySidebar from '../../../components/CategorySidebar/CategorySidebar.jsx'
 import DishCard from '../../../components/DishCard/DishCard.jsx'
 import DishCardSkeleton from '../../../components/DishCardSkeleton/DishCardSkeleton.jsx'
+import DishRow from '../../../components/DishRow/DishRow.jsx'
 import FeaturedDishes from '../../../components/FeaturedDishes/FeaturedDishes.jsx'
 import FeaturedDishesSkeleton from '../../../components/FeaturedDishesSkeleton/FeaturedDishesSkeleton.jsx'
 import Icon from '../../../components/Icon/Icon.jsx'
@@ -16,15 +17,13 @@ import MenuSearch from '../../../components/MenuSearch/MenuSearch.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import useLanguage from '../../../hooks/useLanguage.js'
 import useList from '../../../hooks/useList.js'
-import useScrollSpy from '../../../hooks/useScrollSpy.js'
 import kitchenStatus from '../../../utils/kitchenStatus.js'
 import normalizeText from '../../../utils/normalizeText.js'
 import styles from './MenuPage.module.css'
 
 const SKELETON_CARDS = 4
-const FAR_JUMP_SCREENS = 2 // farther than this, a smooth scroll would run through half the menu: jump at once
-
-const sectionId = (category) => `category-${category._id}` // anchor for chips, shortcuts and sidebar
+const CATEGORY_TITLE_ID = 'menu-category-title' // heading of the category on screen: gets the focus after a switch
+const LOW_ON_SCREEN = 2 / 3 // after a switch, a list starting below this share of the screen height is brought up
 
 // Dish number from its start ("4" --> 4, 47, 4a), names anywhere, in the guest's language and in Italian
 const matchesSearch = (dish, search, lang) =>
@@ -32,9 +31,26 @@ const matchesSearch = (dish, search, lang) =>
   normalizeText(dish.name[lang]).includes(search) ||
   normalizeText(dish.name.it).includes(search)
 
+// Compact categories (Bevande): one line per dish, no photo. The others: cards with the photo
+const renderDishes = (category, dishes) => (
+  category.isCompact ? (
+    <ul className={styles.compactList}>
+      {dishes.map((dish) => <li key={dish._id}><DishRow dish={dish} /></li>)}
+    </ul>
+  ) : (
+    <div className={styles.dishGrid}>
+      {dishes.map((dish) => <DishCard key={dish._id} dish={dish} />)}
+    </div>
+  )
+)
+
 const MenuPage = () => {
   const { lang, t, pick, tError } = useLanguage()
   const { count: listCount } = useList()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const location = useLocation()
+  const dishMatch = useMatch('/menu/dish/:id') // the dish sheet open over the menu, if any
+  const pendingFocusRef = useRef(null) // category chosen by the guest, waiting to be on screen
   const [menu, setMenu] = useState(null) // { categories, dishes, settings }
   const [error, setError] = useState(null)
   const [attempt, setAttempt] = useState(0) // "Riprova" bumps it and the effect fetches again
@@ -77,8 +93,8 @@ const MenuPage = () => {
 
   const search = normalizeText(query)
 
-  const visibleSections = useMemo(() => { // while searching: only the matching dishes, still grouped by category
-    if (!search) return sections
+  const searchSections = useMemo(() => { // while searching: the matching dishes of the whole menu, still grouped by category
+    if (!search) return []
     return sections
       .map(({ category, dishes }) => ({ category, dishes: dishes.filter((dish) => matchesSearch(dish, search, lang)) }))
       .filter(({ dishes }) => dishes.length > 0)
@@ -89,21 +105,43 @@ const MenuPage = () => {
     [menu],
   )
 
-  const sectionIds = useMemo(() => visibleSections.map(({ category }) => sectionId(category)), [visibleSections])
-  const activeId = useScrollSpy(sectionIds)
+  // The category on screen: the one in the URL. Without it (or with an unknown id): a shared dish link shows the dish's
+  // own category behind the sheet, everything else the first category
+  const sharedDish = dishMatch && !location.state?.fromMenu
+    ? menu?.dishes.find((dish) => dish._id === dishMatch.params.id)
+    : null
+  const selected =
+    sections.find(({ category }) => category._id === searchParams.get('category')) ??
+    sections.find(({ category }) => category._id === sharedDish?.category) ??
+    sections[0]
+  const activeId = search ? null : selected?.category._id ?? null // while searching no chip is active
 
-  const navItems = visibleSections.map(({ category }) => ({
-    id: sectionId(category),
+  useEffect(() => { // No dependencies on purpose: runs after every render, acts once the chosen category is the one on screen
+    if (!pendingFocusRef.current || pendingFocusRef.current !== activeId) return
+    pendingFocusRef.current = null
+    const heading = document.getElementById(CATEGORY_TITLE_ID)
+    const list = heading?.closest('section')
+    if (!list) return
+
+    // scroll-padding-top = height of the sticky bars (top bar, + chips under 1024px): the list must start under them
+    const barsHeight = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0
+    const { top } = list.getBoundingClientRect()
+    if (top < barsHeight || top > window.innerHeight * LOW_ON_SCREEN) {
+      list.scrollIntoView({ block: 'start' }) // smooth only when motion is allowed (global.css)
+    }
+    heading.focus({ preventScroll: true }) // keyboard and screen reader users continue from the new list
+  })
+
+  const navItems = sections.map(({ category }) => ({
+    id: category._id,
     label: pick(category.name),
     image: category.coverImage,
   }))
 
-  const handleSelectCategory = (id) => {
-    const section = document.getElementById(id)
-    if (!section) return
-    const isFar = Math.abs(section.getBoundingClientRect().top) > FAR_JUMP_SCREENS * window.innerHeight
-    section.scrollIntoView({ block: 'start', behavior: isFar ? 'instant' : 'auto' }) // "auto" follows global.css: smooth only when motion is allowed. The html scroll-padding-top stops it under the sticky bars
-    section.querySelector('h2').focus({ preventScroll: true }) // keyboard users continue from the section they jumped to
+  const handleSelectCategory = (id) => { // chips, shortcuts and sidebar. Also ends a search
+    pendingFocusRef.current = id
+    setQuery('')
+    setSearchParams({ category: id }, { replace: true }) // replace: Back leaves the menu instead of stepping through categories
   }
 
   const handleClearSearch = () => {
@@ -116,10 +154,45 @@ const MenuPage = () => {
     setAttempt((current) => current + 1)
   }
 
+  const renderSection = ({ category, dishes }, titleId) => (
+    <section key={category._id} aria-labelledby={titleId}>
+      <div className={styles.sectionHeading}>
+        <h2 id={titleId} className={styles.sectionTitle} tabIndex={-1}>
+          {pick(category.name)}
+        </h2>
+        <p className={styles.sectionCount}>
+          {dishes.length === 1 ? t('menu.dishCountOne') : t('menu.dishCount', { count: dishes.length })}
+        </p>
+      </div>
+      {renderDishes(category, dishes)}
+    </section>
+  )
+
   const settings = menu?.settings
   const status = settings && kitchenStatus(settings)
   const hasFrozen = menu?.dishes.some((dish) => dish.isFrozen)
-  const resultCount = visibleSections.reduce((sum, { dishes }) => sum + dishes.length, 0)
+  const resultCount = searchSections.reduce((sum, { dishes }) => sum + dishes.length, 0)
+
+  let results
+  if (!search) {
+    results = selected && renderSection(selected, CATEGORY_TITLE_ID) // undefined only while the menu loads or is empty
+  } else if (searchSections.length === 0) {
+    results = (
+      <div className={styles.message}>
+        <h2 className={styles.messageTitle}>{t('menu.searchEmptyTitle', { query: query.trim() })}</h2>
+        <p className={styles.messageText}>{t('menu.searchEmptyText')}</p>
+        <button type="button" className={styles.button} onClick={handleClearSearch}>
+          {t('menu.clearSearch')}
+        </button>
+      </div>
+    )
+  } else {
+    results = (
+      <div className={styles.sections}>
+        {searchSections.map((section) => renderSection(section, `search-${section.category._id}-title`))}
+      </div>
+    )
+  }
 
   let content
   if (error) {
@@ -142,12 +215,10 @@ const MenuPage = () => {
           <div className={styles.menuBody}>
             <CategoryChipsSkeleton />
 
-            <div className={styles.sections}>
-              <div>
-                <Skeleton width="11rem" height="1.8rem" className={styles.headingSkeleton} />
-                <div className={styles.dishGrid}>
-                  {Array.from({ length: SKELETON_CARDS }, (_, index) => <DishCardSkeleton key={index} />)}
-                </div>
+            <div>
+              <Skeleton width="11rem" height="1.8rem" className={styles.headingSkeleton} />
+              <div className={styles.dishGrid}>
+                {Array.from({ length: SKELETON_CARDS }, (_, index) => <DishCardSkeleton key={index} />)}
               </div>
             </div>
           </div>
@@ -163,7 +234,7 @@ const MenuPage = () => {
   } else {
     content = (
       <>
-        {!search && <CategoryShortcuts items={navItems} onSelect={handleSelectCategory} />}
+        {!search && <CategoryShortcuts items={navItems} activeId={activeId} onSelect={handleSelectCategory} />}
         {!search && featured.length > 0 && <FeaturedDishes dishes={featured} />}
 
         {/* Read out after each keystroke, so screen reader users know the list changed */}
@@ -172,42 +243,11 @@ const MenuPage = () => {
             t(resultCount === 1 ? 'menu.searchResultsOne' : 'menu.searchResults', { count: resultCount, query: query.trim() })}
         </p>
 
-        {visibleSections.length === 0 ? (
-          <div className={styles.message}>
-            <h2 className={styles.messageTitle}>{t('menu.searchEmptyTitle', { query: query.trim() })}</h2>
-            <p className={styles.messageText}>{t('menu.searchEmptyText')}</p>
-            <button type="button" className={styles.button} onClick={handleClearSearch}>
-              {t('menu.clearSearch')}
-            </button>
-          </div>
-        ) : (
-          <div className={styles.menuBody}>
-            {/* Sticky elements stick only inside their parent: this box spans all the sections */}
-            <CategoryChips items={navItems} activeId={activeId} onSelect={handleSelectCategory} />
-
-            <div className={styles.sections}>
-              {visibleSections.map(({ category, dishes }) => (
-                <section
-                  key={category._id}
-                  id={sectionId(category)}
-                  aria-labelledby={`${sectionId(category)}-title`}
-                >
-                  <div className={styles.sectionHeading}>
-                    <h2 id={`${sectionId(category)}-title`} className={styles.sectionTitle} tabIndex={-1}>
-                      {pick(category.name)}
-                    </h2>
-                    <p className={styles.sectionCount}>
-                      {dishes.length === 1 ? t('menu.dishCountOne') : t('menu.dishCount', { count: dishes.length })}
-                    </p>
-                  </div>
-                  <div className={styles.dishGrid}>
-                    {dishes.map((dish) => <DishCard key={dish._id} dish={dish} />)}
-                  </div>
-                </section>
-              ))}
-            </div>
-          </div>
-        )}
+        <div className={styles.menuBody}>
+          {/* Sticky elements stick only inside their parent: this box spans the whole list */}
+          <CategoryChips items={navItems} activeId={activeId} onSelect={handleSelectCategory} />
+          {results}
+        </div>
 
         <aside className={styles.note} aria-labelledby="menu-note-title">
           <span className={styles.noteIcon} aria-hidden="true">*</span>

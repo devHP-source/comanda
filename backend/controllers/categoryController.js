@@ -58,12 +58,13 @@ const checkCoverDish = async (dishId, categoryId) => { // null or "" --> automat
 }
 
 export const createCategory = async (req, res) => { // POST /api/categories (admin). No coverDish: a new category has no dishes yet
-  const { name, order } = req.body ?? {}
+  const { name, order, isCompact } = req.body ?? {}
 
   // Only the fields we expect: anything else in the body is ignored
   const category = await Category.create({
     name: { it: name?.it, en: name?.en },
     order,
+    isCompact,
   })
   res.status(201).json(category)
 }
@@ -72,10 +73,11 @@ export const updateCategory = async (req, res) => { // PUT /api/categories/:id (
   const category = await Category.findById(req.params.id)
   if (!category) throw categoryNotFound()
 
-  const { name, order, coverDish } = req.body ?? {}
+  const { name, order, isCompact, coverDish } = req.body ?? {}
   if (name?.it !== undefined) category.name.it = name.it
   if (name?.en !== undefined) category.name.en = name.en
   if (order !== undefined) category.order = order
+  if (isCompact !== undefined) category.isCompact = isCompact
   if (coverDish !== undefined) category.coverDish = await checkCoverDish(coverDish, category._id)
 
   await category.save() // save() runs the full schema validation

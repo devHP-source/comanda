@@ -7,7 +7,7 @@ import styles from './CategorySidebar.module.css'
 const SKELETON_ROWS = 15 // one per menu category
 const SKELETON_WIDTHS = ['70%', '50%', '85%', '60%']
 
-const CategorySidebar = ({ items, activeId, onSelect, isLoading = false, className = '' }) => { // Desktop: sticky category list next to the dishes, the section being read is highlighted
+const CategorySidebar = ({ items, activeId, onSelect, isLoading = false, className = '' }) => { // Desktop: sticky category list next to the dishes, a click opens that category (highlighted; none while searching)
   const { t } = useLanguage()
 
   const note = (
