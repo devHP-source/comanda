@@ -102,6 +102,54 @@
       }
     }
   },
+  "bookingLink": {
+    "slow": "Just a few more seconds, we're checking your booking…",
+    "bookAgain": "Book again",
+    "contacts": "Contacts",
+    "confirmed": {
+      "title": "Booking confirmed",
+      "text": "See you soon! You'll get a confirmation email with a link to cancel, should your plans change."
+    },
+    "slotFull": {
+      "title": "This time is now full",
+      "nearest": "While the confirmation was waiting, the free tables for this time ran out and the booking is no longer valid. The nearest free times on the same day: {times}.",
+      "none": "While the confirmation was waiting, the free tables for this time ran out and the booking is no longer valid. There are no other free times that day: try another day."
+    },
+    "invalid": {
+      "title": "Invalid or expired link",
+      "confirmText": "The confirmation link is valid for 30 minutes. If it has expired, the table wasn't held: book again.",
+      "cancelText": "Check that you opened the full link from the confirmation email."
+    },
+    "confirmError": {
+      "title": "We can't confirm right now"
+    },
+    "refused": {
+      "title": "We can't confirm this booking"
+    },
+    "cancel": {
+      "title": "Cancel your booking?",
+      "text": "If you cancel, the table becomes free for other guests.",
+      "button": "Cancel booking",
+      "loadError": "We can't load the booking",
+      "dialogTitle": "Cancel the booking on {date} at {time}?",
+      "dialogMessage": "{guests}. A cancellation can't be undone.",
+      "dialogConfirm": "Yes, cancel",
+      "dialogKeep": "Keep it",
+      "notCancellable": "This booking can't be cancelled",
+      "done": {
+        "title": "Booking cancelled",
+        "text": "Thank you for letting us know: the table is free again for other guests."
+      },
+      "already": {
+        "title": "Booking already cancelled",
+        "text": "This booking had already been cancelled. Nothing else to do."
+      },
+      "started": {
+        "title": "Booking already started",
+        "text": "It can no longer be cancelled online. If needed, contact us."
+      }
+    }
+  },
   "menu": {
     "eyebrow": "Welcome to Comanda",
     "title": "What would you like to eat?",

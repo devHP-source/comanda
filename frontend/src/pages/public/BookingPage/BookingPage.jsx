@@ -1,47 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router'
+import { useEffect, useState } from 'react'
 import api from '../../../api/client.js'
 import BookingForm from '../../../components/BookingForm/BookingForm.jsx'
+import BookingMessage from '../../../components/BookingMessage/BookingMessage.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import useLanguage from '../../../hooks/useLanguage.js'
-import { formatDate } from '../../../utils/calendar.js'
 import styles from './BookingPage.module.css'
-
-const BookingResult = ({ booking }) => { // What happens next depends on the status the server chose
-  const { lang, t } = useLanguage()
-  const titleRef = useRef(null)
-
-  useEffect(() => { // the form is gone: screen readers and the scroll position move to the result
-    titleRef.current.focus()
-  }, [])
-
-  return (
-    <section className={styles.result} aria-labelledby="book-result">
-      <h1 id="book-result" ref={titleRef} className={styles.resultTitle} tabIndex={-1}>
-        {t(`booking.result.${booking.status}.title`)}
-      </h1>
-      <p className={styles.resultText}>{t(`booking.result.${booking.status}.text`, { email: booking.email })}</p>
-
-      <dl className={styles.summary}>
-        <div className={styles.summaryRow}>
-          <dt>{t('booking.date')}</dt>
-          <dd>{formatDate(booking.date, lang)}</dd>
-        </div>
-        <div className={styles.summaryRow}>
-          <dt>{t('booking.time')}</dt>
-          <dd>{booking.time}</dd>
-        </div>
-        <div className={styles.summaryRow}>
-          <dt>{t('booking.partySize')}</dt>
-          <dd>{booking.partySize}</dd>
-        </div>
-      </dl>
-
-      <Link to="/menu" className={styles.action}>{t('booking.backToMenu')}</Link>
-    </section>
-  )
-}
 
 // /book: loads the booking rules, then shows the form or, once sent, what happens next
 const BookingPage = () => {
@@ -75,7 +39,13 @@ const BookingPage = () => {
   if (booking) {
     return (
       <div className={styles.page}>
-        <BookingResult booking={booking} />
+        {/* What happens next depends on the status the server chose */}
+        <BookingMessage
+          title={t(`booking.result.${booking.status}.title`)}
+          text={t(`booking.result.${booking.status}.text`, { email: booking.email })}
+          booking={booking}
+          actions={[{ label: t('booking.backToMenu'), to: '/menu' }]}
+        />
       </div>
     )
   }

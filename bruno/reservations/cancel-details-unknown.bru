@@ -1,0 +1,20 @@
+meta {
+  name: Cancel details - unknown token (404)
+  type: http
+  seq: 25
+}
+
+get {
+  url: {{baseUrl}}/reservations/cancel/not-a-real-token
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+  res.body.code: eq RESERVATION_NOT_FOUND
+}
+
+docs {
+  The read-only request the cancel page sends when it opens.
+}

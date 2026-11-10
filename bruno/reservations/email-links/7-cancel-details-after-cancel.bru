@@ -1,10 +1,10 @@
 meta {
-  name: 5. Cancel - second click (200)
+  name: 7. Cancel details - after cancelling (200)
   type: http
-  seq: 5
+  seq: 7
 }
 
-post {
+get {
   url: {{baseUrl}}/reservations/cancel/{{process.env.CANCEL_TOKEN}}
   body: none
   auth: none
@@ -22,5 +22,5 @@ assert {
 }
 
 docs {
-  Also proves that cancelling didn't replace the cancel token. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+  Reopening the cancel link: the page says "already cancelled" instead of offering the button again. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
 }

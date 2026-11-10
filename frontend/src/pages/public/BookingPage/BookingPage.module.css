@@ -55,59 +55,6 @@
   font-weight: 700;
 }
 
-/* After sending */
-.result {
-  display: grid;
-  justify-items: start;
-  gap: var(--space-4);
-  margin-top: var(--space-8);
-  padding: var(--space-6);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-card);
-}
-
-.resultTitle {
-  font-size: 2.25rem;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-}
-
-.resultTitle:focus {
-  outline: none; /* focused from code to move screen readers here, not an interactive element */
-}
-
-.resultText {
-  color: var(--color-ink-muted);
-  line-height: 1.55;
-  overflow-wrap: anywhere; /* a very long email address stays inside the card */
-}
-
-.summary {
-  display: grid;
-  width: 100%;
-  gap: var(--space-1);
-}
-
-.summaryRow {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-3);
-  padding: var(--space-2) 0;
-  border-bottom: 1px solid var(--color-line);
-  font-variant-numeric: tabular-nums;
-}
-
-.summaryRow dt {
-  color: var(--color-ink-muted);
-}
-
-.summaryRow dd {
-  font-weight: 700;
-  text-align: right;
-}
-
 @media (min-width: 700px) {
   .page {
     padding: 0 2.5rem;
@@ -115,10 +62,5 @@
 
   .intro {
     padding: 4rem 0 2.5rem;
-  }
-
-  .result {
-    margin-top: 4rem;
-    padding: 2.5rem var(--space-8);
   }
 }

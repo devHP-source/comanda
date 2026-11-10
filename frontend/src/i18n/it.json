@@ -102,6 +102,54 @@
       }
     }
   },
+  "bookingLink": {
+    "slow": "Ancora qualche secondo, stiamo controllando la prenotazione…",
+    "bookAgain": "Prenota di nuovo",
+    "contacts": "Contatti",
+    "confirmed": {
+      "title": "Prenotazione confermata",
+      "text": "Ti aspettiamo! Riceverai un'email di conferma con il link per annullare, se cambi programma."
+    },
+    "slotFull": {
+      "title": "Questo orario si è riempito",
+      "nearest": "Mentre la conferma era in attesa, i tavoli liberi per questo orario sono finiti e la prenotazione non è valida. Gli orari liberi più vicini nello stesso giorno: {times}.",
+      "none": "Mentre la conferma era in attesa, i tavoli liberi per questo orario sono finiti e la prenotazione non è valida. Quel giorno non ci sono altri orari liberi: prova con un altro giorno."
+    },
+    "invalid": {
+      "title": "Link non valido o scaduto",
+      "confirmText": "Il link di conferma vale 30 minuti. Se è scaduto, il tavolo non è stato riservato: prenota di nuovo.",
+      "cancelText": "Controlla di aver aperto il link completo dall'email di conferma."
+    },
+    "confirmError": {
+      "title": "Non riusciamo a confermare in questo momento"
+    },
+    "refused": {
+      "title": "Non possiamo confermare questa prenotazione"
+    },
+    "cancel": {
+      "title": "Annullare la prenotazione?",
+      "text": "Se annulli, il tavolo torna libero per altri ospiti.",
+      "button": "Annulla la prenotazione",
+      "loadError": "Non riusciamo a caricare la prenotazione",
+      "dialogTitle": "Annullare la prenotazione del {date} alle {time}?",
+      "dialogMessage": "{guests}. L'annullamento non si può ritirare.",
+      "dialogConfirm": "Sì, annulla",
+      "dialogKeep": "Mantieni",
+      "notCancellable": "Prenotazione non annullabile",
+      "done": {
+        "title": "Prenotazione annullata",
+        "text": "Grazie per avercelo detto: il tavolo torna libero per altri ospiti."
+      },
+      "already": {
+        "title": "Prenotazione già annullata",
+        "text": "Questa prenotazione era già stata annullata. Non devi fare nient'altro."
+      },
+      "started": {
+        "title": "Prenotazione già iniziata",
+        "text": "Non si può più annullare online. Se serve, contattaci."
+      }
+    }
+  },
   "menu": {
     "eyebrow": "Benvenuto da Comanda",
     "title": "Cosa vuoi mangiare?",

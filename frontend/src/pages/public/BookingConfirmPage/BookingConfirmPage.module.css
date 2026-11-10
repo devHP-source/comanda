@@ -1,0 +1,20 @@
+.page {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+
+.skeleton {
+  display: block;
+  margin-top: var(--space-8);
+}
+
+@media (min-width: 700px) {
+  .page {
+    padding: 0 2.5rem;
+  }
+
+  .skeleton {
+    margin-top: 4rem;
+  }
+}

@@ -12,6 +12,8 @@ import AdminDishesPage from'./pages/admin/AdminDishesPage/AdminDishesPage.jsx'
 import AdminSettingsPage from './pages/admin/AdminSettingsPage/AdminSettingsPage.jsx'
 import AdminStaffPage from './pages/admin/AdminStaffPage/AdminStaffPage.jsx'
 import KitchenPage from './pages/kitchen/KitchenPage/KitchenPage.jsx'
+import BookingCancelPage from './pages/public/BookingCancelPage/BookingCancelPage.jsx'
+import BookingConfirmPage from './pages/public/BookingConfirmPage/BookingConfirmPage.jsx'
 import BookingPage from './pages/public/BookingPage/BookingPage.jsx'
 import DishSheet from './pages/public/DishSheet/DishSheet.jsx'
 import InfoPage from './pages/public/InfoPage/InfoPage.jsx'
@@ -33,6 +35,8 @@ const App = () => (
         </Route>
         <Route path="list" element={<ListPage />} />
         <Route path="book" element={<BookingPage />} />
+        <Route path="book/confirm/:token" element={<BookingConfirmPage />} />
+        <Route path="book/cancel/:token" element={<BookingCancelPage />} />
         <Route path="info" element={<InfoPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>

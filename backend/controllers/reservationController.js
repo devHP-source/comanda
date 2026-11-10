@@ -56,7 +56,7 @@ export const createReservation = async (req, res) => { // POST /api/reservations
   })
 
   if (reservation.verifyToken) { // until the emails exist the link is only in the server logs
-    console.log(`Verify link for ${reservation.email}: ${req.protocol}://${req.get("host")}/api/reservations/verify/${reservation.verifyToken}`)
+    console.log(`Verify link for ${reservation.email}: <frontend>/book/confirm/${reservation.verifyToken}`)
   }
 
   res.status(201).json(reservation)
@@ -80,9 +80,23 @@ export const verifyReservation = async (req, res) => { // GET /api/reservations/
   await reservation.save()
 
   // until the emails exist the link is only in the server logs
-  console.log(`Cancel link for ${reservation.email}: POST ${req.protocol}://${req.get("host")}/api/reservations/cancel/${reservation.cancelToken}`)
+  console.log(`Cancel link for ${reservation.email}: <frontend>/book/cancel/${reservation.cancelToken}`)
 
   res.json(reservation)
+}
+
+export const getCancelDetails = async (req, res) => { // GET /api/reservations/cancel/:token (public, read-only): which booking the cancel page is about. Changes nothing: only the button on that page sends the POST
+  const reservation = await Reservation.findOne({ cancelToken: req.params.token })
+
+  if (!reservation) throw reservationError(404, "RESERVATION_NOT_FOUND", "This link is not valid")
+
+  res.json({ // no personal data: anyone who sees the link (a forwarded email) learns only these
+    date: reservation.date,
+    time: reservation.time,
+    partySize: reservation.partySize,
+    status: reservation.status,
+    hasStarted: hasBookingStarted(reservation.date, reservation.time),
+  })
 }
 
 export const cancelReservation = async (req, res) => { // POST /api/reservations/cancel/:token (public, the link in the confirmation email)

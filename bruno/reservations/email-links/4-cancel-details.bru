@@ -1,0 +1,33 @@
+meta {
+  name: 4. Cancel details - before cancelling (200)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/reservations/cancel/{{process.env.CANCEL_TOKEN}}
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  if (bru.getProcessEnv("RUN_EMAIL_LINKS") !== "true") {
+    bru.runner.skipRequest()
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq confirmed
+  res.body.hasStarted: eq false
+}
+
+tests {
+  test("only what the cancel page needs: no personal data, no tokens", () => {
+    expect(Object.keys(res.body).sort()).to.eql(["date", "hasStarted", "partySize", "status", "time"])
+  })
+}
+
+docs {
+  What the cancel page shows before the guest presses the button. Opening it changes nothing: request 5 still finds the booking confirmed. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+}
