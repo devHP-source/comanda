@@ -147,6 +147,22 @@
       "started": {
         "title": "Prenotazione già iniziata",
         "text": "Non si può più annullare online. Se serve, contattaci."
+      },
+      "rejected": {
+        "title": "Richiesta non accettata",
+        "text": "Avevamo già risposto a questa richiesta: non possiamo accogliere il gruppo in questa data e a quest'ora. Non devi annullare nulla."
+      },
+      "pending": {
+        "title": "Ritirare la richiesta?",
+        "text": "Stiamo ancora controllando i tavoli liberi per il tuo gruppo. Se ritiri la richiesta, non riceverai la nostra risposta.",
+        "button": "Ritira la richiesta",
+        "dialogTitle": "Ritirare la richiesta per il {date} alle {time}?",
+        "dialogMessage": "{guests}. Per tornare indietro dovrai inviare una nuova richiesta.",
+        "dialogConfirm": "Sì, ritira",
+        "done": {
+          "title": "Richiesta ritirata",
+          "text": "Grazie per avercelo detto: non riceverai altre email per questa richiesta."
+        }
       }
     }
   },
@@ -838,6 +854,7 @@
     "RESERVATION_NOT_FOUND": "Questo link non è valido o è scaduto.",
     "RESERVATION_NOT_CANCELLABLE": "Questa prenotazione non può essere annullata.",
     "RESERVATION_ALREADY_STARTED": "Questa prenotazione è già iniziata o passata.",
-    "INVALID_RESERVATION_TRANSITION": "La prenotazione è già stata aggiornata. Aggiorna la pagina."
+    "INVALID_RESERVATION_TRANSITION": "La prenotazione è già stata aggiornata. Aggiorna la pagina.",
+    "EMAIL_SEND_FAILED": "Non siamo riusciti a inviare l'email di conferma. Riprova tra qualche minuto."
   }
 }

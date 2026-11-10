@@ -1,0 +1,27 @@
+meta {
+  name: 10. Cancel details - pending request (200)
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/reservations/cancel/{{process.env.PENDING_CANCEL_TOKEN}}
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  if (bru.getProcessEnv("RUN_EMAIL_LINKS") !== "true") {
+    bru.runner.skipRequest()
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq pending
+  res.body.hasStarted: eq false
+}
+
+docs {
+  The cancel page shows the "withdraw your request" version. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+}

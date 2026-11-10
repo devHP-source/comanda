@@ -1,0 +1,50 @@
+meta {
+  name: 13. Create big group to reject - your inbox (201 pending)
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{baseUrl}}/reservations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bruno",
+    "surname": "Rifiuto",
+    "email": "{{process.env.EMAIL_LINKS_TO}}",
+    "phone": "+393331234567",
+    "date": "{{openDate}}",
+    "time": "20:00",
+    "partySize": 12
+  }
+}
+
+script:pre-request {
+  if (bru.getProcessEnv("RUN_EMAIL_LINKS") !== "true") {
+    bru.runner.skipRequest()
+  } else {
+    // The first Wednesday at least 2 days ahead: open with the default closedDays
+    const date = new Date()
+    date.setUTCDate(date.getUTCDate() + 2)
+    while (date.getUTCDay() !== 3) date.setUTCDate(date.getUTCDate() + 1)
+    bru.setVar("openDate", date.toISOString().slice(0, 10))
+  }
+}
+
+script:post-response {
+  if (res.status === 201) {
+    bru.setVar("rejectedLinkReservationId", res.body._id)
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.status: eq pending
+}
+
+docs {
+  Copy the token of the notice email's link into bruno/.env as REJECTED_CANCEL_TOKEN. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+}

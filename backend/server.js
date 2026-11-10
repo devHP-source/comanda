@@ -30,6 +30,10 @@ app.use(cors({
   origin: allowedOrigins 
 }))
 app.use(express.json())
+// The verify and cancel tokens work like passwords: the request log shows "/verify/[token]" instead of the real one
+morgan.token("url", (req) =>
+  (req.originalUrl || req.url).replace(/^(\/api\/reservations\/(?:verify|cancel)\/)[^/?#]+/, "$1[token]")
+)
 app.use(morgan("dev"))
 
 

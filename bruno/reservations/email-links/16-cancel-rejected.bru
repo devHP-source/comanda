@@ -1,0 +1,26 @@
+meta {
+  name: 16. Cancel - rejected request (409)
+  type: http
+  seq: 17
+}
+
+post {
+  url: {{baseUrl}}/reservations/cancel/{{process.env.REJECTED_CANCEL_TOKEN}}
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  if (bru.getProcessEnv("RUN_EMAIL_LINKS") !== "true") {
+    bru.runner.skipRequest()
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq RESERVATION_NOT_CANCELLABLE
+}
+
+docs {
+  A rejected booking can't become cancelled. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+}

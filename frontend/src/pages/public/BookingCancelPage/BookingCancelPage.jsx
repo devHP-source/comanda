@@ -20,7 +20,7 @@ const BookingCancelPage = () => {
   const [error, setError] = useState(null)
   const [attempt, setAttempt] = useState(0)
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
-  const [cancelledNow, setCancelledNow] = useState(false) // "cancelled" by this visit, or before it
+  const [cancelledFrom, setCancelledFrom] = useState(null) // the status this visit cancelled (confirmed or pending). null: cancelled before it
 
   useEffect(() => {
     let ignore = false
@@ -47,7 +47,7 @@ const BookingCancelPage = () => {
   const handleCancel = async () => {
     try {
       const { data } = await api.post(`/reservations/cancel/${encodeURIComponent(token)}`)
-      setCancelledNow(true)
+      setCancelledFrom(booking.status)
       setBooking((current) => ({ ...current, status: data.status }))
     } catch (err) {
       toast.error(tError(err))
@@ -83,7 +83,7 @@ const BookingCancelPage = () => {
       </LoadingState>
     )
   } else if (booking.status === 'cancelled') {
-    const state = cancelledNow ? 'done' : 'already'
+    const state = { confirmed: 'done', pending: 'pending.done' }[cancelledFrom] ?? 'already'
     content = (
       <BookingMessage
         key={state}
@@ -93,7 +93,17 @@ const BookingCancelPage = () => {
         actions={[{ label: t('bookingLink.bookAgain'), to: '/book', primary: true }, backToMenu]}
       />
     )
-  } else if (booking.status !== 'confirmed') { // only confirmed bookings get this link: reached only if the data changed by hand
+  } else if (booking.status === 'rejected') { // the big-group notice has this link, and the admin said no afterwards
+    content = (
+      <BookingMessage
+        key="rejected"
+        title={t('bookingLink.cancel.rejected.title')}
+        text={t('bookingLink.cancel.rejected.text')}
+        booking={booking}
+        actions={[{ label: t('bookingLink.bookAgain'), to: '/book', primary: true }, backToMenu]}
+      />
+    )
+  } else if (booking.status !== 'confirmed' && booking.status !== 'pending') { // awaiting_verification: its email has no cancel link, reached only if the link was built by hand
     content = (
       <BookingMessage
         key="not-cancellable"
@@ -115,23 +125,24 @@ const BookingCancelPage = () => {
     )
   } else {
     const guests = booking.partySize === 1 ? t('booking.guestCountOne') : t('booking.guestCount', { count: booking.partySize })
+    const copy = booking.status === 'pending' ? 'bookingLink.cancel.pending' : 'bookingLink.cancel' // pending: the guest withdraws a request the admin hasn't answered yet
     content = (
       <>
         <BookingMessage
-          key="details"
-          title={t('bookingLink.cancel.title')}
-          text={t('bookingLink.cancel.text')}
+          key={`details-${booking.status}`}
+          title={t(`${copy}.title`)}
+          text={t(`${copy}.text`)}
           booking={booking}
-          actions={[{ label: t('bookingLink.cancel.button'), onClick: () => setIsConfirmOpen(true), primary: true }, backToMenu]}
+          actions={[{ label: t(`${copy}.button`), onClick: () => setIsConfirmOpen(true), primary: true }, backToMenu]}
         />
 
         {isConfirmOpen && (
           <ConfirmDialog
             open
             destructive
-            title={t('bookingLink.cancel.dialogTitle', { date: formatDate(booking.date, lang), time: booking.time })}
-            message={t('bookingLink.cancel.dialogMessage', { guests })}
-            confirmLabel={t('bookingLink.cancel.dialogConfirm')}
+            title={t(`${copy}.dialogTitle`, { date: formatDate(booking.date, lang), time: booking.time })}
+            message={t(`${copy}.dialogMessage`, { guests })}
+            confirmLabel={t(`${copy}.dialogConfirm`)}
             cancelLabel={t('bookingLink.cancel.dialogKeep')}
             onConfirm={handleCancel}
             onClose={() => setIsConfirmOpen(false)}

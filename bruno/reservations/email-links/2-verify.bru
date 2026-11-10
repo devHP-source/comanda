@@ -1,7 +1,7 @@
 meta {
   name: 2. Verify - confirmed (200)
   type: http
-  seq: 2
+  seq: 3
 }
 
 get {
@@ -33,5 +33,5 @@ tests {
 }
 
 docs {
-  Prints the cancel link in the backend console: copy its token into bruno/.env as CANCEL_TOKEN. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+  Sends the confirmation email to EMAIL_LINKS_TO: copy the token at the end of its cancel link into bruno/.env as CANCEL_TOKEN. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
 }

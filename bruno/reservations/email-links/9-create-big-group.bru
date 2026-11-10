@@ -1,0 +1,51 @@
+meta {
+  name: 9. Create big group - your inbox (201 pending)
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/reservations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bruno",
+    "surname": "Ritiro",
+    "email": "{{process.env.EMAIL_LINKS_TO}}",
+    "phone": "+393331234567",
+    "date": "{{openDate}}",
+    "time": "20:00",
+    "partySize": 11,
+    "lang": "en"
+  }
+}
+
+script:pre-request {
+  if (bru.getProcessEnv("RUN_EMAIL_LINKS") !== "true") {
+    bru.runner.skipRequest()
+  } else {
+    // The first Wednesday at least 2 days ahead: open with the default closedDays
+    const date = new Date()
+    date.setUTCDate(date.getUTCDate() + 2)
+    while (date.getUTCDay() !== 3) date.setUTCDate(date.getUTCDate() + 1)
+    bru.setVar("openDate", date.toISOString().slice(0, 10))
+  }
+}
+
+script:post-response {
+  if (res.status === 201) {
+    bru.setVar("withdrawnReservationId", res.body._id)
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.status: eq pending
+}
+
+docs {
+  More guests than maxPartySizeAuto: the request waits for the admin. The notice email (in English, to check both languages) now has a "Withdraw my request" link: copy its token into bruno/.env as PENDING_CANCEL_TOKEN. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+}

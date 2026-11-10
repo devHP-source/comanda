@@ -1,6 +1,7 @@
 import Reservation, { MAX_PARTY_SIZE, RESERVATION_STATUSES } from "../models/Reservation.js"
 import { isRealDate } from "../models/Settings.js"
 import { assertBookableDate, assertBookableSlot, assertSlotHasRoom, getFreeSlots, getTablesNeeded, hasBookingStarted, romeNow } from "../services/availability.js"
+import { sendBigGroupNotice, sendBookingDeclinedEmail, sendConfirmationEmail, sendVerifyEmail } from "../services/email.js"
 import { getSettings } from "../services/settings.js"
 
 const reservationError = (status, code, message) => {
@@ -10,7 +11,16 @@ const reservationError = (status, code, message) => {
   return err
 }
 
-const assertPartySize = (partySize) => {
+// Only the verify email decides whether a booking exists. Any other email that fails was already logged by send(), and the booking stands
+const sendWithoutFailing = async (sendEmail, reservation) => {
+  try {
+    await sendEmail(reservation)
+  } catch {
+    // nothing else to do: the guest or the admin still gets the right status in the response
+  }
+}
+
+const assertPartySize =(partySize) => {
   if (!Number.isInteger(partySize) || partySize < 1 || partySize > MAX_PARTY_SIZE) {
     const err = new Error(`partySize must be an integer from 1 to ${MAX_PARTY_SIZE}`)
     err.status = 400
@@ -55,8 +65,15 @@ export const createReservation = async (req, res) => { // POST /api/reservations
     status: partySize > settings.maxPartySizeAuto ? "pending" : "awaiting_verification", // big groups: the admin decides
   })
 
-  if (reservation.verifyToken) { // until the emails exist the link is only in the server logs
-    console.log(`Verify link for ${reservation.email}: <frontend>/book/confirm/${reservation.verifyToken}`)
+  if (reservation.status === "awaiting_verification") {
+    try {
+      await sendVerifyEmail(reservation) // verifyToken is still in memory after create()
+    } catch (err) {
+      await Reservation.deleteOne({ _id: reservation._id }) // a booking whose link never arrived can't be confirmed: remove it so the guest can simply try again
+      throw err // 502 EMAIL_SEND_FAILED
+    }
+  } else {
+    await sendWithoutFailing(sendBigGroupNotice, reservation)
   }
 
   res.status(201).json(reservation)
@@ -79,13 +96,14 @@ export const verifyReservation = async (req, res) => { // GET /api/reservations/
   reservation.status = "confirmed"
   await reservation.save()
 
-  // until the emails exist the link is only in the server logs
-  console.log(`Cancel link for ${reservation.email}: <frontend>/book/cancel/${reservation.cancelToken}`)
+  await sendWithoutFailing(sendConfirmationEmail, reservation) // only the first click gets here: a second one returned above, so no second email
 
   res.json(reservation)
 }
 
-export const getCancelDetails = async (req, res) => { // GET /api/reservations/cancel/:token (public, read-only): which booking the cancel page is about. Changes nothing: only the button on that page sends the POST
+const CANCELLABLE_STATUSES = ["confirmed", "pending"] // the two emails with a cancel link: the confirmation and the big-group notice (the guest withdraws the request)
+
+export const getCancelDetails = async (req, res) => { // GET /api/reservations/cancel/:token (public, read-only): which booking the cancel page is about, whatever its status, so the page can say why it can't be cancelled. Changes nothing: only the button on that page sends the POST
   const reservation = await Reservation.findOne({ cancelToken: req.params.token })
 
   if (!reservation) throw reservationError(404, "RESERVATION_NOT_FOUND", "This link is not valid")
@@ -99,22 +117,22 @@ export const getCancelDetails = async (req, res) => { // GET /api/reservations/c
   })
 }
 
-export const cancelReservation = async (req, res) => { // POST /api/reservations/cancel/:token (public, the link in the confirmation email)
+export const cancelReservation = async (req, res) => { // POST /api/reservations/cancel/:token (public, the link in the confirmation email or in the big-group notice)
   const reservation = await Reservation.findOne({ cancelToken: req.params.token })
 
   if (!reservation) throw reservationError(404, "RESERVATION_NOT_FOUND", "This link is not valid")
 
   if (reservation.status === "cancelled") return res.json(reservation) // second click on the link: nothing to do
 
-  if (reservation.status !== "confirmed") { // only confirmed bookings receive the cancel link
-    throw reservationError(409, "RESERVATION_NOT_CANCELLABLE", "Only confirmed bookings can be cancelled")
+  if (!CANCELLABLE_STATUSES.includes(reservation.status)) { // rejected, or awaiting_verification (its emails have no cancel link)
+    throw reservationError(409, "RESERVATION_NOT_CANCELLABLE", `Only ${CANCELLABLE_STATUSES.join(" or ")} bookings can be cancelled`)
   }
 
   if (hasBookingStarted(reservation.date, reservation.time)) {
     throw reservationError(409, "RESERVATION_ALREADY_STARTED", "Past bookings can't be cancelled")
   }
 
-  reservation.status = "cancelled" // its tables are free again: only confirmed bookings are counted
+  reservation.status = "cancelled" // confirmed: its tables are free again (only confirmed bookings are counted). Pending: the admin can no longer confirm it
   await reservation.save()
 
   res.json(reservation)
@@ -184,7 +202,7 @@ export const updateReservationStatus = async (req, res) => { // PATCH /api/reser
     throw reservationError(400, "INVALID_STATUS", `status must be one of: ${Object.keys(STATUS_TRANSITIONS).join(", ")}`)
   }
 
-  const reservation = await Reservation.findById(req.params.id) // bad id --> CastError --> 400 INVALID_ID
+  const reservation = await Reservation.findById(req.params.id).select("+cancelToken") // bad id --> CastError --> 400 INVALID_ID. cancelToken: the confirmation email links to it
   if (!reservation) throw reservationError(404, "RESERVATION_NOT_FOUND", `Reservation not found: ${req.params.id}`)
 
   if (!allowedFrom.includes(reservation.status)) {
@@ -199,6 +217,8 @@ export const updateReservationStatus = async (req, res) => { // PATCH /api/reser
   reservation.status = status
   reservation.handledBy = req.user._id
   await reservation.save()
+
+  await sendWithoutFailing(status === "confirmed" ? sendConfirmationEmail : sendBookingDeclinedEmail, reservation) // rejected or cancelled: one short "sorry" email
   await reservation.populate("handledBy", "name") // same shape as GET /api/reservations
   res.json(reservation)
 }

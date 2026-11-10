@@ -1,7 +1,7 @@
 meta {
   name: 3. Verify - second click (200)
   type: http
-  seq: 3
+  seq: 4
 }
 
 get {
@@ -22,5 +22,5 @@ assert {
 }
 
 docs {
-  Clicking the link again changes nothing, and no new cancel link is printed. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+  Clicking the link again changes nothing, and no second confirmation email is sent. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
 }

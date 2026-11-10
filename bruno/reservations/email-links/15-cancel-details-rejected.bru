@@ -1,0 +1,26 @@
+meta {
+  name: 15. Cancel details - rejected request (200)
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{baseUrl}}/reservations/cancel/{{process.env.REJECTED_CANCEL_TOKEN}}
+  body: none
+  auth: none
+}
+
+script:pre-request {
+  if (bru.getProcessEnv("RUN_EMAIL_LINKS") !== "true") {
+    bru.runner.skipRequest()
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq rejected
+}
+
+docs {
+  The old withdraw link still opens: the cancel page says the request was not accepted instead of offering the button. Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+}

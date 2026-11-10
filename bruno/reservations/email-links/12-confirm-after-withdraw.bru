@@ -1,0 +1,36 @@
+meta {
+  name: 12. Update status - confirm a withdrawn request (409)
+  type: http
+  seq: 13
+}
+
+patch {
+  url: {{baseUrl}}/reservations/{{withdrawnReservationId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "status": "confirmed"
+  }
+}
+
+script:pre-request {
+  if (bru.getProcessEnv("RUN_EMAIL_LINKS") !== "true") {
+    bru.runner.skipRequest()
+  }
+}
+
+assert {
+  res.status: eq 409
+  res.body.code: eq INVALID_RESERVATION_TRANSITION
+}
+
+docs {
+  Once withdrawn, the admin can't confirm it any more, and no confirmation email goes out. Needs adminToken ("Login - admin"). Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+}

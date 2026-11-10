@@ -1,0 +1,36 @@
+meta {
+  name: 14. Update status - reject the big group (200)
+  type: http
+  seq: 15
+}
+
+patch {
+  url: {{baseUrl}}/reservations/{{rejectedLinkReservationId}}/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "status": "rejected"
+  }
+}
+
+script:pre-request {
+  if (bru.getProcessEnv("RUN_EMAIL_LINKS") !== "true") {
+    bru.runner.skipRequest()
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.status: eq rejected
+}
+
+docs {
+  The admin says no: the guest gets the "rejected" email, but still has the notice with the withdraw link. Needs adminToken ("Login - admin"). Skipped unless RUN_EMAIL_LINKS=true (see the folder docs).
+}
