@@ -28,6 +28,13 @@ export const formatShortDate = (isoDate, lang, currentYear) => {
   return capitalize(text)
 }
 
+// "2026-11-14" → "sabato 14 novembre" / "Saturday 14 November", for sentences like "… sabato 14 novembre alle 20:00?"
+export const formatWeekdayDate = (isoDate, lang) => {
+  const [year, month, day] = isoDate.split('-').map(Number)
+  return new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : lang, { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' })
+    .format(new Date(Date.UTC(year, month - 1, day)))
+}
+
 // "2027-08-16" → "16 agosto 2027" / "16 August 2027"
 export const formatDate = (isoDate, lang) => {
   const [year, month, day] = isoDate.split('-').map(Number)

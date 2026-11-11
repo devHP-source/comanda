@@ -188,6 +188,68 @@
   font-size: var(--text-xs);
 }
 
+/* Conferma / Rifiuta / Annulla on a row */
+.rowActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.actionButton {
+  min-height: var(--tap-min);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.actionConfirm {
+  border: 1px solid var(--color-ink);
+  color: var(--color-white);
+  background: var(--color-ink);
+}
+
+.actionDecline { /* reject and cancel: red outline, the red fill is kept for the dialog's final button */
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-surface);
+}
+
+.actionDecline:hover {
+  background: var(--color-surface-muted);
+}
+
+/* Free tables inside the confirm dialog */
+.tableCheck {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.tableCheckMuted {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+
+.tableCheckCount {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font-size: var(--text-md);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.tableCheckWarning {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  color: var(--tone-amber);
+  background: var(--tone-amber-bg);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
 /* Phones and tablets: cards */
 .tableWrap {
   display: none;
@@ -315,7 +377,7 @@
 }
 
 .colStatus {
-  width: 10rem;
+  width: 11.5rem; /* room for Conferma + Rifiuta side by side */
 }
 
 /* guest and notes share what is left */
@@ -348,6 +410,11 @@
 
 .table .phone {
   min-height: 0; /* desktop: a mouse doesn't need the 44px tap height */
+}
+
+.table .actionButton {
+  min-height: 2.25rem;
+  padding: 0 var(--space-3);
 }
 
 .party {

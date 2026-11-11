@@ -678,7 +678,44 @@
     "paginationLabel": "Pagine delle prenotazioni",
     "page": "Pagina {page} di {total}",
     "loadError": "Non riusciamo a caricare le prenotazioni.",
-    "slow": "Stiamo caricando le prenotazioni…"
+    "slow": "Stiamo caricando le prenotazioni…",
+    "actions": {
+      "back": "Indietro",
+      "confirmed": {
+        "button": "Conferma",
+        "buttonLabel": "Conferma la prenotazione di {name}",
+        "title": "Confermare il gruppo di {count} {day} alle {time}?",
+        "message": "{name} riceverà un'email di conferma con il link per annullare.",
+        "confirmLabel": "Conferma",
+        "done": "Prenotazione di {name} confermata.",
+        "emailFailed": "Prenotazione confermata, ma l'email non è partita: avvisa il cliente al telefono."
+      },
+      "rejected": {
+        "button": "Rifiuta",
+        "buttonLabel": "Rifiuta la richiesta di {name}",
+        "title": "Rifiutare la richiesta di {name}?",
+        "message": "Gruppo di {count}, {day} alle {time}. Il cliente riceverà un'email.",
+        "confirmLabel": "Rifiuta",
+        "done": "Richiesta di {name} rifiutata.",
+        "emailFailed": "Richiesta rifiutata, ma l'email non è partita: avvisa il cliente al telefono."
+      },
+      "cancelled": {
+        "button": "Annulla",
+        "buttonLabel": "Annulla la prenotazione di {name}",
+        "title": "Annullare la prenotazione di {name}?",
+        "message": "{guests}, {day} alle {time}. I tavoli tornano liberi e il cliente riceverà un'email.",
+        "confirmLabel": "Annulla prenotazione",
+        "done": "Prenotazione di {name} annullata.",
+        "emailFailed": "Prenotazione annullata, ma l'email non è partita: avvisa il cliente al telefono."
+      }
+    },
+    "freeTables": {
+      "loading": "Conto i tavoli liberi…",
+      "count": "Tavoli liberi: {free} di {max} · ne servono {needed}",
+      "countOne": "Tavoli liberi: {free} di {max} · ne serve 1",
+      "notEnough": "Non ci sono abbastanza tavoli liberi online. Puoi confermare lo stesso, se in sala c'è posto.",
+      "failed": "Non riusciamo a contare i tavoli liberi. Puoi confermare lo stesso."
+    }
   },
   "adminStaff": {
     "kicker": "Personale",

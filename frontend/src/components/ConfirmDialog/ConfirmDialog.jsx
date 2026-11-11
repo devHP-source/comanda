@@ -10,6 +10,7 @@ const ConfirmDialog = ({ // `onConfirm` runs the request and toasts its own erro
   confirmLabel,
   cancelLabel,
   destructive = false,
+  children, // optional extra content under the message (e.g. a count loaded when the dialog opens), shown before the buttons
   onConfirm,
   onClose,
 }) => {
@@ -63,6 +64,7 @@ const ConfirmDialog = ({ // `onConfirm` runs the request and toasts its own erro
       <div className={styles.box}>
         <h2 id={titleId} className={styles.title}>{title}</h2>
         {message && <p id={messageId} className={styles.message}>{message}</p>}
+        {children}
 
         <div className={styles.actions}>
           <button

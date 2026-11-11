@@ -1,0 +1,72 @@
+meta {
+  name: Free tables - admin, matches a count by hand (200)
+  type: http
+  seq: 20
+}
+
+get {
+  url: {{baseUrl}}/reservations/{{rejectReservationId}}/free-tables
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+script:pre-request {
+  if (bru.getEnvVar("liveCaptcha") === "true") {
+    bru.runner.skipRequest() // render: request 1 can't save bookings with the dummy token (folder docs)
+  } else {
+    // The count by hand: every minute of the stay (20:00 on openDate, avgDurationMinutes long), the tables of the confirmed bookings seated then; the busiest minute wins.
+    // A different method from the server's (which only looks at arrival moments), so the two must agree
+    const axios = require("axios")
+    const baseUrl = bru.getEnvVar("baseUrl")
+    const headers = { Authorization: `Bearer ${bru.getVar("adminToken")}` }
+
+    const { data: settings } = await axios.get(`${baseUrl}/settings`, { headers })
+    const { data: list } = await axios.get(`${baseUrl}/reservations`, {
+      headers,
+      params: { date: bru.getVar("openDate"), status: "confirmed", limit: 100 },
+    })
+
+    const toMinutes = (time) => {
+      const [hours, minutes] = time.split(":").map(Number)
+      return hours * 60 + minutes
+    }
+
+    const arrival = toMinutes("20:00")
+    let busiest = 0
+    for (let minute = arrival; minute < arrival + settings.avgDurationMinutes; minute += 1) {
+      const inUse = list.data
+        .filter((booking) => toMinutes(booking.time) <= minute && minute < toMinutes(booking.time) + settings.avgDurationMinutes)
+        .reduce((sum, booking) => sum + booking.tablesNeeded, 0)
+      busiest = Math.max(busiest, inUse)
+    }
+
+    bru.setVar("expectedFreeTables", Math.max(0, settings.maxOnlineTables - busiest))
+    bru.setVar("expectedMaxOnlineTables", settings.maxOnlineTables)
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.freeTables: isNumber
+  res.body.tablesNeeded: eq 3
+}
+
+tests {
+  test("same number as the count by hand", () => {
+    expect(res.body.freeTables).to.equal(bru.getVar("expectedFreeTables"))
+    expect(res.body.maxOnlineTables).to.equal(bru.getVar("expectedMaxOnlineTables"))
+  })
+
+  test("never below 0", () => {
+    expect(res.body.freeTables).to.be.at.least(0)
+  })
+}
+
+docs {
+  The booking rejected by request 18 (12 guests at 20:00 on openDate, 3 tables): the status doesn't matter, the count is about its date and time. Needs request 1 (Setup).
+  Usually every online table is free (request 15 cancelled the only confirmed booking). To see a real count, confirm a few bookings on openDate at 19:00-21:00 first (Compass or the admin screen), then send this request.
+}

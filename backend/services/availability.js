@@ -56,20 +56,23 @@ const listBookableSlots = (settings, date) => {
   return date === now.date ? slots.filter((slot) => slot > now.time) : slots
 }
 
-// The tables in use only go up when someone arrives, so the busiest moment of a stay is either when these guests arrive or when another booking arrives while they're seated: the slot has room only if the party fits at all of those moments
-const slotHasRoom = (bookings, slot, tablesNeeded, { avgDurationMinutes, maxOnlineTables }) => {
-  const arrival = toMinutes(slot)
+// The most tables the confirmed `bookings` use at once while a party arriving at `time` is seated.
+// The tables in use only go up when someone arrives, so the busiest moment of a stay is either when these guests arrive or when another booking arrives while they're seated
+const busiestTablesInUse = (bookings, time, avgDurationMinutes) => {
+  const arrival = toMinutes(time)
   const stays = bookings.map((booking) => ({ start: toMinutes(booking.time), tables: booking.tablesNeeded }))
   const laterArrivals = stays.map(({ start }) => start).filter((start) => start > arrival && start < arrival + avgDurationMinutes)
 
-  return [arrival, ...laterArrivals].every((moment) => {
-    const tablesInUse = stays
-      .filter(({ start }) => start <= moment && moment < start + avgDurationMinutes)
-      .reduce((sum, { tables }) => sum + tables, 0)
+  const tablesInUseAt = (moment) => stays
+    .filter(({ start }) => start <= moment && moment < start + avgDurationMinutes)
+    .reduce((sum, { tables }) => sum + tables, 0)
 
-    return tablesInUse + tablesNeeded <= maxOnlineTables
-  })
+  return Math.max(...[arrival, ...laterArrivals].map(tablesInUseAt))
 }
+
+// The slot has room only if the party fits at the busiest moment of its stay
+const slotHasRoom = (bookings, slot, tablesNeeded, { avgDurationMinutes, maxOnlineTables }) =>
+  busiestTablesInUse(bookings, slot, avgDurationMinutes) + tablesNeeded <= maxOnlineTables
 
 export const getTablesNeeded = (settings, partySize) => Math.ceil(partySize / settings.seatsPerTable)
 
@@ -113,6 +116,15 @@ export const getFreeSlots = async (settings, date, partySize) => {
   const bookings = await Reservation.find({ date, status: "confirmed" }).select("time tablesNeeded") // only confirmed bookings hold tables
 
   return slots.filter((slot) => slotHasRoom(bookings, slot, tablesNeeded, settings))
+}
+
+// Online tables still free at the busiest moment of a stay starting at `time`, never below 0 (Settings may have lowered maxOnlineTables).
+export const getFreeTables = async (settings, date, time, excludeId) => {
+  const filter = { date, status: "confirmed" }
+  if (excludeId) filter._id = { $ne: excludeId } // excludeId a booking that must not count itself, if it's already confirmed
+
+  const bookings = await Reservation.find(filter).select("time tablesNeeded")
+  return Math.max(0, settings.maxOnlineTables - busiestTablesInUse(bookings, time, settings.avgDurationMinutes))
 }
 
 // What to suggest when the chosen time is full: closest first, on a tie the earlier one

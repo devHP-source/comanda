@@ -678,7 +678,44 @@
     "paginationLabel": "Reservation pages",
     "page": "Page {page} of {total}",
     "loadError": "We can't load the reservations.",
-    "slow": "Loading the reservations…"
+    "slow": "Loading the reservations…",
+    "actions": {
+      "back": "Back",
+      "confirmed": {
+        "button": "Confirm",
+        "buttonLabel": "Confirm the reservation of {name}",
+        "title": "Confirm the group of {count} on {day} at {time}?",
+        "message": "{name} will get a confirmation email with the link to cancel.",
+        "confirmLabel": "Confirm",
+        "done": "Reservation of {name} confirmed.",
+        "emailFailed": "Reservation confirmed, but the email wasn't sent: call the guest."
+      },
+      "rejected": {
+        "button": "Reject",
+        "buttonLabel": "Reject the request of {name}",
+        "title": "Reject the request of {name}?",
+        "message": "Group of {count}, {day} at {time}. The guest will get an email.",
+        "confirmLabel": "Reject",
+        "done": "Request of {name} rejected.",
+        "emailFailed": "Request rejected, but the email wasn't sent: call the guest."
+      },
+      "cancelled": {
+        "button": "Cancel",
+        "buttonLabel": "Cancel the reservation of {name}",
+        "title": "Cancel the reservation of {name}?",
+        "message": "{guests}, {day} at {time}. The tables are free again and the guest will get an email.",
+        "confirmLabel": "Cancel reservation",
+        "done": "Reservation of {name} cancelled.",
+        "emailFailed": "Reservation cancelled, but the email wasn't sent: call the guest."
+      }
+    },
+    "freeTables": {
+      "loading": "Counting the free tables…",
+      "count": "Free tables: {free} of {max} · {needed} needed",
+      "countOne": "Free tables: {free} of {max} · 1 needed",
+      "notEnough": "There aren't enough free online tables. You can still confirm if there's room in the dining room.",
+      "failed": "We can't count the free tables. You can still confirm."
+    }
   },
   "adminStaff": {
     "kicker": "Staff",

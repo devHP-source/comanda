@@ -1,6 +1,6 @@
 import Reservation, { MAX_PARTY_SIZE, RESERVATION_STATUSES } from "../models/Reservation.js"
 import { isRealDate } from "../models/Settings.js"
-import { assertBookableDate, assertBookableSlot, assertSlotHasRoom, getFreeSlots, getTablesNeeded, hasBookingStarted, romeNow } from "../services/availability.js"
+import { assertBookableDate, assertBookableSlot, assertSlotHasRoom, getFreeSlots, getFreeTables, getTablesNeeded, hasBookingStarted, romeNow } from "../services/availability.js"
 import { sendBigGroupNotice, sendBookingDeclinedEmail, sendConfirmationEmail, sendVerifyEmail } from "../services/email.js"
 import { getSettings } from "../services/settings.js"
 import { verifyTurnstile } from "../services/turnstile.js"
@@ -12,12 +12,14 @@ const reservationError = (status, code, message) => {
   return err
 }
 
-// Only the verify email decides whether a booking exists. Any other email that fails was already logged by send(), and the booking stands
+// Only the verify email decides whether a booking exists. Any other email that fails was already logged by send(), and the booking stands.
+// Returns false when it failed, so the admin screen can say "call the guest" (a skipped .test address counts as sent)
 const sendWithoutFailing = async (sendEmail, reservation) => {
   try {
     await sendEmail(reservation)
+    return true
   } catch {
-    // nothing else to do: the guest or the admin still gets the right status in the response
+    return false // nothing else to do: the guest or the admin still gets the right status in the response
   }
 }
 
@@ -241,7 +243,17 @@ export const updateReservationStatus = async (req, res) => { // PATCH /api/reser
   reservation.handledBy = req.user._id
   await reservation.save()
 
-  await sendWithoutFailing(status === "confirmed" ? sendConfirmationEmail : sendBookingDeclinedEmail, reservation) // rejected or cancelled: one short "sorry" email
+  const emailSent = await sendWithoutFailing(status === "confirmed" ? sendConfirmationEmail : sendBookingDeclinedEmail, reservation) // rejected or cancelled: one short "sorry" email
   await reservation.populate("handledBy", "name") // same shape as GET /api/reservations
-  res.json(reservation)
+  res.json({ ...reservation.toJSON(), emailSent }) // toJSON(): still without the tokens
+}
+
+export const getReservationFreeTables = async (req, res) => { // GET /api/reservations/:id/free-tables (admin): how many online tables are free at that booking's time, before confirming a big group
+  const reservation = await Reservation.findById(req.params.id) // bad id --> CastError --> 400 INVALID_ID
+  if (!reservation) throw reservationError(404, "RESERVATION_NOT_FOUND", `Reservation not found: ${req.params.id}`)
+
+  const settings = await getSettings()
+  const freeTables = await getFreeTables(settings, reservation.date, reservation.time, reservation._id) // a confirmed booking doesn't count its own tables
+
+  res.json({ freeTables, maxOnlineTables: settings.maxOnlineTables, tablesNeeded: reservation.tablesNeeded })
 }

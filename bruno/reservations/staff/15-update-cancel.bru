@@ -28,6 +28,7 @@ assert {
   res.status: eq 200
   res.body.status: eq cancelled
   res.body.handledBy.name: isString
+  res.body.emailSent: eq true
 }
 
 docs {

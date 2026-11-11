@@ -1,0 +1,20 @@
+meta {
+  name: Free tables - unknown id (404)
+  type: http
+  seq: 22
+}
+
+get {
+  url: {{baseUrl}}/reservations/000000000000000000000000/free-tables
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 404
+  res.body.code: eq RESERVATION_NOT_FOUND
+}

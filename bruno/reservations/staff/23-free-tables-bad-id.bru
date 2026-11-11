@@ -1,0 +1,20 @@
+meta {
+  name: Free tables - bad id (400)
+  type: http
+  seq: 23
+}
+
+get {
+  url: {{baseUrl}}/reservations/not-an-id/free-tables
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_ID
+}

@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router'
+import { toast } from 'sonner'
 import api from '../../../api/client.js'
+import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import Pagination from '../../../components/Pagination/Pagination.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import useLanguage from '../../../hooks/useLanguage.js'
-import { formatDate, formatShortDate, isRealDate } from '../../../utils/calendar.js'
+import { formatDate, formatShortDate, formatWeekdayDate, isRealDate } from '../../../utils/calendar.js'
 import { romeNow } from '../../../utils/kitchenStatus.js'
 import styles from './AdminReservationsPage.module.css'
 
@@ -39,6 +41,17 @@ const StatusBadge = ({ status }) => {
 
 const guestName = (reservation) => `${reservation.name} ${reservation.surname}`
 
+const hasStarted = (reservation, now) => `${reservation.date} ${reservation.time}` <= `${now.date} ${now.time}` // same rule as the server
+
+// What the admin can do with a row, as the server's transitions allow: a big group waits for Conferma/Rifiuta
+// (only Rifiuta once its time has passed, so it doesn't wait forever), a confirmed booking can be cancelled until it starts
+const actionsFor = (reservation, now) => {
+  const started = hasStarted(reservation, now)
+  if (reservation.status === 'pending') return started ? ['rejected'] : ['confirmed', 'rejected']
+  if (reservation.status === 'confirmed' && !started) return ['cancelled']
+  return []
+}
+
 // /admin/reservations: every booking, 20 per page. No date: from today (Rome) on, soonest first; a date: that day only, past days too.
 // Date, status and page live in the URL (?date=&status=&page=), so back/forward and reload keep them
 const AdminReservationsPage = () => {
@@ -48,8 +61,12 @@ const AdminReservationsPage = () => {
   const [result, setResult] = useState(null) // { data, page, totalPages, total, key } of the list on screen, null until the first answer
   const [loadError, setLoadError] = useState(null)
   const [attempt, setAttempt] = useState(0)
+  const [pendingAction, setPendingAction] = useState(null) // { reservation, status } while the ConfirmDialog is open
+  const [tableCheck, setTableCheck] = useState(null) // free tables for the booking being confirmed: { id, data } or { id, failed: true }
+  const tableCheckRef = useRef(0) // only the answer for the dialog opened last is kept
 
-  const today = romeNow().date
+  const now = romeNow()
+  const today = now.date
   const currentYear = Number(today.slice(0, 4))
   const requestKey = `${date}|${status}|${page}`
   const hasFilters = Boolean(date || status)
@@ -101,6 +118,50 @@ const AdminReservationsPage = () => {
     window.scrollTo(0, 0)
   }
 
+  // Confirming a big group: the dialog opens at once and counts the free tables meanwhile. A warning, never a block: the admin decides
+  const openAction = (reservation, status) => {
+    setPendingAction({ reservation, status })
+    setTableCheck(null)
+    if (status !== 'confirmed') return
+
+    const requestId = ++tableCheckRef.current
+    api.get(`/reservations/${reservation._id}/free-tables`)
+      .then(({ data }) => {
+        if (requestId === tableCheckRef.current) setTableCheck({ id: reservation._id, data })
+      })
+      .catch(() => {
+        if (requestId === tableCheckRef.current) setTableCheck({ id: reservation._id, failed: true })
+      })
+  }
+
+  const closeAction = () => {
+    tableCheckRef.current += 1 // a late answer for a closed dialog is ignored
+    setPendingAction(null)
+    setTableCheck(null)
+  }
+
+  const changeStatus = async () => {
+    const { reservation, status } = pendingAction
+    try {
+      const { data } = await api.patch(`/reservations/${reservation._id}/status`, { status })
+      const { emailSent, ...updated } = data
+      setResult((current) => current && {
+        ...current,
+        data: current.data.map((row) => (row._id === updated._id ? updated : row)), // the row stays on screen with its new status, even under a status filter
+      })
+
+      const name = guestName(updated)
+      if (emailSent) {
+        toast.success(t(`adminReservations.actions.${status}.done`, { name }))
+      } else { // the status is saved, only the email failed: the guest must hear it by phone
+        toast.warning(t(`adminReservations.actions.${status}.emailFailed`), { description: `${name} · ${updated.phone}`, duration: 15000 })
+      }
+    } catch (err) {
+      toast.error(tError(err))
+      if (err.response?.status === 409 || err.response?.status === 404) setAttempt((current) => current + 1) // the row was out of date (the guest cancelled meanwhile): reload the list
+    }
+  }
+
   const dayLabel = (reservation) => (
     reservation.date === today ? t('adminReservations.today') : formatShortDate(reservation.date, lang, currentYear)
   )
@@ -122,6 +183,72 @@ const AdminReservationsPage = () => {
   const handledBy = (reservation) => reservation.handledBy?.name && (
     <span className={styles.handledBy}>{t('adminReservations.handledBy', { name: reservation.handledBy.name })}</span>
   )
+
+  const rowActions = (reservation) => {
+    const actions = actionsFor(reservation, now)
+    if (actions.length === 0) return null
+    return (
+      <div className={styles.rowActions}>
+        {actions.map((status) => (
+          <button
+            key={status}
+            type="button"
+            className={`${styles.actionButton} ${status === 'confirmed' ? styles.actionConfirm : styles.actionDecline}`}
+            aria-label={t(`adminReservations.actions.${status}.buttonLabel`, { name: guestName(reservation) })}
+            onClick={() => openAction(reservation, status)}
+          >
+            {t(`adminReservations.actions.${status}.button`)}
+          </button>
+        ))}
+      </div>
+    )
+  }
+
+  // Free tables in the confirm dialog: counting → "Tavoli liberi: 12 di 36 · ne servono 4" (+ warning when they're not enough) or "couldn't count"
+  const freeTablesInfo = (reservation) => {
+    const check = tableCheck?.id === reservation._id ? tableCheck : null
+    let content
+    if (!check) {
+      content = <p className={styles.tableCheckMuted}>{t('adminReservations.freeTables.loading')}</p>
+    } else if (check.failed) {
+      content = <p className={styles.tableCheckWarning}>{t('adminReservations.freeTables.failed')}</p>
+    } else {
+      const { freeTables, maxOnlineTables, tablesNeeded } = check.data
+      content = (
+        <>
+          <p className={styles.tableCheckCount}>
+            {t(tablesNeeded === 1 ? 'adminReservations.freeTables.countOne' : 'adminReservations.freeTables.count', {
+              free: freeTables,
+              max: maxOnlineTables,
+              needed: tablesNeeded,
+            })}
+          </p>
+          {freeTables < tablesNeeded && <p className={styles.tableCheckWarning}>{t('adminReservations.freeTables.notEnough')}</p>}
+        </>
+      )
+    }
+    return <div className={styles.tableCheck} aria-live="polite">{content}</div>
+  }
+
+  let dialogProps = {}
+  if (pendingAction) {
+    const { reservation, status } = pendingAction
+    const values = {
+      name: guestName(reservation),
+      count: reservation.partySize,
+      guests: guestsText(reservation),
+      day: formatWeekdayDate(reservation.date, lang),
+      time: reservation.time,
+    }
+    dialogProps = {
+      title: t(`adminReservations.actions.${status}.title`, values),
+      message: t(`adminReservations.actions.${status}.message`, values),
+      confirmLabel: t(`adminReservations.actions.${status}.confirmLabel`),
+      cancelLabel: status === 'cancelled' ? t('adminReservations.actions.back') : undefined, // "Annulla" would mean both buttons
+      destructive: status !== 'confirmed',
+      children: status === 'confirmed' ? freeTablesInfo(reservation) : null,
+    }
+  }
 
   const isLoading = result && result.key !== requestKey // old rows stay on screen, dimmed, until the new list arrives
 
@@ -203,6 +330,7 @@ const AdminReservationsPage = () => {
                     <td>
                       <StatusBadge status={reservation.status} />
                       {handledBy(reservation)}
+                      {rowActions(reservation)}
                     </td>
                   </tr>
                 ))}
@@ -228,6 +356,7 @@ const AdminReservationsPage = () => {
                 </p>
                 {reservation.notes && <p className={styles.cardNotes}>{reservation.notes}</p>}
                 {handledBy(reservation)}
+                {rowActions(reservation)}
               </li>
             ))}
           </ul>
@@ -299,6 +428,8 @@ const AdminReservationsPage = () => {
       </div>
 
       {content}
+
+      <ConfirmDialog open={Boolean(pendingAction)} onConfirm={changeStatus} onClose={closeAction} {...dialogProps} />
     </div>
   )
 }
