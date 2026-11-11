@@ -482,6 +482,7 @@
       "dishes": "Menu e piatti",
       "categories": "Categorie",
       "reservations": "Prenotazioni",
+      "qr": "Codice QR",
       "staff": "Personale",
       "settings": "Impostazioni"
     },
@@ -756,6 +757,18 @@
     "active": "Attivo",
     "inactive": "Disattivato",
     "empty": "Nessun account dello staff."
+  },
+  "adminQr": {
+    "kicker": "Codice QR",
+    "title": "Codice QR del menu",
+    "subtitle": "Stampalo e mettilo sui tavoli: i clienti lo inquadrano e aprono il menu sul telefono.",
+    "target": "Apre: {url}",
+    "localNote": "Sei su localhost: questo codice apre il menu solo su questo computer. Per i tavoli, stampa quello del sito online.",
+    "cardLabel": "Codice QR da stampare",
+    "qrTitle": "Codice QR che apre il menu",
+    "scan": "Scansiona per il menu · Scan for the menu",
+    "print": "Stampa",
+    "download": "Scarica"
   },
   "adminSettings": {
     "kicker": "Impostazioni",

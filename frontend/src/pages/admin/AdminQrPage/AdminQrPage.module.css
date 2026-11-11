@@ -1,0 +1,153 @@
+.page {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.kicker {
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.title {
+  margin-top: var(--space-1);
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+
+.subtitle {
+  margin-top: var(--space-1);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+
+.target {
+  margin-top: var(--space-2);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
+.localNote {
+  max-width: 40rem;
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  color: var(--tone-amber);
+  background: var(--tone-amber-bg);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.card {
+  display: grid;
+  width: 100%;
+  max-width: 26rem;
+  justify-self: center;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-5) var(--space-8);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-white);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.qr {
+  width: 100%;
+  max-width: 20rem;
+  height: auto;
+  margin-bottom: var(--space-2);
+}
+
+.name {
+  color: var(--color-accent);
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.scan {
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  min-height: var(--tap-min);
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-6);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-md);
+  font-weight: 700;
+}
+
+.primary {
+  border: 0;
+  color: var(--color-white);
+  background: var(--color-accent);
+  box-shadow: var(--shadow-accent);
+}
+
+.primary:hover {
+  filter: brightness(1.08);
+}
+
+.secondary {
+  border: 1px solid var(--color-line);
+  color: var(--color-ink);
+  background: var(--color-surface);
+}
+
+.secondary:hover {
+  background: var(--color-surface-muted);
+}
+
+/* A4 portrait. This rule reaches every print of the app (all the CSS ends up in one bundle), and A4 is the paper used in Italy anyway */
+@page {
+  size: A4 portrait;
+}
+
+/* Print: only the card, centered on the page. AdminLayout hides the sidebar and the header */
+@media print {
+  .heading,
+  .actions {
+    display: none;
+  }
+
+  .card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 14cm;
+    max-width: none;
+    padding: 1cm 1cm 1.5cm;
+    box-shadow: none;
+    transform: translate(-50%, -50%);
+  }
+
+  .qr {
+    width: 11cm;
+    max-width: none;
+  }
+
+  .name {
+    font-size: 28pt;
+  }
+
+  .scan {
+    font-size: 14pt;
+  }
+}

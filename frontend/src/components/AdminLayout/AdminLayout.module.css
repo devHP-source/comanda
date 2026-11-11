@@ -274,3 +274,20 @@
     }
   }
 }
+
+/* Print: only the page content, without the sidebar and the header (the QR page prints its card alone) */
+@media print {
+  .sidebar,
+  .header {
+    display: none;
+  }
+
+  .shell {
+    display: block;
+    min-height: 0;
+  }
+
+  .content {
+    padding: 0;
+  }
+}

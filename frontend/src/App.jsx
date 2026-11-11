@@ -9,6 +9,7 @@ import AdminCategoryFormPage from './pages/admin/AdminCategoryFormPage/AdminCate
 import AdminDashboardPage from './pages/admin/AdminDashboardPage/AdminDashboardPage.jsx'
 import AdminDishFormPage from './pages/admin/AdminDishFormPage/AdminDishFormPage.jsx'
 import AdminDishesPage from'./pages/admin/AdminDishesPage/AdminDishesPage.jsx'
+import AdminQrPage from './pages/admin/AdminQrPage/AdminQrPage.jsx'
 import AdminReservationsPage from './pages/admin/AdminReservationsPage/AdminReservationsPage.jsx'
 import AdminSettingsPage from './pages/admin/AdminSettingsPage/AdminSettingsPage.jsx'
 import AdminStaffPage from './pages/admin/AdminStaffPage/AdminStaffPage.jsx'
@@ -65,6 +66,7 @@ const App = () => (
             <Route path="categories/new" element={<AdminCategoryFormPage />} />
             <Route path="categories/:id/edit" element={<AdminCategoryFormPage />} />
             <Route path="reservations" element={<AdminReservationsPage />} />
+            <Route path="qr" element={<AdminQrPage />} />
             <Route path="staff" element={<AdminStaffPage />} />
             <Route path="settings" element={<AdminSettingsPage />} />
           </Route>

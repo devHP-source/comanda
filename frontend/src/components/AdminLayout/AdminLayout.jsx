@@ -14,6 +14,7 @@ const NAV_ITEMS = [ // one entry per admin screen, added when that screen exists
   { to: '/admin/dishes', label: 'admin.nav.dishes', icon: 'dish' },
   { to: '/admin/categories', label: 'admin.nav.categories', icon: 'list' },
   { to: '/admin/reservations', label: 'admin.nav.reservations', icon: 'calendar' },
+  { to: '/admin/qr', label: 'admin.nav.qr', icon: 'qr' },
   { to: '/admin/staff', label: 'admin.nav.staff', icon: 'people' },
   { to: '/admin/settings', label: 'admin.nav.settings', icon: 'settings' },
 ]

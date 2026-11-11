@@ -482,6 +482,7 @@
       "dishes": "Menu & dishes",
       "categories": "Categories",
       "reservations": "Reservations",
+      "qr": "QR code",
       "staff": "Staff",
       "settings": "Settings"
     },
@@ -756,6 +757,18 @@
     "active": "Active",
     "inactive": "Disabled",
     "empty": "No staff accounts."
+  },
+  "adminQr": {
+    "kicker": "QR code",
+    "title": "Menu QR code",
+    "subtitle": "Print it and put it on the tables: guests scan it and open the menu on their phone.",
+    "target": "Opens: {url}",
+    "localNote": "You're on localhost: this code opens the menu on this computer only. For the tables, print the one from the live site.",
+    "cardLabel": "QR code to print",
+    "qrTitle": "QR code that opens the menu",
+    "scan": "Scansiona per il menu · Scan for the menu",
+    "print": "Print",
+    "download": "Download"
   },
   "adminSettings": {
     "kicker": "Settings",
