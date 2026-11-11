@@ -18,7 +18,8 @@ const sendWithoutFailing = async (sendEmail, reservation) => {
   try {
     await sendEmail(reservation)
     return true
-  } catch {
+  } catch (err) {
+    if (err.code !== "EMAIL_SEND_FAILED") console.error("Email not sent, unexpected error:", err) // a bug before send(): nothing logged it yet
     return false // nothing else to do: the guest or the admin still gets the right status in the response
   }
 }
