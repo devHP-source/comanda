@@ -9,6 +9,7 @@
   "nav": {
     "main": "Main navigation",
     "mobile": "Navigation",
+    "home": "Home",
     "menu": "Menu",
     "list": "My list",
     "book": "Book",
@@ -233,6 +234,20 @@
     "browseMenu": "Go to the menu",
     "errorTitle": "We couldn't load your list",
     "slow": "Getting your list ready…"
+  },
+  "home": {
+    "title": "Dumplings, noodles and pizza at the same table.",
+    "lead": "Browse the menu with a photo of every dish, save the ones you like and book your table.",
+    "seeMenu": "See the menu",
+    "bookTable": "Book a table",
+    "hours": "Hours",
+    "closedOn": "Closed on",
+    "openEveryDay": "Open every day",
+    "slow": "One moment, we are setting the table…",
+    "featuredError": "We could not load the chef’s picks.",
+    "aboutTitle": "One dining room, two cuisines",
+    "aboutText": "Address, phone number and all our opening hours, including special closures.",
+    "aboutLink": "Where we are and contact"
   },
   "info": {
     "eyebrow": "About & contact",

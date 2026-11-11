@@ -9,6 +9,7 @@
   "nav": {
     "main": "Navigazione principale",
     "mobile": "Navigazione",
+    "home": "Home",
     "menu": "Menu",
     "list": "La mia lista",
     "book": "Prenota",
@@ -233,6 +234,20 @@
     "browseMenu": "Vai al menu",
     "errorTitle": "Non riusciamo a caricare la lista",
     "slow": "Stiamo preparando la lista…"
+  },
+  "home": {
+    "title": "Ravioli, noodles e pizza alla stessa tavola.",
+    "lead": "Sfoglia il menu con le foto dei piatti, salva quelli che ti piacciono e prenota il tuo tavolo.",
+    "seeMenu": "Guarda il menu",
+    "bookTable": "Prenota un tavolo",
+    "hours": "Orario",
+    "closedOn": "Giorno di chiusura",
+    "openEveryDay": "Aperti tutti i giorni",
+    "slow": "Ancora un momento, stiamo apparecchiando…",
+    "featuredError": "Non riusciamo a caricare i piatti consigliati.",
+    "aboutTitle": "Una sala, due cucine",
+    "aboutText": "Indirizzo, telefono e tutti gli orari, comprese le chiusure straordinarie.",
+    "aboutLink": "Dove siamo e contatti"
   },
   "info": {
     "eyebrow": "Chi siamo & contatti",

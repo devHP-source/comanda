@@ -5,7 +5,12 @@ import useLanguage from '../../hooks/useLanguage.js'
 import useList from '../../hooks/useList.js'
 import styles from './PublicLayout.module.css'
 
-const topLinks = [ // Home joins this bar when its page exists
+const topLinks = [ // Home only here: the mobile bottom bar stays Menu · La mia lista · Prenota · Info
+  {
+    to: '/',
+    label: 'nav.home',
+    end: true // "/" is active only on Home, not on every page
+  },
   {
     to: '/menu',
     label: 'nav.menu'
@@ -51,7 +56,7 @@ const PublicLayout = () => {
   return (
     <div className={styles.shell}>
       <header className={styles.topbar}>
-        <Link to="/menu" className={styles.brand}>
+        <Link to="/" className={styles.brand}>
           <span className={styles.brandMark} aria-hidden="true">C</span>
           <span className={styles.brandText}>
             <span className={styles.brandName}>Comanda</span>
@@ -61,7 +66,7 @@ const PublicLayout = () => {
 
         <nav className={styles.topNav} aria-label={t('nav.main')}>
           {topLinks.map((link) => (
-            <NavLink key={link.to} to={link.to} className={styles.topLink}>
+            <NavLink key={link.to} to={link.to} end={link.end} className={styles.topLink}>
               {t(link.label)}
             </NavLink>
           ))}

@@ -6,7 +6,12 @@ import formatPrice from '../../utils/formatPrice.js'
 import thumbnailUrl from '../../utils/thumbnailUrl.js'
 import styles from './FeaturedDishes.module.css'
 
-const FeaturedDishes = ({ dishes }) => { // "Consigliati dallo chef": swipeable row on mobile and tablet, grid on desktop
+/*
+* "Consigliati dallo chef": swipeable row on mobile and tablet, grid on desktop.
+* `fromMenu` (default): the sheet opens over the current menu entry, so closing goes back to it.
+* `fromMenu={false}` (Home): a plain dish link, the menu opens on the dish's own category behind the sheet
+*/
+const FeaturedDishes = ({ dishes, fromMenu = true }) => {
   const { t, pick } = useLanguage()
   const { search } = useLocation() // keeps ?category=, so closing the sheet comes back to the same category
 
@@ -42,7 +47,11 @@ const FeaturedDishes = ({ dishes }) => { // "Consigliati dallo chef": swipeable 
                 {dish.code}
               </p>
               <h3 className={styles.name}>
-                <Link to={{ pathname: `/menu/dish/${dish._id}`, search }} state={{ fromMenu: true }} className={styles.link}>
+                <Link
+                  to={fromMenu ? { pathname: `/menu/dish/${dish._id}`, search } : `/menu/dish/${dish._id}`}
+                  state={fromMenu ? { fromMenu: true } : undefined}
+                  className={styles.link}
+                >
                   {pick(dish.name)}
                 </Link>
                 {dish.isFrozen && (

@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router'
+import { Route, Routes } from 'react-router'
 import { Toaster } from 'sonner'
 import AdminLayout from './components/AdminLayout/AdminLayout.jsx'
 import PublicLayout from './components/PublicLayout/PublicLayout.jsx'
@@ -18,6 +18,7 @@ import BookingCancelPage from './pages/public/BookingCancelPage/BookingCancelPag
 import BookingConfirmPage from './pages/public/BookingConfirmPage/BookingConfirmPage.jsx'
 import BookingPage from './pages/public/BookingPage/BookingPage.jsx'
 import DishSheet from './pages/public/DishSheet/DishSheet.jsx'
+import HomePage from './pages/public/HomePage/HomePage.jsx'
 import InfoPage from './pages/public/InfoPage/InfoPage.jsx'
 import ListPage from './pages/public/ListPage/ListPage.jsx'
 import MenuPage from './pages/public/MenuPage/MenuPage.jsx'
@@ -31,7 +32,7 @@ const App = () => (
   <>
     <Routes>
       <Route element={<PublicLayout />}>
-        <Route index element={<Navigate to="/menu" replace />} />
+        <Route index element={<HomePage />} />
         <Route path="menu" element={<MenuPage />}>
           <Route path="dish/:id" element={<DishSheet />} />
         </Route>
