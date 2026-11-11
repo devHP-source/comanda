@@ -44,10 +44,9 @@ const guestName = (reservation) => `${reservation.name} ${reservation.surname}`
 const hasStarted = (reservation, now) => `${reservation.date} ${reservation.time}` <= `${now.date} ${now.time}` // same rule as the server
 
 // What the admin can do with a row, as the server's transitions allow: a big group waits for Conferma/Rifiuta
-// (only Rifiuta once its time has passed, so it doesn't wait forever), a confirmed booking can be cancelled until it starts
 const actionsFor = (reservation, now) => {
   const started = hasStarted(reservation, now)
-  if (reservation.status === 'pending') return started ? ['rejected'] : ['confirmed', 'rejected']
+  if (reservation.status === 'pending') return started ? ['rejected'] : ['confirmed', 'rejected'] // (only Rifiuta once its time has passed, so it doesn't wait forever), a confirmed booking can be cancelled until it starts
   if (reservation.status === 'confirmed' && !started) return ['cancelled']
   return []
 }

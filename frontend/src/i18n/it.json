@@ -490,6 +490,16 @@
       "evening": "Buonasera, {name}"
     }
   },
+  "todayBookings": {
+    "kicker": "Oggi",
+    "title": "Prenotazioni di oggi",
+    "count": "{count} prenotazioni",
+    "countOne": "1 prenotazione",
+    "past": "orario passato",
+    "empty": "Nessuna prenotazione confermata per oggi",
+    "stale": "Non riusciamo ad aggiornare le prenotazioni. Riprovo tra poco…",
+    "loadError": "Non riusciamo a caricare le prenotazioni di oggi."
+  },
   "adminDashboard": {
     "kicker": "Panoramica",
     "title": "Il servizio di oggi",
@@ -500,8 +510,10 @@
       "tablesDetail": "{count} liberi",
       "tickets": "Comande aperte",
       "ticketsDetail": "{count} in cucina",
-      "ready": "Pronte da servire",
-      "readyDetail": "Da portare ai tavoli",
+      "bookings": "Prenotazioni oggi",
+      "bookingsDetail": "{count} coperti previsti",
+      "bookingsDetailOne": "1 coperto previsto",
+      "bookingsUnknown": "Non disponibile",
       "total": "Conti aperti",
       "totalDetail": "Su {count} tavoli",
       "totalDetailOne": "Su 1 tavolo"
@@ -513,6 +525,16 @@
     },
     "ready": {
       "subtitle": "Puoi segnarle servite anche da qui"
+    },
+    "bookings": {
+      "title": "Prossime prenotazioni",
+      "subtitle": "Confermate per oggi · si aggiornano ogni minuto",
+      "manage": "Gestisci",
+      "noneLeft": "Nessun altro arrivo previsto per oggi",
+      "pendingGroups": "Gruppi da decidere: {count}",
+      "pendingHint": "Conferma o rifiuta le richieste dei gruppi",
+      "stale": "Non riusciamo ad aggiornare le prenotazioni. Riprovo tra poco…",
+      "loadError": "Non riusciamo a caricare le prenotazioni."
     },
     "attention": {
       "title": "Richiede attenzione",

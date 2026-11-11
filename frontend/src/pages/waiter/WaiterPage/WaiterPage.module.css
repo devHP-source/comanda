@@ -47,6 +47,12 @@
   gap: var(--space-8);
 }
 
+.main {
+  display: grid;
+  min-width: 0;
+  gap: var(--space-8);
+}
+
 .heading {
   display: flex;
   align-items: flex-end;

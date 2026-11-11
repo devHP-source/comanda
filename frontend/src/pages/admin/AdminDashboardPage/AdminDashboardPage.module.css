@@ -315,6 +315,84 @@
   color: var(--color-ink-muted);
 }
 
+/* "Prossime prenotazioni": time · name · guests and tables */
+.panelLink {
+  display: inline-flex;
+  min-height: var(--tap-min);
+  flex: 0 0 auto;
+  align-items: center;
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.panelLink:hover {
+  text-decoration: underline;
+}
+
+.pendingList {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.panelStale {
+  padding: var(--space-3) var(--space-4) 0;
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.panelError {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-4);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.bookingsPending {
+  min-height: calc(3 * 3.25rem + 2 * var(--space-2));
+}
+
+.bookingSkeletons {
+  display: grid;
+}
+
+.bookingRow {
+  display: grid;
+  min-height: 3.25rem;
+  grid-template-columns: 3rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.rows > .bookingRow:not(:last-child),
+.bookingSkeletons > .bookingRow:not(:last-child) {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.bookingTime {
+  font-size: var(--text-md);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.bookingName {
+  overflow: hidden;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bookingParty {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+
 .allGood {
   display: flex;
   align-items: center;

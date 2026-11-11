@@ -12,10 +12,14 @@ import usePolling from '../../../hooks/usePolling.js'
 import dishCount from '../../../utils/dishCount.js'
 import formatPrice from '../../../utils/formatPrice.js'
 import formatTime from '../../../utils/formatTime.js'
+import { romeNow } from '../../../utils/kitchenStatus.js'
 import styles from './AdminDashboardPage.module.css'
 
 const POLL_MS = 5000 // room and tickets, same rhythm as the waiter screen
 const DISHES_POLL_MS = 30000 // sold-out and translations change rarely: no need to reload the whole menu every 5s
+const BOOKINGS_POLL_MS = 60000 // bookings change rarely during service
+const SKELETON_BOOKINGS = 3
+const UPCOMING_BOOKINGS = 5 // rows in "Prossime prenotazioni"
 const LEGEND = ['free', 'occupied', 'preparing', 'ready']
 const PREVIEW_NAMES = 3 // dish names shown in a "Richiede attenzione" row
 const SKELETON_TILES = 24
@@ -59,6 +63,8 @@ const AdminDashboardPage = () => {
   const [dishes, setDishes] = useState(null) // published menu, for "Richiede attenzione"
   const [dishesError, setDishesError] = useState(false)
   const [ticketToServe, setTicketToServe] = useState(null)
+  const [bookings, setBookings] = useState(null) // { today, todayTotal, pendingGroups }: null until the first answer
+  const [bookingsError, setBookingsError] = useState(false)
   const latestLoad = useRef(0)
 
   const load = useCallback(async () => {
@@ -87,8 +93,27 @@ const AdminDashboardPage = () => {
     }
   }, [])
 
+  const loadBookings = useCallback(async () => {
+    try {
+      const [todayRes, pendingRes] = await Promise.all([
+        api.get('/reservations', { params: { date: romeNow().date, status: 'confirmed', limit: 100 } }), // today in Rome, soonest first
+        api.get('/reservations', { params: { status: 'pending', limit: 1 } }), // only the count: big groups from today on, waiting for an answer
+      ])
+      setBookings({ today: todayRes.data.data, todayTotal: todayRes.data.total, pendingGroups: pendingRes.data.total })
+      setBookingsError(false)
+    } catch {
+      setBookingsError(true) // keep the last numbers on screen
+    }
+  }, [])
+
   usePolling(load, POLL_MS)
   usePolling(loadDishes, DISHES_POLL_MS)
+  usePolling(loadBookings, BOOKINGS_POLL_MS)
+
+  const retryBookings = () => {
+    setBookingsError(false)
+    loadBookings()
+  }
 
   const handleRetry = () => {
     setError(null)
@@ -157,6 +182,20 @@ const AdminDashboardPage = () => {
   const soldOut = dishes?.filter((dish) => !dish.isAvailable) ?? []
   const missingEnglish = dishes?.filter((dish) => !dish.name.en?.trim()) ?? []
 
+  const now = romeNow() // the page re-renders every 5 s (room polling), so a booking leaves the panel once its time comes
+  const upcomingBookings = bookings?.today
+    .filter((booking) => booking.time > now.time) // "HH:mm" strings compare in time order; the list is already soonest first
+    .slice(0, UPCOMING_BOOKINGS) ?? [] // the whole day is behind "Gestisci"
+  let bookingsDetail = '' // "36 coperti previsti", empty while loading
+  if (bookings) {
+    const expectedGuests = bookings.today.reduce((sum, booking) => sum + booking.partySize, 0)
+    bookingsDetail = expectedGuests === 1
+      ? t('adminDashboard.stats.bookingsDetailOne')
+      : t('adminDashboard.stats.bookingsDetail', { count: expectedGuests })
+  } else if (bookingsError) {
+    bookingsDetail = t('adminDashboard.stats.bookingsUnknown')
+  }
+
   return (
     <div className={styles.page}>
       {title}
@@ -179,11 +218,11 @@ const AdminDashboardPage = () => {
           detail={t('adminDashboard.stats.ticketsDetail', { count: inKitchen })}
         />
         <StatCard
-          icon="dish"
+          icon="calendar"
           tone="green"
-          label={t('adminDashboard.stats.ready')}
-          value={readyTickets.length}
-          detail={t('adminDashboard.stats.readyDetail')}
+          label={t('adminDashboard.stats.bookings')}
+          value={bookings ? bookings.todayTotal : '–'}
+          detail={bookingsDetail}
         />
         <StatCard
           icon="list"
@@ -262,6 +301,79 @@ const AdminDashboardPage = () => {
               <p className={styles.allGood}>
                 <Icon name="check" size={20} />
                 {t('readyBell.none')}
+              </p>
+            )}
+          </section>
+
+          <section className={styles.panel} aria-labelledby="bookings-title">
+            <div className={styles.panelHeader}>
+              <div>
+                <h2 id="bookings-title" className={styles.panelTitle}>{t('adminDashboard.bookings.title')}</h2>
+                <p className={styles.panelSubtitle}>{t('adminDashboard.bookings.subtitle')}</p>
+              </div>
+              <Link to={`/admin/reservations?date=${now.date}`} className={styles.panelLink}>{t('adminDashboard.bookings.manage')}</Link>
+            </div>
+
+            {bookings?.pendingGroups > 0 && (
+              <ul className={`${styles.rows} ${styles.pendingList}`}>
+                <li>
+                  <Link to="/admin/reservations?status=pending" className={styles.attentionRow}>
+                    <span className={`${styles.attentionIcon} ${styles.amber}`}><Icon name="people" size={18} /></span>
+                    <span className={styles.attentionText}>
+                      <strong>{t('adminDashboard.bookings.pendingGroups', { count: bookings.pendingGroups })}</strong>
+                      <span>{t('adminDashboard.bookings.pendingHint')}</span>
+                    </span>
+                    <Icon name="chevron" size={18} />
+                  </Link>
+                </li>
+              </ul>
+            )}
+
+            {bookingsError && bookings && <p className={styles.panelStale} role="status">{t('adminDashboard.bookings.stale')}</p>}
+
+            {!bookings && bookingsError && (
+              <div className={styles.panelError} role="alert">
+                <p>{t('adminDashboard.bookings.loadError')}</p>
+                <button type="button" className={styles.retry} onClick={retryBookings}>{t('menu.retry')}</button>
+              </div>
+            )}
+
+            {!bookings && !bookingsError && (
+              <div className={`${styles.rows} ${styles.bookingsPending}`}> {/* keeps its size during the skeleton's 200 ms delay */}
+                <LoadingState quiet>
+                  <ul className={styles.bookingSkeletons}>
+                    {Array.from({ length: SKELETON_BOOKINGS }, (_, index) => (
+                      <li key={index} className={styles.bookingRow}>
+                        <Skeleton width="2.75rem" height="1.1rem" />
+                        <Skeleton width="70%" height="1rem" />
+                        <Skeleton width="5rem" height="0.9rem" />
+                      </li>
+                    ))}
+                  </ul>
+                </LoadingState>
+              </div>
+            )}
+
+            {upcomingBookings.length > 0 && (
+              <ul className={styles.rows}>
+                {upcomingBookings.map((booking) => (
+                  <li key={booking._id} className={styles.bookingRow}>
+                    <strong className={styles.bookingTime}>{booking.time}</strong>
+                    <span className={styles.bookingName}>{booking.name} {booking.surname}</span>
+                    <span className={styles.bookingParty}>
+                      {booking.partySize === 1 ? t('booking.guestCountOne') : t('booking.guestCount', { count: booking.partySize })}
+                      {' · '}
+                      {booking.tablesNeeded === 1 ? t('adminReservations.tablesOne') : t('adminReservations.tables', { count: booking.tablesNeeded })}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {bookings && upcomingBookings.length === 0 && (
+              <p className={styles.allGood}>
+                <Icon name="calendar" size={20} />
+                {bookings.today.length === 0 ? t('todayBookings.empty') : t('adminDashboard.bookings.noneLeft')}
               </p>
             )}
           </section>

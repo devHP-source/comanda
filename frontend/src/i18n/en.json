@@ -490,6 +490,16 @@
       "evening": "Good evening, {name}"
     }
   },
+  "todayBookings": {
+    "kicker": "Today",
+    "title": "Today's reservations",
+    "count": "{count} reservations",
+    "countOne": "1 reservation",
+    "past": "time passed",
+    "empty": "No confirmed reservations for today",
+    "stale": "We can't refresh the reservations. Trying again shortly…",
+    "loadError": "We can't load today's reservations."
+  },
   "adminDashboard": {
     "kicker": "Overview",
     "title": "Today's service",
@@ -500,8 +510,10 @@
       "tablesDetail": "{count} free",
       "tickets": "Open tickets",
       "ticketsDetail": "{count} in the kitchen",
-      "ready": "Ready to serve",
-      "readyDetail": "To bring to the tables",
+      "bookings": "Reservations today",
+      "bookingsDetail": "{count} guests expected",
+      "bookingsDetailOne": "1 guest expected",
+      "bookingsUnknown": "Not available",
       "total": "Open bills",
       "totalDetail": "Across {count} tables",
       "totalDetailOne": "Across 1 table"
@@ -513,6 +525,16 @@
     },
     "ready": {
       "subtitle": "You can mark them served from here too"
+    },
+    "bookings": {
+      "title": "Upcoming reservations",
+      "subtitle": "Confirmed for today · refreshed every minute",
+      "manage": "Manage",
+      "noneLeft": "No more arrivals expected today",
+      "pendingGroups": "Groups to decide: {count}",
+      "pendingHint": "Confirm or reject the group requests",
+      "stale": "We can't refresh the reservations. Trying again shortly…",
+      "loadError": "We can't load the reservations."
     },
     "attention": {
       "title": "Needs attention",

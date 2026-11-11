@@ -9,6 +9,7 @@ import ReadyTicketCard from '../../../components/ReadyTicketCard/ReadyTicketCard
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import TableSheet from '../../../components/TableSheet/TableSheet.jsx'
 import TableTile from '../../../components/TableTile/TableTile.jsx'
+import TodayBookings from '../../../components/TodayBookings/TodayBookings.jsx'
 import useAuth from '../../../hooks/useAuth.js'
 import useLanguage from '../../../hooks/useLanguage.js'
 import usePolling from '../../../hooks/usePolling.js'
@@ -171,45 +172,49 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
           )}
         </section>
 
-        <section className={styles.tablesSection} aria-labelledby="tables-title">
-          <div className={styles.heading}>
-            <div>
-              <p className={`${styles.kicker} ${styles.muted}`}>{t('waiter.roomKicker')}</p>
-              <h2 id="tables-title" className={styles.title}>{t('waiter.tablesTitle')}</h2>
+        <div className={styles.main}> {/* right column from tablet up: the room, then today's bookings */}
+          <section className={styles.tablesSection} aria-labelledby="tables-title">
+            <div className={styles.heading}>
+              <div>
+                <p className={`${styles.kicker} ${styles.muted}`}>{t('waiter.roomKicker')}</p>
+                <h2 id="tables-title" className={styles.title}>{t('waiter.tablesTitle')}</h2>
+              </div>
+              <span className={styles.occupied}>
+                {occupiedCount === 1 ? t('waiter.occupiedOne') : t('waiter.occupied', { count: occupiedCount })}
+              </span>
             </div>
-            <span className={styles.occupied}>
-              {occupiedCount === 1 ? t('waiter.occupiedOne') : t('waiter.occupied', { count: occupiedCount })}
-            </span>
-          </div>
 
-          <div className={styles.filters} role="group" aria-label={t('waiter.filterLabel')}>
-            {FILTERS.map((value) => (
-              <button
-                key={value}
-                type="button"
-                className={`${styles.filter} ${filter === value ? styles.filterActive : ''}`}
-                aria-pressed={filter === value}
-                onClick={() => setFilter(value)}
-              >
-                {t(`waiter.filters.${value}`)}
-              </button>
-            ))}
-          </div>
-
-          {error && <p className={styles.stale} role="status">{t('waiter.stale')}</p>}
-
-          {visibleTables.length > 0 ? (
-            <ul className={styles.grid}>
-              {visibleTables.map((table) => (
-                <li key={table.number}>
-                  <TableTile table={table} onSelect={openSheet} />
-                </li>
+            <div className={styles.filters} role="group" aria-label={t('waiter.filterLabel')}>
+              {FILTERS.map((value) => (
+                <button
+                  key={value}
+                  type="button"
+                  className={`${styles.filter} ${filter === value ? styles.filterActive : ''}`}
+                  aria-pressed={filter === value}
+                  onClick={() => setFilter(value)}
+                >
+                  {t(`waiter.filters.${value}`)}
+                </button>
               ))}
-            </ul>
-          ) : (
-            <p className={styles.empty}>{t(`waiter.empty.${filter}`)}</p>
-          )}
-        </section>
+            </div>
+
+            {error && <p className={styles.stale} role="status">{t('waiter.stale')}</p>}
+
+            {visibleTables.length > 0 ? (
+              <ul className={styles.grid}>
+                {visibleTables.map((table) => (
+                  <li key={table.number}>
+                    <TableTile table={table} onSelect={openSheet} />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className={styles.empty}>{t(`waiter.empty.${filter}`)}</p>
+            )}
+          </section>
+
+          <TodayBookings />
+        </div>
       </div>
     )
   }
