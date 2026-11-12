@@ -1,0 +1,28 @@
+meta {
+  name: Order status - operator (400)
+  type: http
+  seq: 14
+}
+
+patch {
+  url: {{baseUrl}}/orders/000000000000000000000000/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{waiterToken}}
+}
+
+body:json {
+  {
+    "status": {
+      "$ne": null
+    }
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_STATUS
+}

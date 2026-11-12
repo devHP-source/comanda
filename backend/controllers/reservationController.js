@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import Reservation, { MAX_PARTY_SIZE, RESERVATION_STATUSES } from "../models/Reservation.js"
 import { isRealDate } from "../models/Settings.js"
 import { assertBookableDate, assertBookableSlot, assertSlotHasRoom, getFreeSlots, getFreeTables, getTablesNeeded, hasBookingStarted, romeNow } from "../services/availability.js"
@@ -51,8 +52,8 @@ const EMAIL_LIMIT_WINDOW_MS = 60 * 60 * 1000
 const assertEmailUnderLimit = async (email) => { // on top of the per-IP limit: one address can't be flooded with emails from many IPs
   const openBookings = await Reservation.countDocuments({
     email,
-    status: { $in: ["awaiting_verification", "pending"] },
-    createdAt: { $gte: new Date(Date.now() - EMAIL_LIMIT_WINDOW_MS) },
+    status: mongoose.trusted({ $in: ["awaiting_verification", "pending"] }),
+    createdAt: mongoose.trusted({ $gte: new Date(Date.now() - EMAIL_LIMIT_WINDOW_MS) }),
   })
 
   if (openBookings >= EMAIL_LIMIT) {
@@ -169,7 +170,7 @@ const adminListFilter = ({ date, status }) => { // both filters are optional, st
     if (!isRealDate(date)) throw reservationError(400, "INVALID_DATE", "date must be a real date as YYYY-MM-DD")
     filter.date = date // any day, past ones included: the only way to look back
   } else {
-    filter.date = { $gte: romeNow().date } // no date: today (Europe/Rome) onward. "YYYY-MM-DD" strings compare in calendar order
+    filter.date = mongoose.trusted({ $gte: romeNow().date }) // no date: today (Europe/Rome) onward. "YYYY-MM-DD" strings compare in calendar order
   }
 
   if (status !== undefined) {
@@ -178,7 +179,7 @@ const adminListFilter = ({ date, status }) => { // both filters are optional, st
     if (invalid.length > 0) {
       throw reservationError(400, "INVALID_STATUS", `Unknown status: ${invalid.join(", ")}. Use ${RESERVATION_STATUSES.join(", ")}`)
     }
-    filter.status = { $in: statuses }
+    filter.status = mongoose.trusted({ $in: statuses }) // every status was checked above
   }
 
   return filter

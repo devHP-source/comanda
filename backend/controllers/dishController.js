@@ -29,14 +29,17 @@ const applyDishFields = (dish, body) => { // copies only the fields sent: works 
   }
 }
 
+const invalidCategory = (message) => {
+  const err = new Error(message)
+  err.status = 400 // bad value in the body, not a missing route resource
+  err.code = "INVALID_CATEGORY"
+  return err
+}
+
 const checkCategoryExists = async (categoryId) => { // the schema only checks it's an ObjectId, not that the category is real
   if (categoryId === undefined) return // missing on create --> the required validator answers
-  if (!(await Category.exists({ _id: categoryId }))) {
-    const err = new Error(`Category not found: ${categoryId}`)
-    err.status = 400 // bad value in the body, not a missing route resource
-    err.code = "INVALID_CATEGORY"
-    throw err
-  }
+  if (typeof categoryId !== "string") throw invalidCategory("category must be a category id") // checked before the query: an object never reaches Category.exists
+  if (!(await Category.exists({ _id: categoryId }))) throw invalidCategory(`Category not found: ${categoryId}`)
 }
 
 // validates first, upload and save, for create and update. Works the same without a file (JSON requests)
@@ -119,7 +122,7 @@ export const getAdminDishes = async (req, res) => {
   const q = typeof req.query.q === "string" ? req.query.q.trim().slice(0, MAX_SEARCH_LENGTH) : "" // ?q=a&q=b arrives as an array: ignored
 
   const filter = {}
-  if (category) filter.category = category // bad id --> CastError --> 400
+  if (typeof category === "string" && category) filter.category = category // bad id --> CastError --> 400. ?category=a&category=b arrives as an array: ignored
   if (q) Object.assign(filter, searchFilter(q))
 
   res.json(await findDishPage(filter, req.query))

@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import Order, { ORDER_STATUSES } from "../models/Order.js"
 import Dish from "../models/Dish.js"
 import { getSettings } from "../services/settings.js"
@@ -22,8 +23,8 @@ export const createOrder = async (req, res) => { // POST /api/orders (waiter, ad
     throw orderError(400, "EMPTY_ORDER", "items must be a non-empty array of { dish, qty, notes }")
   }
 
-  // One query for every dish of the ticket. A bad id --> CastError --> 400 INVALID_ID in errorHandler
-  const dishes = await Dish.find({ _id: { $in: items.map((item) => item.dish) } })
+  // One query for every dish of the ticket. Each id is still cast: a bad id or an object --> CastError --> 400 INVALID_ID in errorHandler
+  const dishes = await Dish.find({ _id: mongoose.trusted({ $in: items.map((item) => item.dish) }) })
   const dishById = new Map(dishes.map((dish) => [dish._id.toString(), dish]))
 
   const unknown = items.filter((item) => !dishById.has(String(item.dish)))
@@ -68,7 +69,7 @@ export const getOrders = async (req, res) => { // GET /api/orders?status=sent,pr
     if (invalid.length > 0) {
       throw orderError(400, "INVALID_STATUS", `Unknown status: ${invalid.join(", ")}. Use ${ORDER_STATUSES.join(", ")}`)
     }
-    filter.status = { $in: statuses }
+    filter.status = mongoose.trusted({ $in: statuses }) // every status was checked above
   }
 
   const orders = await Order.find(filter)

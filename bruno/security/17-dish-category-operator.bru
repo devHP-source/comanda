@@ -1,0 +1,33 @@
+meta {
+  name: Dish - category operator (400)
+  type: http
+  seq: 17
+}
+
+post {
+  url: {{baseUrl}}/dishes
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "code": "SEC1",
+    "name": {
+      "it": "Prova"
+    },
+    "price": 1,
+    "category": {
+      "$ne": null
+    }
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_CATEGORY
+}

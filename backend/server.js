@@ -57,6 +57,11 @@ app.use("/api/reservations", reservationRoutes)
 app.use(notFound)
 app.use(errorHandler)
 
+if (!process.env.JWT_SECRET) { // fail at startup, not with a 500 on the first login
+  console.error("Missing JWT_SECRET in .env")
+  process.exit(1)
+}
+
 try {
   await connectDB()
   app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))

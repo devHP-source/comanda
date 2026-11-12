@@ -1,0 +1,28 @@
+meta {
+  name: Category - cover dish operator (400)
+  type: http
+  seq: 16
+}
+
+put {
+  url: {{baseUrl}}/categories/{{securityCategoryId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{adminToken}}
+}
+
+body:json {
+  {
+    "coverDish": {
+      "$ne": null
+    }
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_COVER_DISH
+}

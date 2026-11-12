@@ -133,7 +133,7 @@ async function upsertStaff(staffData) {
     users.push(user)
   }
 
-  const { deletedCount } = await User.deleteMany({ _id: { $nin: users.map((user) => user._id) } }) // and staff tokens still work after a re-seed. Staff not in the list are removed (accounts come only from the seed)
+  const { deletedCount } = await User.deleteMany({ _id: mongoose.trusted({ $nin: users.map((user) => user._id) }) }) // and staff tokens still work after a re-seed. Staff not in the list are removed (accounts come only from the seed)
   console.log(`Upserted ${users.length} staff users (${users.map((user) => user.role).join(", ")}), removed ${deletedCount}`)
 }
 

@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import Order from "../models/Order.js"
 import { centsToEuros } from "../models/price.js"
 import { getSettings } from "../services/settings.js"
@@ -65,7 +66,7 @@ export const closeTable = async (req, res) => { // POST /api/tables/:number/clos
   if (!summary) throw tableError(409, "TABLE_ALREADY_FREE", `Table ${tableNumber} has no open tickets`)
 
   // Only the tickets summed above: one sent in the meantime stays open instead of closing without being counted
-  await Order.updateMany({ _id: { $in: summary.ticketIds } }, { closedAt: new Date() })
+  await Order.updateMany({ _id: mongoose.trusted({ $in: summary.ticketIds }) }, { closedAt: new Date() })
 
   res.json({
     tableNumber,

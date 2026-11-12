@@ -1,0 +1,55 @@
+meta {
+  name: Login - email operator (400)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": {
+      "$ne": null
+    },
+    "password": "anything"
+  }
+}
+
+script:pre-request {
+  // Everything this folder uses is created here, so it works on its own
+  const axios = require("axios")
+  const baseUrl = bru.getEnvVar("baseUrl")
+
+  const login = async (role) => {
+    const { data } = await axios.post(`${baseUrl}/auth/login`, {
+      email: bru.getProcessEnv(`SEED_${role}_EMAIL`),
+      password: bru.getProcessEnv(`SEED_${role}_PASSWORD`),
+    })
+    return data.token
+  }
+
+  bru.setVar("adminToken", await login("ADMIN"))
+  bru.setVar("waiterToken", await login("WAITER"))
+
+  const { data: categories } = await axios.get(`${baseUrl}/categories`)
+  bru.setVar("securityCategoryId", categories[0]._id)
+
+  // The first Wednesday at least 2 days ahead: open with the default closedDays
+  const date = new Date()
+  date.setUTCDate(date.getUTCDate() + 2)
+  while (date.getUTCDay() !== 3) date.setUTCDate(date.getUTCDate() + 1)
+  bru.setVar("openDate", date.toISOString().slice(0, 10))
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq MISSING_CREDENTIALS
+}
+
+docs {
+  Also the folder setup (pre-request): admin and waiter tokens, a category id, openDate.
+}

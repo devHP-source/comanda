@@ -1,0 +1,20 @@
+meta {
+  name: Cancel details - operator as token (404)
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/reservations/cancel/%7B%22%24ne%22%3Anull%7D
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+  res.body.code: eq RESERVATION_NOT_FOUND
+}
+
+docs {
+  The token is {"$ne":null} (URL-encoded): route params are always strings, so it is just a token that doesn't exist.
+}

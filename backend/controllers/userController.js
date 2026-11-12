@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import User from "../models/User.js"
 
 const maskEmail = (email) => { // "p***@gmail.com"
@@ -12,7 +13,7 @@ export const getUsers = async (req, res) => { // GET /api/users (admin): every s
     User.find()
       .select("name email role avatar isActive") // password is select: false anyway; googleId stays private
       .sort({ role: 1, name: 1 }),
-    User.distinct("_id", { password: { $in: [null, ""] } }), // filtering on password never loads the hashes
+    User.distinct("_id", { password: mongoose.trusted({ $in: [null, ""] }) }), // filtering on password never loads the hashes
   ])
 
   const googleOnly = new Set(googleOnlyIds.map(String)) // Google-only accounts (no password, like the owner's personal Gmail) get a masked email here: only in this list, never in the DB or /auth/me

@@ -1,0 +1,20 @@
+meta {
+  name: Slots - date operator in the query (400)
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/reservations/slots?date%5B%24gte%5D=2026-01-01&partySize=2
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 400
+  res.body.code: eq INVALID_DATE
+}
+
+docs {
+  ?date[$gte]=2026-01-01 (URL-encoded). Express 5's default query parser keeps "date[$gte]" as a plain key and never builds { $gte } objects: date is missing.
+}

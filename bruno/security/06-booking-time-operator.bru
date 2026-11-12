@@ -1,0 +1,37 @@
+meta {
+  name: Booking - time operator (400)
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/reservations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bruno",
+    "surname": "Sicurezza",
+    "email": "security@comanda.test",
+    "phone": "+393331234567",
+    "date": "{{openDate}}",
+    "time": {
+      "$ne": null
+    },
+    "partySize": 2,
+    "turnstileToken": "{{turnstileToken}}"
+  }
+}
+
+assert {
+  res.status: eq 400
+}
+
+tests {
+  test("answers INVALID_TIME", () => {
+    const expected = bru.getEnvVar("liveCaptcha") === "true" ? "CAPTCHA_FAILED" : "INVALID_TIME" // render: Turnstile answers first (folder docs)
+    expect(res.body.code).to.equal(expected)
+  })
+}

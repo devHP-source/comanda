@@ -1,0 +1,36 @@
+meta {
+  name: Booking - party size operator (400)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/reservations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Bruno",
+    "surname": "Sicurezza",
+    "email": "security@comanda.test",
+    "phone": "+393331234567",
+    "date": "{{openDate}}",
+    "time": "20:00",
+    "partySize": {
+      "$gt": 0
+    },
+    "turnstileToken": "{{turnstileToken}}"
+  }
+}
+
+assert {
+  res.status: eq 400
+}
+
+tests {
+  test("answers INVALID_PARTY_SIZE", () => {
+    expect(res.body.code).to.equal("INVALID_PARTY_SIZE") // checked before the Turnstile token, on render too
+  })
+}

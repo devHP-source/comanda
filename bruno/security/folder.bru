@@ -1,0 +1,21 @@
+meta {
+  name: security
+  seq: 16
+}
+
+tests {
+  test("an operator never logs anyone in or matches a record", () => {
+    expect(res.status).to.be.within(400, 404)
+    expect(res.body).to.not.have.property("token")
+  })
+}
+
+docs {
+  NoSQL operator injection: each request sends an operator object (like { "$ne": null }) where the API expects a plain value, and must get 400, 401 or 404 with no token in the answer. Nothing is saved: every request fails before a write.
+  Two layers are tested together: the type checks in the controllers, and mongoose.set("sanitizeFilter", true) behind them.
+
+  Self-contained: request 1 logs in the admin and the waiter, picks a category and computes openDate, then sends its own check. Run the folder in order.
+
+  Login limit: failed logins count, 10 per IP every 15 minutes. This folder sends 2 (requests 1 and 2), the auth folder 2. Before a second full run within 15 minutes, restart the backend (type rs in the nodemon terminal): the count lives in memory.
+  On render (liveCaptcha = true) the booking requests with a valid party size are refused by Turnstile first: they expect 400 CAPTCHA_FAILED instead of their own code.
+}

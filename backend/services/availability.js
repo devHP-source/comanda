@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import Reservation from "../models/Reservation.js"
 import { isRealDate } from "../models/Settings.js"
 
@@ -121,7 +122,7 @@ export const getFreeSlots = async (settings, date, partySize) => {
 // Online tables still free at the busiest moment of a stay starting at `time`, never below 0 (Settings may have lowered maxOnlineTables).
 export const getFreeTables = async (settings, date, time, excludeId) => {
   const filter = { date, status: "confirmed" }
-  if (excludeId) filter._id = { $ne: excludeId } // excludeId a booking that must not count itself, if it's already confirmed
+  if (excludeId) filter._id = mongoose.trusted({ $ne: excludeId }) // excludeId a booking that must not count itself, if it's already confirmed
 
   const bookings = await Reservation.find(filter).select("time tablesNeeded")
   return Math.max(0, settings.maxOnlineTables - busiestTablesInUse(bookings, time, settings.avgDurationMinutes))

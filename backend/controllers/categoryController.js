@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import Category from "../models/Category.js"
 import Dish, { byCode } from "../models/Dish.js"
 
@@ -8,10 +9,17 @@ const categoryNotFound = () => {
   return err
 }
 
+const invalidCoverDish = (message) => {
+  const err = new Error(message)
+  err.status = 400
+  err.code = "INVALID_COVER_DISH"
+  return err
+}
+
 
 // Adds coverImage to each category: photo of coverDish, else the first dish of the category with a photo, else "" (the frontend shows a placeholder)
 const withCoverImages = async (categories) => {
-  const dishesWithPhoto = await Dish.find({ isPublished: true, "image.url": { $ne: "" } }) // unpublished dishes never preview a category
+  const dishesWithPhoto = await Dish.find({ isPublished: true, "image.url": mongoose.trusted({ $ne: "" }) }) // unpublished dishes never preview a category
     .sort({ code: 1 })
     .collation(byCode)
     .select("category image")
@@ -48,11 +56,9 @@ export const getAdminCategories = async (req, res) => { // GET /api/admin/catego
 
 const checkCoverDish = async (dishId, categoryId) => { // null or "" --> automatic preview. Otherwise it must be one of this category's dishes
   if (dishId === null || dishId === "") return null
+  if (typeof dishId !== "string") throw invalidCoverDish("coverDish must be a dish id or null") // checked before the query: an object never reaches Dish.exists
   if (!(await Dish.exists({ _id: dishId, category: categoryId }))) { // a bad id --> CastError --> 400 INVALID_ID in errorHandler
-    const err = new Error(`Dish ${dishId} is not in this category`)
-    err.status = 400
-    err.code = "INVALID_COVER_DISH"
-    throw err
+    throw invalidCoverDish(`Dish ${dishId} is not in this category`)
   }
   return dishId
 }
