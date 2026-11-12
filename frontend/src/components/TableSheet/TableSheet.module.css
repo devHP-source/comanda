@@ -14,7 +14,7 @@
   box-shadow: var(--shadow-float);
 }
 
-.dialog[open] { /* only while open: a display value on the closed dialog would show it */
+.dialog[open] { /* a display value (only while open) on the closed dialog would show it */
   display: flex;
   flex-direction: column;
 }
@@ -42,7 +42,7 @@
 .scroll {
   display: grid;
   min-height: 0;
-  flex: 1;
+  flex: 1 1 auto; /* a 0 basis collapses the sheet in WebKit: the dialog has only a max-height */
   gap: var(--space-5);
   padding: var(--space-5) var(--space-4) calc(var(--space-5) + env(safe-area-inset-bottom));
   overflow-y: auto;
