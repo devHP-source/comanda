@@ -4,12 +4,14 @@ import BookingForm from '../../../components/BookingForm/BookingForm.jsx'
 import BookingMessage from '../../../components/BookingMessage/BookingMessage.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
+import useDocumentTitle from '../../../hooks/useDocumentTitle.js'
 import useLanguage from '../../../hooks/useLanguage.js'
 import styles from './BookingPage.module.css'
 
 // /book: loads the booking rules, then shows the form or, once sent, what happens next
 const BookingPage = () => {
   const { t } = useLanguage()
+  useDocumentTitle(t('nav.book'))
   const [settings, setSettings] = useState(null)
   const [error, setError] = useState(null)
   const [attempt, setAttempt] = useState(0)

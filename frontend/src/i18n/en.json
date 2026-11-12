@@ -109,6 +109,10 @@
     }
   },
   "bookingLink": {
+    "pageTitle": {
+      "confirm": "Confirm booking",
+      "cancel": "Cancel booking"
+    },
     "slow": "Just a few more seconds, we're checking your booking…",
     "bookAgain": "Book again",
     "contacts": "Contacts",

@@ -68,10 +68,33 @@
   resize: vertical;
 }
 
-.phoneRow {
+.phoneRow { /* phones: the country above the number, so long country names aren't cut off */
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
   gap: var(--space-2);
+}
+
+/* Native select with our chevron instead of the browser's arrow */
+.selectWrap {
+  position: relative;
+  display: grid;
+  min-width: 0;
+}
+
+.select {
+  padding-right: calc(var(--space-4) + 1.5rem);
+  -webkit-appearance: none;
+  appearance: none;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.selectChevron {
+  position: absolute;
+  top: 50%;
+  right: var(--space-4);
+  color: var(--color-ink-muted);
+  pointer-events: none;
+  transform: translateY(-50%) rotate(90deg);
 }
 
 .hint {
@@ -200,7 +223,7 @@
 }
 
 .submit:disabled {
-  color: var(--color-ink-muted);
+  color: var(--color-ink);
   background: var(--color-line);
   box-shadow: none;
   cursor: not-allowed;
@@ -227,5 +250,9 @@
 @media (min-width: 700px) {
   .twoColumns {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .phoneRow {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
   }
 }

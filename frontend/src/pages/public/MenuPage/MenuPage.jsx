@@ -15,6 +15,7 @@ import Icon from '../../../components/Icon/Icon.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import MenuSearch from '../../../components/MenuSearch/MenuSearch.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
+import useDocumentTitle from '../../../hooks/useDocumentTitle.js'
 import useLanguage from '../../../hooks/useLanguage.js'
 import useList from '../../../hooks/useList.js'
 import kitchenStatus from '../../../utils/kitchenStatus.js'
@@ -46,6 +47,7 @@ const renderDishes = (category, dishes) => (
 
 const MenuPage = () => {
   const { lang, t, pick, tError } = useLanguage()
+  useDocumentTitle(t('nav.menu'))
   const { count: listCount } = useList()
   const [searchParams, setSearchParams] = useSearchParams()
   const location = useLocation()

@@ -3,6 +3,7 @@ import api from '../../../api/client.js'
 import Icon from '../../../components/Icon/Icon.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
+import useDocumentTitle from '../../../hooks/useDocumentTitle.js'
 import useLanguage from '../../../hooks/useLanguage.js'
 import { WEEK, formatDate, weekdayName } from '../../../utils/calendar.js'
 import kitchenStatus, { romeNow } from '../../../utils/kitchenStatus.js'
@@ -12,6 +13,7 @@ import styles from './InfoPage.module.css'
 // /info: opening hours from the public settings, plus address and phone
 const InfoPage = () => {
   const { lang, t } = useLanguage()
+  useDocumentTitle(t('nav.about'))
   const [settings, setSettings] = useState(null)
   const [error, setError] = useState(null)
   const [attempt, setAttempt] = useState(0)

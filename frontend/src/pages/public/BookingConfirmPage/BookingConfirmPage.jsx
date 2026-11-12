@@ -4,6 +4,7 @@ import api, { getErrorCode } from '../../../api/client.js'
 import BookingMessage from '../../../components/BookingMessage/BookingMessage.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
+import useDocumentTitle from '../../../hooks/useDocumentTitle.js'
 import useLanguage from '../../../hooks/useLanguage.js'
 import styles from './BookingConfirmPage.module.css'
 
@@ -13,6 +14,7 @@ const canRetry = (error) => !error.response || error.response.status >= 500 // o
 const BookingConfirmPage = () => {
   const { token } = useParams()
   const { t, tError } = useLanguage()
+  useDocumentTitle(t('bookingLink.pageTitle.confirm'))
   const [result, setResult] = useState(null) // { booking } or { error }
   const [attempt, setAttempt] = useState(0) // "Riprova" bumps it
   const requestRef = useRef(null) // { key, promise }

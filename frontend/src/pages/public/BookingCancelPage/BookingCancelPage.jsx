@@ -6,6 +6,7 @@ import BookingMessage from '../../../components/BookingMessage/BookingMessage.js
 import ConfirmDialog from '../../../components/ConfirmDialog/ConfirmDialog.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
+import useDocumentTitle from '../../../hooks/useDocumentTitle.js'
 import useLanguage from '../../../hooks/useLanguage.js'
 import { formatDate } from '../../../utils/calendar.js'
 import styles from './BookingCancelPage.module.css'
@@ -16,6 +17,7 @@ const RELOAD_CODES = ['RESERVATION_NOT_FOUND', 'RESERVATION_NOT_CANCELLABLE', 'R
 const BookingCancelPage = () => {
   const { token } = useParams()
   const { lang, t, tError } = useLanguage()
+  useDocumentTitle(t('bookingLink.pageTitle.cancel'))
   const [booking, setBooking] = useState(null) // { date, time, partySize, status, hasStarted }
   const [error, setError] = useState(null)
   const [attempt, setAttempt] = useState(0)

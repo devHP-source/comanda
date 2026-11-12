@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import api, { getErrorCode } from '../../api/client.js'
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog.jsx'
+import Icon from '../Icon/Icon.jsx'
 import LoadingState from '../LoadingState/LoadingState.jsx'
 import Skeleton from '../Skeleton/Skeleton.jsx'
 import Turnstile from '../Turnstile/Turnstile.jsx'
@@ -284,19 +285,22 @@ const BookingForm = ({ settings, onBooked }) => {
         <div className={styles.field}>
           <label htmlFor="book-phone" className={styles.label}>{t('booking.phone')}{requiredMark}</label>
           <div className={styles.phoneRow}>
-            <select
-              className={styles.input}
-              name="region"
-              aria-label={t('booking.phonePrefix')}
-              autoComplete="off" // the options are countries: a browser filling in "+39" wouldn't match them
-              value={form.region}
-              onChange={handleChange}
-            >
-              {prefixOptions.map(({ region, label }) => (
-                <option key={region} value={region}>{label}</option>
-              ))}
-              <option value={OTHER_REGION}>{t('booking.phoneOther')}</option>
-            </select>
+            <span className={styles.selectWrap}>
+              <select
+                className={`${styles.input} ${styles.select}`}
+                name="region"
+                aria-label={t('booking.phonePrefix')}
+                autoComplete="off"
+                value={form.region}
+                onChange={handleChange}
+              >
+                {prefixOptions.map(({ region, label }) => (
+                  <option key={region} value={region}>{label}</option>
+                ))}
+                <option value={OTHER_REGION}>{t('booking.phoneOther')}</option>
+              </select>
+              <Icon name="chevron" size={18} className={styles.selectChevron} />
+            </span>
             <input
               id="book-phone"
               ref={phoneRef}

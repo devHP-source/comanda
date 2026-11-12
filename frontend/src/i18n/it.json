@@ -109,6 +109,10 @@
     }
   },
   "bookingLink": {
+    "pageTitle": {
+      "confirm": "Conferma prenotazione",
+      "cancel": "Annulla prenotazione"
+    },
     "slow": "Ancora qualche secondo, stiamo controllando la prenotazione…",
     "bookAgain": "Prenota di nuovo",
     "contacts": "Contatti",

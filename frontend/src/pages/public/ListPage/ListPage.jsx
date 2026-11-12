@@ -6,6 +6,7 @@ import DishCardSkeleton from '../../../components/DishCardSkeleton/DishCardSkele
 import Icon from '../../../components/Icon/Icon.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import WaiterListDialog from '../../../components/WaiterListDialog/WaiterListDialog.jsx'
+import useDocumentTitle from '../../../hooks/useDocumentTitle.js'
 import useLanguage from '../../../hooks/useLanguage.js'
 import useList from '../../../hooks/useList.js'
 import styles from './ListPage.module.css'
@@ -15,6 +16,7 @@ const MAX_SKELETON_CARDS = 4
 // /list: the dishes the guest bookmarked, in menu order. Not an order: the waiter still takes it
 const ListPage = () => {
   const { t, tError } = useLanguage()
+  useDocumentTitle(t('nav.list'))
   const { ids, keepOnly } = useList()
   const [dishes, setDishes] = useState(null) // the whole published menu: the list only stores ids
   const [error, setError] = useState(null)

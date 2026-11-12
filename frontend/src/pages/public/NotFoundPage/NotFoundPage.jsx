@@ -1,9 +1,11 @@
 import { Link } from 'react-router'
+import useDocumentTitle from '../../../hooks/useDocumentTitle.js'
 import useLanguage from '../../../hooks/useLanguage.js'
 import styles from './NotFoundPage.module.css'
 
 const NotFoundPage = () => {
   const { t } = useLanguage()
+  useDocumentTitle(t('notFound.title'))
 
   return (
     <section className={styles.page}>

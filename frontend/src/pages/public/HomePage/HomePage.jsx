@@ -7,6 +7,7 @@ import Icon from '../../../components/Icon/Icon.jsx'
 import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import Reveal from '../../../components/Reveal/Reveal.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
+import useDocumentTitle from '../../../hooks/useDocumentTitle.js'
 import useLanguage from '../../../hooks/useLanguage.js'
 import { WEEK, weekdayName } from '../../../utils/calendar.js'
 import kitchenStatus from '../../../utils/kitchenStatus.js'
@@ -15,6 +16,7 @@ import styles from './HomePage.module.css'
 // "/": the page for people finding us online. Hours from the public settings, chef's picks from the menu
 const HomePage = () => {
   const { lang, t } = useLanguage()
+  useDocumentTitle()
   const [settings, setSettings] = useState(null)
   const [settingsError, setSettingsError] = useState(null)
   const [settingsAttempt, setSettingsAttempt] = useState(0)
