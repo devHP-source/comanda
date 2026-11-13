@@ -8,6 +8,7 @@ const router = Router()
 
 router.post("/login", loginLimiter, login)
 router.get("/me", authenticate, getMe)
-router.post("/impersonate/:userId", authenticate, authorize("admin"), impersonate) // "View as" token belongs to a waiter/kitchen user: authorize("admin") also stops it from impersonating again
+// A "View as" token belongs to a waiter or kitchen user: authorize("admin") also stops it from impersonating again
+router.post("/impersonate/:userId", authenticate, authorize("admin"), impersonate)
 
 export default router

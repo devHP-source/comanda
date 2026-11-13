@@ -1,6 +1,7 @@
 import Dish, { byCode } from "../models/Dish.js"
 import Category from "../models/Category.js"
-import { uploadImage, deleteImage, DISH_IMAGES_FOLDER } from "../services/uploadImage.js"
+import { uploadImage, deleteImage } from "../services/uploadImage.js"
+import httpError from "../utils/httpError.js"
 
 const publishedOnly = { isPublished: true } // guests never see unpublished dishes (sold out ones stay visible)
 
@@ -8,12 +9,7 @@ const publishedOnly = { isPublished: true } // guests never see unpublished dish
 const plainFields = ["code", "price", "category", "allergens", "spiceLevel", "isVegetarian", "isFrozen", "isAvailable", "isPublished", "isFeatured"]
 const langFields = ["name", "description"] // { it, en }
 
-const dishNotFound = (id) => {
-  const err = new Error(`Dish not found: ${id}`)
-  err.status = 404
-  err.code = "DISH_NOT_FOUND"
-  return err
-}
+const dishNotFound = (id) => httpError(404, "DISH_NOT_FOUND", `Dish not found: ${id}`)
 
 // multipart sends one allergen as a string, several as an array, and can't send an empty list: the admin form sends "" for "none"
 const toAllergenList = (value) => [].concat(value).filter(Boolean)
@@ -29,12 +25,7 @@ const applyDishFields = (dish, body) => { // copies only the fields sent: works 
   }
 }
 
-const invalidCategory = (message) => {
-  const err = new Error(message)
-  err.status = 400 // bad value in the body, not a missing route resource
-  err.code = "INVALID_CATEGORY"
-  return err
-}
+const invalidCategory = (message) => httpError(400, "INVALID_CATEGORY", message) // 400: bad value in the body, not a missing route resource
 
 const checkCategoryExists = async (categoryId) => { // the schema only checks it's an ObjectId, not that the category is real
   if (categoryId === undefined) return // missing on create --> the required validator answers
@@ -45,10 +36,13 @@ const checkCategoryExists = async (categoryId) => { // the schema only checks it
 // validates first, upload and save, for create and update. Works the same without a file (JSON requests)
 const saveDish = async (dish, file) => {
   await dish.validate() // check the fields before uploading: a bad request never leaves a photo on Cloudinary
-  if (!file) return dish.save()
+  if (!file) {
+    await dish.save()
+    return
+  }
 
   const oldPublicId = dish.image.publicId // "" on create or when the dish had no photo
-  dish.image = await uploadImage(file.buffer, DISH_IMAGES_FOLDER)
+  dish.image = await uploadImage(file.buffer)
 
   try {
     await dish.save() // duplicate code --> 11000 --> 409 in errorHandler (validate() can't see unique indexes)
@@ -57,7 +51,7 @@ const saveDish = async (dish, file) => {
     throw err
   }
 
-  if (oldPublicId) await deleteImage(oldPublicId).catch(console.error) // Replaced the old photo goes only after the new one is saved, so the dish never points to a deleted image
+  if (oldPublicId) await deleteImage(oldPublicId).catch(console.error) // the old photo is deleted only after the new one is saved, so the dish never points to a deleted image
 }
 
 const findDishPage = async (filter, query) => { // .sort().skip().limit() + countDocuments() --> { data, page, totalPages, total }
@@ -77,13 +71,9 @@ const findDishPage = async (filter, query) => { // .sort().skip().limit() + coun
   }
 }
 
-export const getDishes = async (req, res) => { // GET /api/dishes (public): whole menu, or one page with ?page
-  if (req.query.page === undefined) {
-    const dishes = await Dish.find(publishedOnly).sort({ code: 1 }).collation(byCode)
-    return res.json(dishes)
-  }
-
-  res.json(await findDishPage(publishedOnly, req.query))
+export const getDishes = async (req, res) => { // GET /api/dishes (public): the whole menu, no pagination
+  const dishes = await Dish.find(publishedOnly).sort({ code: 1 }).collation(byCode)
+  res.json(dishes)
 }
 
 export const getDishById = async (req, res) => { // GET /api/dishes/:id (public). Bad id --> CastError --> 400 in errorHandler, unpublished --> 404
@@ -95,7 +85,6 @@ export const getDishById = async (req, res) => { // GET /api/dishes/:id (public)
 
 const MAX_SEARCH_LENGTH = 50
 
-// A regex can't ignore accents, so each vowel (and c, n) matches its accented forms too: "caffe" finds "Caffè"
 const ACCENTED = {
   a: "aàáâäãAÀÁÂÄÃ",
   e: "eèéêëEÈÉÊË",
@@ -135,7 +124,7 @@ export const getAdminDishById = async (req, res) => { // GET /api/admin/dishes/:
   res.json(dish)
 }
 
-export const createDish =async (req, res) => { // POST /api/dishes (admin): JSON, or multipart with an optional "image" file. price in euros (8.5): the Dish setter stores cents
+export const createDish = async (req, res) => { // POST /api/dishes (admin): JSON, or multipart with an optional "image" file. price in euros (8.5): the Dish setter stores cents
   const body = req.body ?? {}
   await checkCategoryExists(body.category)
 
@@ -150,10 +139,7 @@ export const updateDish = async (req, res) => { // PUT /api/dishes/:id (admin): 
   const removeImage = body.removeImage === true || body.removeImage === "true" // JSON sends a boolean, multipart a string
 
   if (removeImage && req.file) {
-    const err = new Error("Send either removeImage or a new image, not both")
-    err.status = 400
-    err.code = "REMOVE_IMAGE_WITH_FILE"
-    throw err
+    throw httpError(400, "REMOVE_IMAGE_WITH_FILE", "Send either removeImage or a new image, not both")
   }
 
   const dish = await Dish.findById(req.params.id)
@@ -182,10 +168,7 @@ export const updateAvailability = async (req, res) => { // PATCH /api/dishes/:id
 
   // Explicit value instead of a server-side toggle: two staff tapping "Esaurito" at once can't flip it back
   if (typeof isAvailable !== "boolean") {
-    const err = new Error("isAvailable must be true or false")
-    err.status = 400
-    err.code = "INVALID_AVAILABILITY"
-    throw err
+    throw httpError(400, "INVALID_AVAILABILITY", "isAvailable must be true or false")
   }
 
   const dish = await Dish.findById(req.params.id)

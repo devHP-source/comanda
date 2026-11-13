@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-export default async function connectDB() {
+const connectDB = async () => {
   if (!process.env.MONGODB_URI) {
     throw new Error("Missing MONGODB_URI in .env")
   }
@@ -11,3 +11,5 @@ export default async function connectDB() {
   const conn = await mongoose.connect(process.env.MONGODB_URI)
   console.log(`MongoDB connected: ${conn.connection.name}`)
 }
+
+export default connectDB

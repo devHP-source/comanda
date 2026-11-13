@@ -26,9 +26,7 @@ app.set("trust proxy", 1) // Render sits behind a proxy: the rate limit must rea
 const allowedOrigins = [process.env.FRONTEND_URL, "http://localhost:5173"].filter(Boolean)
 
 app.use(helmet())
-app.use(cors({ 
-  origin: allowedOrigins 
-}))
+app.use(cors({ origin: allowedOrigins }))
 app.use(express.json())
 // The verify and cancel tokens work like passwords: the request log shows "/verify/[token]" instead of the real one
 morgan.token("url", (req) =>
@@ -36,8 +34,7 @@ morgan.token("url", (req) =>
 )
 app.use(morgan("dev"))
 
-
-app.get("/api/health", (req, res) => { // Health check per svegliare Render dallo sleep
+app.get("/api/health", (req, res) => { // health check: a first request also wakes Render from sleep
   res.json({
     status: "ok",
     db: mongoose.connection.readyState === 1 ? "connected" : "disconnected",

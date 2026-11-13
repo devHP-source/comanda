@@ -1,18 +1,12 @@
 // Cloudflare Turnstile: checks on the server the token the booking form got from the widget. A token works once and expires after 5 minutes
+import httpError from "../utils/httpError.js"
 
 const SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
 const MAX_TOKEN_LENGTH = 2048 // Cloudflare's own limit
 const OUR_SIDE_ERRORS = ["missing-input-secret", "invalid-input-secret", "internal-error"] // wrong or missing secret, or Cloudflare's own failure: not the guest's fault
 
-const captchaError = (status, code, message) => {
-  const err = new Error(message)
-  err.status = status
-  err.code = code
-  return err
-}
-
-const failed = () => captchaError(400, "CAPTCHA_FAILED", "The security check failed, try again")
-const unavailable = () => captchaError(502, "CAPTCHA_UNAVAILABLE", "The security check is not available right now, try again later")
+const failed = () => httpError(400, "CAPTCHA_FAILED", "The security check failed, try again")
+const unavailable = () => httpError(502,"CAPTCHA_UNAVAILABLE", "The security check is not available right now, try again later")
 
 export const verifyTurnstile = async (token, ip) => {
   if (typeof token !== "string" || token.length === 0 || token.length > MAX_TOKEN_LENGTH) {

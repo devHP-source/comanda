@@ -1,21 +1,10 @@
 import mongoose from "mongoose"
 import Category from "../models/Category.js"
 import Dish, { byCode } from "../models/Dish.js"
+import httpError from "../utils/httpError.js"
 
-const categoryNotFound = () => {
-  const err = new Error("Category not found")
-  err.status = 404
-  err.code = "CATEGORY_NOT_FOUND"
-  return err
-}
-
-const invalidCoverDish = (message) => {
-  const err = new Error(message)
-  err.status = 400
-  err.code = "INVALID_COVER_DISH"
-  return err
-}
-
+const categoryNotFound = () => httpError(404, "CATEGORY_NOT_FOUND", "Category not found")
+const invalidCoverDish = (message) => httpError(400, "INVALID_COVER_DISH", message)
 
 // Adds coverImage to each category: photo of coverDish, else the first dish of the category with a photo, else "" (the frontend shows a placeholder)
 const withCoverImages = async (categories) => {
@@ -86,7 +75,7 @@ export const updateCategory = async (req, res) => { // PUT /api/categories/:id (
   if (isCompact !== undefined) category.isCompact = isCompact
   if (coverDish !== undefined) category.coverDish = await checkCoverDish(coverDish, category._id)
 
-  await category.save() // save() runs the full schema validation
+  await category.save() // runs the schema validators
   res.json(category)
 }
 
@@ -94,13 +83,8 @@ export const deleteCategory = async (req, res) => { // DELETE /api/categories/:i
   const category = await Category.findById(req.params.id)
   if (!category) throw categoryNotFound()
 
-  const dishCount = await Dish.countDocuments({ category: category._id })   // Never leaves dishes pointing to a missing category: move or delete them first
-  if (dishCount > 0) {
-    const err = new Error(`Category still has ${dishCount} dishes`)
-    err.status = 409
-    err.code = "CATEGORY_HAS_DISHES"
-    throw err
-  }
+  const dishCount = await Dish.countDocuments({ category: category._id }) // never leaves dishes pointing to a missing category: move or delete them first
+  if (dishCount > 0) throw httpError(409, "CATEGORY_HAS_DISHES", `Category still has ${dishCount} dishes`)
 
   await category.deleteOne()
   res.status(204).end()

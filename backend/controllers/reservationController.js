@@ -5,13 +5,7 @@ import { assertBookableDate, assertBookableSlot, assertSlotHasRoom, getFreeSlots
 import { sendBigGroupNotice, sendBookingDeclinedEmail, sendConfirmationEmail, sendVerifyEmail } from "../services/email.js"
 import { getSettings } from "../services/settings.js"
 import { verifyTurnstile } from "../services/turnstile.js"
-
-const reservationError = (status, code, message) => {
-  const err = new Error(message)
-  err.status = status
-  err.code = code
-  return err
-}
+import httpError from "../utils/httpError.js"
 
 // Only the verify email decides whether a booking exists. Any other email that fails was already logged by send(), and the booking stands.
 // Returns false when it failed, so the admin screen can say "call the guest" (a skipped .test address counts as sent)
@@ -25,12 +19,9 @@ const sendWithoutFailing = async (sendEmail, reservation) => {
   }
 }
 
-const assertPartySize =(partySize) => {
+const assertPartySize = (partySize) => {
   if (!Number.isInteger(partySize) || partySize < 1 || partySize > MAX_PARTY_SIZE) {
-    const err = new Error(`partySize must be an integer from 1 to ${MAX_PARTY_SIZE}`)
-    err.status = 400
-    err.code = "INVALID_PARTY_SIZE"
-    throw err
+    throw httpError(400, "INVALID_PARTY_SIZE", `partySize must be an integer from 1 to ${MAX_PARTY_SIZE}`)
   }
 }
 
@@ -57,7 +48,7 @@ const assertEmailUnderLimit = async (email) => { // on top of the per-IP limit: 
   })
 
   if (openBookings >= EMAIL_LIMIT) {
-    throw reservationError(429, "TOO_MANY_BOOKINGS", `At most ${EMAIL_LIMIT} open bookings per email address in one hour`)
+    throw httpError(429, "TOO_MANY_BOOKINGS", `At most ${EMAIL_LIMIT} open bookings per email address in one hour`)
   }
 }
 
@@ -111,7 +102,7 @@ export const verifyReservation = async (req, res) => { // GET /api/reservations/
 
   // The TTL monitor only runs about once a minute, so an expired booking can still be here
   if (reservation?.status !== "awaiting_verification" || reservation.expiresAt <= new Date()) {
-    throw reservationError(404, "RESERVATION_NOT_FOUND", "This link is not valid or has expired")
+    throw httpError(404, "RESERVATION_NOT_FOUND", "This link is not valid or has expired")
   }
 
   const settings = await getSettings()
@@ -128,10 +119,12 @@ export const verifyReservation = async (req, res) => { // GET /api/reservations/
 
 const CANCELLABLE_STATUSES = ["confirmed", "pending"] // the two emails with a cancel link: the confirmation and the big-group notice (the guest withdraws the request)
 
-export const getCancelDetails = async (req, res) => { // GET /api/reservations/cancel/:token (public, read-only): which booking the cancel page is about, whatever its status, so the page can say why it can't be cancelled. Changes nothing: only the button on that page sends the POST
+// GET /api/reservations/cancel/:token (public, read-only): which booking the cancel page is about, whatever its status,
+// so the page can say why it can't be cancelled. Changes nothing: only the button on that page sends the POST
+export const getCancelDetails = async (req, res) => {
   const reservation = await Reservation.findOne({ cancelToken: req.params.token })
 
-  if (!reservation) throw reservationError(404, "RESERVATION_NOT_FOUND", "This link is not valid")
+  if (!reservation) throw httpError(404, "RESERVATION_NOT_FOUND", "This link is not valid")
 
   res.json({ // no personal data: anyone who sees the link (a forwarded email) learns only these
     date: reservation.date,
@@ -145,16 +138,16 @@ export const getCancelDetails = async (req, res) => { // GET /api/reservations/c
 export const cancelReservation = async (req, res) => { // POST /api/reservations/cancel/:token (public, the link in the confirmation email or in the big-group notice)
   const reservation = await Reservation.findOne({ cancelToken: req.params.token })
 
-  if (!reservation) throw reservationError(404, "RESERVATION_NOT_FOUND", "This link is not valid")
+  if (!reservation) throw httpError(404, "RESERVATION_NOT_FOUND", "This link is not valid")
 
   if (reservation.status === "cancelled") return res.json(reservation) // second click on the link: nothing to do
 
   if (!CANCELLABLE_STATUSES.includes(reservation.status)) { // rejected, or awaiting_verification (its emails have no cancel link)
-    throw reservationError(409, "RESERVATION_NOT_CANCELLABLE", `Only ${CANCELLABLE_STATUSES.join(" or ")} bookings can be cancelled`)
+    throw httpError(409, "RESERVATION_NOT_CANCELLABLE", `Only ${CANCELLABLE_STATUSES.join(" or ")} bookings can be cancelled`)
   }
 
   if (hasBookingStarted(reservation.date, reservation.time)) {
-    throw reservationError(409, "RESERVATION_ALREADY_STARTED", "Past bookings can't be cancelled")
+    throw httpError(409, "RESERVATION_ALREADY_STARTED", "Past bookings can't be cancelled")
   }
 
   reservation.status = "cancelled" // confirmed: its tables are free again (only confirmed bookings are counted). Pending: the admin can no longer confirm it
@@ -167,7 +160,7 @@ const adminListFilter = ({ date, status }) => { // both filters are optional, st
   const filter = {}
 
   if (date !== undefined) {
-    if (!isRealDate(date)) throw reservationError(400, "INVALID_DATE", "date must be a real date as YYYY-MM-DD")
+    if (!isRealDate(date)) throw httpError(400, "INVALID_DATE", "date must be a real date as YYYY-MM-DD")
     filter.date = date // any day, past ones included: the only way to look back
   } else {
     filter.date = mongoose.trusted({ $gte: romeNow().date }) // no date: today (Europe/Rome) onward. "YYYY-MM-DD" strings compare in calendar order
@@ -177,7 +170,7 @@ const adminListFilter = ({ date, status }) => { // both filters are optional, st
     const statuses = String(status).split(",").map((value) => value.trim())
     const invalid = statuses.filter((value) => !RESERVATION_STATUSES.includes(value))
     if (invalid.length > 0) {
-      throw reservationError(400, "INVALID_STATUS", `Unknown status: ${invalid.join(", ")}. Use ${RESERVATION_STATUSES.join(", ")}`)
+      throw httpError(400, "INVALID_STATUS", `Unknown status: ${invalid.join(", ")}. Use ${RESERVATION_STATUSES.join(", ")}`)
     }
     filter.status = mongoose.trusted({ $in: statuses }) // every status was checked above
   }
@@ -187,7 +180,10 @@ const adminListFilter = ({ date, status }) => { // both filters are optional, st
 
 const WAITER_FIELDS = "_id name surname date time partySize tablesNeeded notes phone" // data minimization: never the guest's email
 
-export const getReservations = async (req, res) => { // GET /api/reservations (admin: ?date=&status=&page=&limit=, every field, no date = from today on. Waiter: today's confirmed bookings, whatever the filters say, WAITER_FIELDS only)
+// GET /api/reservations
+// Admin: ?date=&status=&page=&limit=, every field, no date = from today on
+// Waiter: today's confirmed bookings whatever the filters say, WAITER_FIELDS only
+export const getReservations = async (req, res) => {
   const isAdmin = req.user.role === "admin"
   const filter = isAdmin
     ? adminListFilter(req.query)
@@ -226,19 +222,19 @@ export const updateReservationStatus = async (req, res) => { // PATCH /api/reser
 
   const allowedFrom = Object.hasOwn(STATUS_TRANSITIONS, status) ? STATUS_TRANSITIONS[status] : null // hasOwn: "constructor" isn't a status
   if (!allowedFrom) {
-    throw reservationError(400, "INVALID_STATUS", `status must be one of: ${Object.keys(STATUS_TRANSITIONS).join(", ")}`)
+    throw httpError(400, "INVALID_STATUS", `status must be one of: ${Object.keys(STATUS_TRANSITIONS).join(", ")}`)
   }
 
   const reservation = await Reservation.findById(req.params.id).select("+cancelToken") // bad id --> CastError --> 400 INVALID_ID. cancelToken: the confirmation email links to it
-  if (!reservation) throw reservationError(404, "RESERVATION_NOT_FOUND", `Reservation not found: ${req.params.id}`)
+  if (!reservation) throw httpError(404, "RESERVATION_NOT_FOUND", `Reservation not found: ${req.params.id}`)
 
   if (!allowedFrom.includes(reservation.status)) {
-    throw reservationError(409, "INVALID_RESERVATION_TRANSITION", `Can't set ${status}: the booking is ${reservation.status}`)
+    throw httpError(409, "INVALID_RESERVATION_TRANSITION", `Can't set ${status}: the booking is ${reservation.status}`)
   }
 
   // Rejecting stays possible, so a big group nobody answered in time doesn't wait forever. No capacity check on confirm: for big groups the admin decides
   if (status !== "rejected" && hasBookingStarted(reservation.date, reservation.time)) {
-    throw reservationError(409, "RESERVATION_ALREADY_STARTED", `Past bookings can't be set to ${status}`)
+    throw httpError(409, "RESERVATION_ALREADY_STARTED", `Past bookings can't be set to ${status}`)
   }
 
   reservation.status = status
@@ -252,7 +248,7 @@ export const updateReservationStatus = async (req, res) => { // PATCH /api/reser
 
 export const getReservationFreeTables = async (req, res) => { // GET /api/reservations/:id/free-tables (admin): how many online tables are free at that booking's time, before confirming a big group
   const reservation = await Reservation.findById(req.params.id) // bad id --> CastError --> 400 INVALID_ID
-  if (!reservation) throw reservationError(404, "RESERVATION_NOT_FOUND", `Reservation not found: ${req.params.id}`)
+  if (!reservation) throw httpError(404, "RESERVATION_NOT_FOUND", `Reservation not found: ${req.params.id}`)
 
   const settings = await getSettings()
   const freeTables = await getFreeTables(settings, reservation.date, reservation.time, reservation._id) // a confirmed booking doesn't count its own tables

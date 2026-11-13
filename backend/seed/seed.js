@@ -1,6 +1,6 @@
 /*
 * Run from backend/ by:
-* npm run seed 
+* npm run seed
 */
 import "dotenv/config"
 import { readFile, readdir } from "node:fs/promises"
@@ -53,7 +53,7 @@ async function uploadDishPhotos(dishes, photos) {
     if (!filePath) continue // no file --> image stays empty, the frontend shows a placeholder
 
     // Fixed public_id comanda/dishes/<code>: re-running the seed replaces the same photo, never adds a copy
-    dish.image = await uploadImage(await readFile(filePath), DISH_IMAGES_FOLDER, {
+    dish.image = await uploadImage(await readFile(filePath), {
       public_id: dish.code,
       overwrite: true,
       invalidate: true,
@@ -73,9 +73,13 @@ async function uploadDishPhotos(dishes, photos) {
 async function setCoverDishes(categoriesData, categoryIds, dishes) {
   const dishByCode = new Map(dishes.map((dish) => [dish.code, dish]))
   let count = 0
+  const withoutCode = [] // these categories fall back to their first dish with a photo
 
   for (const { name, coverDish: code } of categoriesData) {
-    if (!code) continue
+    if (!code) {
+      withoutCode.push(name.it)
+      continue
+    }
     const dish = dishByCode.get(code)
     const categoryId = categoryIds[name.it]
     if (!dish || !dish.category.equals(categoryId)) {
@@ -85,6 +89,9 @@ async function setCoverDishes(categoriesData, categoryIds, dishes) {
     count++
   }
   console.log(`Set coverDish on ${count} categories`)
+  if (withoutCode.length) {
+    console.log(`No coverDish code in categories.json for ${withoutCode.length} categories (preview = first dish with a photo): ${withoutCode.join(", ")}`)
+  }
 }
 
 function requireEnv(name) { // demo credentials come only from .env, never hardcoded
@@ -97,33 +104,33 @@ function requireEnv(name) { // demo credentials come only from .env, never hardc
 
 function getStaffData() {
   return [
-    { 
-      name: "Admin", 
-      email: requireEnv("SEED_ADMIN_EMAIL"), 
-      password: requireEnv("SEED_ADMIN_PASSWORD"), 
-      role: "admin" 
+    {
+      name: "Admin",
+      email: requireEnv("SEED_ADMIN_EMAIL"),
+      password: requireEnv("SEED_ADMIN_PASSWORD"),
+      role: "admin"
     },
-    { 
-      name: "Cameriere", 
-      email: requireEnv("SEED_WAITER_EMAIL"), 
-      password: requireEnv("SEED_WAITER_PASSWORD"), 
-      role: "waiter" 
+    {
+      name: "Cameriere",
+      email: requireEnv("SEED_WAITER_EMAIL"),
+      password: requireEnv("SEED_WAITER_PASSWORD"),
+      role: "waiter"
     },
-    { 
-      name: "Cucina", 
-      email: requireEnv("SEED_KITCHEN_EMAIL"), 
-      password: requireEnv("SEED_KITCHEN_PASSWORD"), 
-      role: "kitchen" 
+    {
+      name: "Cucina",
+      email: requireEnv("SEED_KITCHEN_EMAIL"),
+      password: requireEnv("SEED_KITCHEN_PASSWORD"),
+      role: "kitchen"
     },
-    { 
+    {
       name: "Titolare", // Google-only owner: no password
-      email: requireEnv("SEED_OWNER_GOOGLE_EMAIL"), 
-      role: "admin" 
-    }, 
+      email: requireEnv("SEED_OWNER_GOOGLE_EMAIL"),
+      role: "admin"
+    },
   ]
 }
 
-// Upsert by email instead of delete + create: each user keeps its _id, so orders keep their waiter ref
+// Upsert by email instead of delete + create: each user keeps its _id, so orders keep their waiter ref and staff tokens still work after a re-seed
 async function upsertStaff(staffData) {
   const users = []
   for (const data of staffData) {
@@ -133,7 +140,7 @@ async function upsertStaff(staffData) {
     users.push(user)
   }
 
-  const { deletedCount } = await User.deleteMany({ _id: mongoose.trusted({ $nin: users.map((user) => user._id) }) }) // and staff tokens still work after a re-seed. Staff not in the list are removed (accounts come only from the seed)
+  const { deletedCount } = await User.deleteMany({ _id: mongoose.trusted({ $nin: users.map((user) => user._id) }) }) // staff not in the list are removed (accounts come only from the seed)
   console.log(`Upserted ${users.length} staff users (${users.map((user) => user.role).join(", ")}), removed ${deletedCount}`)
 }
 

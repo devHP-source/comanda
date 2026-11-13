@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 import { priceField } from "./price.js"
 
 // The 14 allergens EU law requires on menus (Reg. 1169/2011)
-export const ALLERGENS = [
+const ALLERGENS = [
   "gluten",
   "crustaceans",
   "eggs",
@@ -19,14 +19,12 @@ export const ALLERGENS = [
   "molluscs",
 ]
 
-export const byCode = { // Codes are strings: 
-  locale: "it", 
-  numericOrdering: true 
-} // this collation sorts 1, 1a, 3, 12, 108 instead of 1, 108, 12. Use with .sort({ code: 1 })
+// Codes are strings: this collation sorts 1, 1a, 3, 12, 108 instead of 1, 108, 12. Use with .sort({ code: 1 })
+export const byCode = { locale: "it", numericOrdering: true }
 
 const dishSchema = new mongoose.Schema(
   {
-    code: { // number printed on the menu, es: 47 (String: also "1a", "15g", "P12")
+    code: { // number printed on the menu, e.g. 47 (String: also "1a", "15g", "P12")
       type: String,
       required: true,
       unique: true,
@@ -34,85 +32,85 @@ const dishSchema = new mongoose.Schema(
     },
 
     name: {
-      it: { 
-        type: String, 
-        required: true, 
-        trim: true 
+      it: {
+        type: String,
+        required: true,
+        trim: true
       },
-      en: { 
-        type: String, 
-        trim: true, 
-        default: "" 
+      en: {
+        type: String,
+        trim: true,
+        default: ""
       },
     },
 
     description: {
-      it: { 
-        type: String, 
-        trim: true, 
-        default: "" 
+      it: {
+        type: String,
+        trim: true,
+        default: ""
       },
-      en: { 
-        type: String, 
-        trim: true, 
-        default: "" 
+      en: {
+        type: String,
+        trim: true,
+        default: ""
       },
     },
 
     price: priceField(), // API speaks euros (8.5), the DB stores cents (850)
 
     image: {
-      url: { 
-        type: String, 
-        default: "" 
+      url: {
+        type: String,
+        default: ""
       },
       publicId: { // Cloudinary id, needed to delete the image
-        type: String, 
-        default: "" 
-      }, 
+        type: String,
+        default: ""
+      },
     },
 
-    category: { 
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: "Category", 
-      required: true 
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true
     },
 
-    allergens: [{ 
-      type: String, 
-      enum: ALLERGENS 
+    allergens: [{
+      type: String,
+      enum: ALLERGENS
     }],
 
-    spiceLevel: { 
-      type: Number, 
-      min: 0, 
-      max: 3, 
-      default: 0 
+    spiceLevel: {
+      type: Number,
+      min: 0,
+      max: 3,
+      default: 0
     },
 
-    isVegetarian: { 
-      type: Boolean, 
-      default: false 
+    isVegetarian: {
+      type: Boolean,
+      default: false
     },
 
     isFrozen: { // shown with an asterisk, required in Italy
-      type: Boolean, 
-      default: false 
-    }, 
+      type: Boolean,
+      default: false
+    },
 
-    isAvailable: { 
-      type: Boolean, 
+    isAvailable: {
+      type: Boolean,
       default: true // false = sold out ("Esaurito")
-    }, 
+    },
 
-    isPublished: { 
-      type: Boolean, 
-      default: true 
+    isPublished: {
+      type: Boolean,
+      default: true
     },
 
     isFeatured: { // "Consigliati dallo chef"
-      type: Boolean, 
-      default: false 
+      type: Boolean,
+      default: false
     },
   }, {
     timestamps: true,

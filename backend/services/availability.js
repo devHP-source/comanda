@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import Reservation from "../models/Reservation.js"
 import { isRealDate } from "../models/Settings.js"
+import httpError from "../utils/httpError.js"
 
 const DAY_MS = 24 * 60 * 60 * 1000
 
@@ -15,12 +16,7 @@ const romeClock = new Intl.DateTimeFormat("en-CA", {
   hourCycle: "h23",
 })
 
-const availabilityError = (code, message) => {
-  const err = new Error(message)
-  err.status = 400
-  err.code = code
-  return err
-}
+const availabilityError = (code, message) => httpError(400, code, message) // a date or time that can't be booked
 
 export const romeNow = () => {
   const parts = Object.fromEntries(romeClock.formatToParts(new Date()).map(({ type, value }) => [type, value]))
@@ -121,10 +117,8 @@ export const getFreeSlots = async (settings, date, partySize) => {
 
 // Online tables still free at the busiest moment of a stay starting at `time`, never below 0 (Settings may have lowered maxOnlineTables).
 export const getFreeTables = async (settings, date, time, excludeId) => {
-  const filter = { date, status: "confirmed" }
-  if (excludeId) filter._id = mongoose.trusted({ $ne: excludeId }) // excludeId a booking that must not count itself, if it's already confirmed
-
-  const bookings = await Reservation.find(filter).select("time tablesNeeded")
+  // excludeId: the booking being checked must not count its own tables, if it's already confirmed
+  const bookings = await Reservation.find({ date, status: "confirmed", _id: mongoose.trusted({ $ne: excludeId }) }).select("time tablesNeeded")
   return Math.max(0, settings.maxOnlineTables - busiestTablesInUse(bookings, time, settings.avgDurationMinutes))
 }
 
@@ -139,8 +133,5 @@ export const assertSlotHasRoom = async (settings, date, time, partySize) => {
   const freeSlots = await getFreeSlots(settings, date, partySize)
   if (freeSlots.includes(time)) return
 
-  const err = availabilityError("SLOT_FULL", "This time is fully booked")
-  err.status = 409
-  err.errors = { slots: pickNearestSlots(freeSlots, time) } // sent as "errors" by errorHandler
-  throw err
+  throw httpError(409, "SLOT_FULL", "This time is fully booked", { slots: pickNearestSlots(freeSlots, time) }) // the form suggests these times
 }

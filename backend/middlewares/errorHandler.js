@@ -1,4 +1,5 @@
-export default function errorHandler(err, req, res, next) {
+// Express recognizes an error handler by its 4 parameters: next stays even though it's never called
+const errorHandler = (err, req, res, next) => {
   if (err.name === "ValidationError") { // Mongoose: a field failed schema validation
     const errors = {}
     for (const [field, fieldError] of Object.entries(err.errors)) {
@@ -40,7 +41,7 @@ export default function errorHandler(err, req, res, next) {
     })
   }
 
-  // Our own thrown errors: const err = new Error("..."); err.status = 404; err.code = "DISH_NOT_FOUND"
+  // Our own thrown errors: throw httpError(404, "DISH_NOT_FOUND", "...")
   const status = err.status || 500
   if (status === 500) {
     console.error(err)
@@ -53,6 +54,8 @@ export default function errorHandler(err, req, res, next) {
   res.status(status).json({
     message: err.message,
     code: typeof err.code === "string" ? err.code : "REQUEST_FAILED",
-    ...(err.errors && { errors: err.errors }) // optional details, es: { dishes: ["47", "P12"] }
+    ...(err.errors && { errors: err.errors }) // optional details, e.g. { dishes: ["47", "P12"] }
   })
 }
+
+export default errorHandler

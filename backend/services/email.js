@@ -1,4 +1,5 @@
 import sgMail from "@sendgrid/mail"
+import httpError from "../utils/httpError.js"
 
 // Every email of the app goes through send(). Each message has a text part and an HTML part built from the same pieces
 
@@ -109,12 +110,7 @@ const TEXTS = {
   },
 }
 
-const emailError = (message) => {
-  const err = new Error(message)
-  err.status = 502 // our request was fine, the email service failed
-  err.code = "EMAIL_SEND_FAILED"
-  return err
-}
+const emailError = (message) => httpError(502, "EMAIL_SEND_FAILED", message) // our request was fine, the email service failed
 
 const escapeHtml = (value) =>
   String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char])
@@ -202,10 +198,10 @@ const send = async ({ to, subject, text, html }) => {
 
 // kind: a key of TEXTS.it (verify, confirmed, pending, rejected, cancelled). path: where the button leads, if any
 const sendReservationEmail = (reservation, kind, path) => {
-  const texts = TEXTS[reservation.lang] ?? TEXTS.it
+  const texts = TEXTS[reservation.lang] // lang is always "it" or "en": schema enum + default
   const copy = texts[kind]
   const content = {
-    lang: reservation.lang ?? "it",
+    lang: reservation.lang,
     heading: copy.heading,
     paragraphs: copy.paragraphs(reservation.name),
     details: bookingDetails(reservation, texts),

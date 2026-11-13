@@ -2,13 +2,7 @@ import mongoose from "mongoose"
 import Order from "../models/Order.js"
 import { centsToEuros } from "../models/price.js"
 import { getSettings } from "../services/settings.js"
-
-const tableError = (status, code, message) => {
-  const err = new Error(message)
-  err.status = status
-  err.code = code
-  return err
-}
+import httpError from "../utils/httpError.js"
 
 // One summary per table with open tickets. aggregate() skips the getters: priceSnapshot stays in cents, so the sum is exact
 const summarizeOpenTables = (match) =>
@@ -59,11 +53,11 @@ export const closeTable = async (req, res) => { // POST /api/tables/:number/clos
   const { tableCount } = await getSettings()
   const tableNumber = Number(req.params.number)
   if (!Number.isInteger(tableNumber) || tableNumber < 1 || tableNumber > tableCount) {
-    throw tableError(400, "INVALID_TABLE", `Table number must be an integer from 1 to ${tableCount}`)
+    throw httpError(400, "INVALID_TABLE", `Table number must be an integer from 1 to ${tableCount}`)
   }
 
   const [summary] = await summarizeOpenTables({ tableNumber })
-  if (!summary) throw tableError(409, "TABLE_ALREADY_FREE", `Table ${tableNumber} has no open tickets`)
+  if (!summary) throw httpError(409, "TABLE_ALREADY_FREE", `Table ${tableNumber} has no open tickets`)
 
   // Only the tickets summed above: one sent in the meantime stays open instead of closing without being counted
   await Order.updateMany({ _id: mongoose.trusted({ $in: summary.ticketIds }) }, { closedAt: new Date() })

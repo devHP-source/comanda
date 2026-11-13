@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 import bcrypt from "bcrypt"
 
-export const ROLES = ["admin", "waiter", "kitchen"]
+const ROLES =["admin", "waiter", "kitchen"]
 
 const SALT_ROUNDS = 10
 
@@ -33,13 +33,13 @@ const userSchema = new mongoose.Schema( // staff only (guests live in Customer)
       required: true
     },
 
-    googleId: { // set on the owner's first Google login
+    googleId: { // Google login (Later list): set on the owner's first Google login
       type: String,
       unique: true,
       sparse: true // many users without googleId are allowed
     },
 
-    avatar: {
+    avatar: { // Google login (Later list): the Google profile photo
       type: String,
       default: ""
     },
@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema( // staff only (guests live in Customer)
     timestamps: true,
     toJSON: {
       virtuals: false, // _id is enough
-      transform(doc, ret) { // the hash stays in memory after create(): never send it
+      transform: (doc, ret) => { // the hash stays in memory after create(): never send it
         delete ret.password
         return ret
       },

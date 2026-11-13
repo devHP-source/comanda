@@ -5,7 +5,7 @@ import { TIME_PATTERN, isRealDate } from "./Settings.js"
 // awaiting_verification (email link not clicked yet, holds no seats) --> confirmed. Big groups: pending --> confirmed/rejected
 export const RESERVATION_STATUSES = ["awaiting_verification", "confirmed", "pending", "rejected", "cancelled"]
 
-export const MAX_PARTY_SIZE = 200 // the whole restaurant a bigger number is only bad input
+export const MAX_PARTY_SIZE = 200 // the whole restaurant: a bigger number is only bad input
 
 const VERIFY_WINDOW_MS = 30 * 60 * 1000
 
@@ -30,7 +30,7 @@ const requiredName = {
 
 const reservationSchema = new mongoose.Schema(
   {
-    customer: { // only for bookings made after a Google login
+    customer: { // Google login (Later list): no Customer model yet, so never set today
       type: mongoose.Schema.Types.ObjectId,
       ref: "Customer",
     },
@@ -67,7 +67,7 @@ const reservationSchema = new mongoose.Schema(
       maxlength: 500,
       default: "",
     },
-    source: {
+    source: { // "google" comes with the Google login (Later list): today every booking is "form"
       type: String,
       enum: ["google", "form"],
       required: true,

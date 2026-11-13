@@ -6,12 +6,11 @@ const maskEmail = (email) => { // "p***@gmail.com"
   return `${email[0]}***${email.slice(at)}`
 }
 
-
 // Inactive users are included (isActive: false) so the switcher can show them greyed out; impersonate rejects them anyway.
 export const getUsers = async (req, res) => { // GET /api/users (admin): every staff account, for the "View as" switcher. No pagination: staff come only from the seed (4 accounts).
   const [users, googleOnlyIds] = await Promise.all([
     User.find()
-      .select("name email role avatar isActive") // password is select: false anyway; googleId stays private
+      .select("name email role isActive") // password is select: false anyway; googleId stays private
       .sort({ role: 1, name: 1 }),
     User.distinct("_id", { password: mongoose.trusted({ $in: [null, ""] }) }), // filtering on password never loads the hashes
   ])

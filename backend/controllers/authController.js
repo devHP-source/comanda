@@ -1,10 +1,11 @@
 import jwt from "jsonwebtoken"
 import User from "../models/User.js"
+import httpError from "../utils/httpError.js"
 
 const IMPERSONATION_EXPIRES_IN = "30m" // "View as" tokens are short-lived
 
-
-const signStaffToken = (user, { impersonatedBy, expiresIn = process.env.JWT_EXPIRES_IN || "1d" } = {}) => // Payload kept small: authenticate reloads the user from the DB anyway.
+// Payload kept small: authenticate reloads the user from the DB anyway
+const signStaffToken = (user, { impersonatedBy, expiresIn = process.env.JWT_EXPIRES_IN || "1d" } = {}) =>
   jwt.sign(
     { id: user._id, kind: "staff", role: user.role, ...(impersonatedBy && { impersonatedBy }) }, // impersonatedBy (admin id) is only set on "View as" tokens
     process.env.JWT_SECRET,
@@ -15,19 +16,13 @@ export const login = async (req, res) => { // POST /api/auth/login (public, rate
   const { email, password } = req.body ?? {} // Express 5: no JSON body --> req.body is undefined
 
   if (typeof email !== "string" || typeof password !== "string" || !email.trim() || !password) {
-    const err = new Error("Email and password are required")
-    err.status = 400
-    err.code = "MISSING_CREDENTIALS"
-    throw err
+    throw httpError(400, "MISSING_CREDENTIALS", "Email and password are required")
   }
 
   const user = await User.findOne({ email }).select("+password") // schema lowercase/trim also apply to the query
 
   if (!user || !user.isActive || !(await user.comparePassword(password))) {
-    const err = new Error("Invalid email or password")
-    err.status = 401
-    err.code = "INVALID_CREDENTIALS" // Same answer for unknown email, wrong password, Google-only or inactive account
-    throw err
+    throw httpError(401, "INVALID_CREDENTIALS", "Invalid email or password") // same answer for unknown email, wrong password, Google-only or inactive account
   }
 
   res.json({
@@ -40,20 +35,13 @@ export const getMe = (req, res) => { // GET /api/auth/me (staff): req.user was l
   res.json({ ...req.user.toJSON(), impersonatedBy: req.impersonatedBy }) // impersonatedBy: admin id while "View as" is on, else null --> the frontend can rebuild the banner after a reload
 }
 
-const impersonateError = (status, message, code) => {
-  const err = new Error(message)
-  err.status = status
-  err.code = code
-  return err
-}
-
 export const impersonate = async (req, res) => { // POST /api/auth/impersonate/:userId (admin): "View as" another staff account
   const target = await User.findById(req.params.userId) // bad id --> CastError --> 400 in errorHandler
-  if (!target) throw impersonateError(404, "User not found", "USER_NOT_FOUND")
+  if (!target) throw httpError(404, "USER_NOT_FOUND", "User not found")
 
   // Admins can't be impersonated (yourself included): "View as" is only for testing the waiter and kitchen roles
-  if (target.role === "admin") throw impersonateError(403, "Admins can't be impersonated", "CANNOT_IMPERSONATE_ADMIN")
-  if (!target.isActive) throw impersonateError(400, "User is inactive", "USER_INACTIVE")
+  if (target.role === "admin") throw httpError(403, "CANNOT_IMPERSONATE_ADMIN", "Admins can't be impersonated")
+  if (!target.isActive) throw httpError(400, "USER_INACTIVE", "User is inactive")
 
   const token = signStaffToken(target, { impersonatedBy: req.user._id, expiresIn: IMPERSONATION_EXPIRES_IN })
   const { exp } = jwt.decode(token) // seconds since 1970, set by expiresIn
@@ -65,6 +53,6 @@ export const impersonate = async (req, res) => { // POST /api/auth/impersonate/:
     token,
     user: target,
     impersonatedBy: req.user._id,
-    expiresAt: new Date(exp * 1000), // the frontend can go back to the admin token when it runs out
+    expiresAt: new Date(exp * 1000), // when the "View as" token stops working: after that, authenticate answers 401 TOKEN_EXPIRED
   })
 }

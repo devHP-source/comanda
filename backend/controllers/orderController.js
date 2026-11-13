@@ -2,41 +2,34 @@ import mongoose from "mongoose"
 import Order, { ORDER_STATUSES } from "../models/Order.js"
 import Dish from "../models/Dish.js"
 import { getSettings } from "../services/settings.js"
-
-const orderError = (status, code, message, errors) => {
-  const err = new Error(message)
-  err.status = status
-  err.code = code
-  if (errors) err.errors = errors // sent as "errors" by errorHandler
-  return err
-}
+import httpError from "../utils/httpError.js"
 
 export const createOrder = async (req, res) => { // POST /api/orders (waiter, admin): one ticket per "send" { tableNumber, items: [{ dish, qty, notes }] }
   const { tableNumber, items } = req.body ?? {}
 
   const { tableCount } = await getSettings()
   if (!Number.isInteger(tableNumber) || tableNumber < 1 || tableNumber > tableCount) {
-    throw orderError(400, "INVALID_TABLE", `tableNumber must be an integer from 1 to ${tableCount}`)
+    throw httpError(400, "INVALID_TABLE", `tableNumber must be an integer from 1 to ${tableCount}`)
   }
 
   if (!Array.isArray(items) || items.length === 0 || !items.every((item) => item && typeof item === "object")) {
-    throw orderError(400, "EMPTY_ORDER", "items must be a non-empty array of { dish, qty, notes }")
+    throw httpError(400, "EMPTY_ORDER", "items must be a non-empty array of { dish, qty, notes }")
   }
 
   // One query for every dish of the ticket. Each id is still cast: a bad id or an object --> CastError --> 400 INVALID_ID in errorHandler
   const dishes = await Dish.find({ _id: mongoose.trusted({ $in: items.map((item) => item.dish) }) })
-  const dishById = new Map(dishes.map((dish) => [dish._id.toString(), dish]))
+  const dishById = new Map(dishes.map((dish) => [String(dish._id), dish]))
 
   const unknown = items.filter((item) => !dishById.has(String(item.dish)))
   if (unknown.length > 0) {
-    throw orderError(400, "INVALID_DISH", `Dish not found: ${unknown.map((item) => item.dish ?? "missing").join(", ")}`)
+    throw httpError(400, "INVALID_DISH", `Dish not found: ${unknown.map((item) => item.dish ?? "missing").join(", ")}`)
   }
 
   // Sold out or hidden from the menu: the waiter's screen may be a few seconds old
   const unavailable = dishes.filter((dish) => !dish.isPublished || !dish.isAvailable)
   if (unavailable.length > 0) {
     const codes = unavailable.map((dish) => dish.code)
-    throw orderError(409, "DISH_UNAVAILABLE", `Dish not available: ${codes.join(", ")}`, { dishes: codes }) // the waiter screen marks these lines
+    throw httpError(409, "DISH_UNAVAILABLE", `Dish not available: ${codes.join(", ")}`, { dishes: codes }) // the waiter screen marks these lines
   }
 
   const order = new Order({ // Snapshots built on the server, the client sends only ids, so it can't change a price or a name
@@ -67,7 +60,7 @@ export const getOrders = async (req, res) => { // GET /api/orders?status=sent,pr
     const statuses = String(req.query.status).split(",").map((status) => status.trim())
     const invalid = statuses.filter((status) => !ORDER_STATUSES.includes(status))
     if (invalid.length > 0) {
-      throw orderError(400, "INVALID_STATUS", `Unknown status: ${invalid.join(", ")}. Use ${ORDER_STATUSES.join(", ")}`)
+      throw httpError(400, "INVALID_STATUS", `Unknown status: ${invalid.join(", ")}. Use ${ORDER_STATUSES.join(", ")}`)
     }
     filter.status = mongoose.trusted({ $in: statuses }) // every status was checked above
   }
@@ -77,7 +70,6 @@ export const getOrders = async (req, res) => { // GET /api/orders?status=sent,pr
     .populate("waiter", "name")
   res.json(orders)
 }
-
 
 const TRANSITIONS = { // Target status --> the statuses the ticket may be in, and who may move it there
   preparing: { from: ["sent", "ready"], roles: ["kitchen"] }, // ready --> preparing: the kitchen fixes a wrong "Pronto" (never once served)
@@ -90,18 +82,18 @@ export const updateOrderStatus = async (req, res) => { // PATCH /api/orders/:id/
 
   const rule = Object.hasOwn(TRANSITIONS, status) ? TRANSITIONS[status] : null // hasOwn: "constructor" isn't a status
   if (!rule) {
-    throw orderError(400, "INVALID_STATUS", `status must be one of: ${Object.keys(TRANSITIONS).join(", ")}`)
+    throw httpError(400, "INVALID_STATUS", `status must be one of: ${Object.keys(TRANSITIONS).join(", ")}`)
   }
   if (!rule.roles.includes(req.user.role)) {
-    throw orderError(403, "FORBIDDEN", `Only ${rule.roles.join(" or ")} can set a ticket to ${status}`)
+    throw httpError(403, "FORBIDDEN", `Only ${rule.roles.join(" or ")} can set a ticket to ${status}`)
   }
 
-  const order = await Order.findById(req.params.id) // bad id sends "CastError" then 400 INVALID_ID
-  if (!order) throw orderError(404, "ORDER_NOT_FOUND", `Order not found: ${req.params.id}`)
+  const order = await Order.findById(req.params.id) // bad id --> CastError --> 400 INVALID_ID
+  if (!order) throw httpError(404, "ORDER_NOT_FOUND", `Order not found: ${req.params.id}`)
 
   if (order.closedAt || !rule.from.includes(order.status)) { // One step at a time, and never on a closed table
     const reason = order.closedAt ? "the table is closed" : `the ticket is ${order.status}`
-    throw orderError(409, "INVALID_STATUS_TRANSITION", `Can't set ${status}: ${reason}`)
+    throw httpError(409, "INVALID_STATUS_TRANSITION", `Can't set ${status}: ${reason}`)
   }
 
   order.status = status
