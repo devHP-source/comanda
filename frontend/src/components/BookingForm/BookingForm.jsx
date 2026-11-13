@@ -8,7 +8,7 @@ import Skeleton from '../Skeleton/Skeleton.jsx'
 import Turnstile from '../Turnstile/Turnstile.jsx'
 import useLanguage from '../../hooks/useLanguage.js'
 import { addDays, formatDate } from '../../utils/calendar.js'
-import { romeNow } from '../../utils/kitchenStatus.js'
+import { romeNow } from '../../utils/restaurantClock.js'
 import { DEFAULT_REGION, OTHER_REGION, phoneOptions, toE164 } from '../../utils/phone.js'
 import styles from './BookingForm.module.css'
 
@@ -47,7 +47,7 @@ const BookingForm = ({ settings, onBooked }) => {
   const slotKey = `${date}|${partySize}|${slotAttempt}`
 
   useEffect(() => { // ignore: a late answer for a previous date or party size never replaces the current one
-    if (!date) return undefined
+    if (!date) return
     let ignore = false
 
     api.get('/reservations/slots', { params: { date, partySize } })

@@ -175,7 +175,7 @@
   display: inline-block;
   min-width: 2.25rem;
   padding: 0.2rem 0.4rem;
-  border-radius: 0.35rem;
+  border-radius: var(--radius-xs);
   color: var(--color-ink);
   background: var(--color-surface-muted);
   font-size: var(--text-sm);

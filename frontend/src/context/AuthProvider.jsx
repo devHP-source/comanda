@@ -71,7 +71,6 @@ export const AuthProvider = ({ children }) => {
     }
   }, [status, tError])
 
-
   useEffect(() => { // Any 401 on the token in use, drop the session, ProtectedRoute sends the user to the login page
     setUnauthorizedHandler((error) => {
       if (getAdminSession()) { // the 30 minutes of "View as" ran out: back to the admin, not to the login page

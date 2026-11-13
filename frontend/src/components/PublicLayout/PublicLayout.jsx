@@ -6,47 +6,17 @@ import useList from '../../hooks/useList.js'
 import styles from './PublicLayout.module.css'
 
 const topLinks = [ // Home only here: the mobile bottom bar stays Menu · La mia lista · Prenota · Info
-  {
-    to: '/',
-    label: 'nav.home',
-    end: true // "/" is active only on Home, not on every page
-  },
-  {
-    to: '/menu',
-    label: 'nav.menu'
-  },
-  {
-    to: '/book',
-    label: 'nav.book'
-  },
-  {
-    to: '/info', 
-    label: 'nav.about' 
-  },
+  { to: '/', label: 'nav.home', end: true }, // end: "/" is active only on Home, not on every page
+  { to: '/menu', label: 'nav.menu' },
+  { to: '/book', label: 'nav.book' },
+  { to: '/info', label: 'nav.about' },
 ]
 
 const bottomLinks = [
-  { 
-    to: '/menu', 
-    label: 'nav.menu', 
-    icon: 'menu' 
-  },
-  {
-    to: '/list',
-    label: 'nav.list',
-    icon: 'bookmark',
-    showsListCount: true
-  },
-  {
-    to: '/book',
-    label: 'nav.book',
-    icon: 'calendar'
-  },
-  { 
-    to: '/info', 
-    label: 'nav.info', 
-    icon: 'map' 
-  },
+  { to: '/menu', label: 'nav.menu', icon: 'menu' },
+  { to: '/list', label: 'nav.list', icon: 'bookmark', showsListCount: true },
+  { to: '/book', label: 'nav.book', icon: 'calendar' },
+  { to: '/info', label: 'nav.info', icon: 'map' },
 ]
 
 const PublicLayout = () => {

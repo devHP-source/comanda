@@ -15,14 +15,13 @@
   --status-free-line: #e2ddd6;
   --status-occupied-bg: #f8eeee;
   --status-occupied-line: #dbc7c8;
-  --status-occupied-dot: #c58f93;
   --status-preparing-bg: #faf5e9;
   --status-preparing-line: #e7d6b5;
   --status-preparing-dot: #d2aa5b;
   --status-ready: var(--color-accent);
 
   /* Stat card tones (admin dashboard) */
-  --tone-wine: #8f1f26;
+  --tone-wine: var(--color-accent);
   --tone-wine-bg: #f4e5e6;
   --tone-amber: #8c621c;
   --tone-amber-bg: #f5ecd9;
@@ -44,7 +43,6 @@
   --placeholder-herb: rgb(69 101 63 / 60%);
   --shadow-plate: 0 12px 22px rgb(62 38 24 / 20%);
 
-
   --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
   --font-serif: Georgia, 'Times New Roman', serif;
   --text-xs: 0.75rem;    /* minimum size for any text */
@@ -63,6 +61,7 @@
   --space-6: 1.5rem;
   --space-8: 2rem;
 
+  --radius-xs: 0.35rem;
   --radius-sm: 0.5rem;
   --radius-md: 0.65rem;
   --radius-lg: 0.85rem;
@@ -77,7 +76,7 @@
   --shadow-accent: 0 7px 18px rgb(143 31 38 / 28%);
 
   --glass-bg: rgb(255 253 249 / 88%);
-  --glass-bg-fallback: #fffdf9;
+  --glass-bg-fallback: var(--color-surface);
   --glass-blur: blur(18px);
   --backdrop: rgb(36 28 24 / 45%);
 

@@ -203,10 +203,10 @@ const DishForm = ({ dish, categories, backTo }) => {
   }
 
   const deleteDish = async () => { // the saved dish, not the values typed in the form
-    const values = { code: dish.code, name: dish.name.it }
+    const names = { code: dish.code, name: dish.name.it }
     try {
       await api.delete(`/dishes/${dish._id}`)
-      toast.success(t('dishForm.deleted', values))
+      toast.success(t('dishForm.deleted', names))
     } catch (err) {
       toast.error(tError(err))
       if (getErrorCode(err) !== 'DISH_NOT_FOUND') return // 404: already deleted elsewhere, the list is the right place anyway

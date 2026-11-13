@@ -16,10 +16,6 @@ const AdminQrPage = () => {
   const menuUrl = `${window.location.origin}/menu`
   const isLocal = LOCAL_HOSTS.includes(window.location.hostname)
 
-  const handlePrint = () => {
-    window.print() // the print rules in the CSS keep only the card
-  }
-
   const handleDownload = () => { // the same SVG as on screen, saved as a file: it scales to any size without losing quality
     const svgText = new XMLSerializer().serializeToString(qrRef.current)
     const blob = new Blob([svgText], { type: 'image/svg+xml' })
@@ -60,7 +56,11 @@ const AdminQrPage = () => {
       </section>
 
       <div className={styles.actions}>
-        <button type="button" className={styles.primary} onClick={handlePrint}>
+        <button
+          type="button"
+          className={styles.primary}
+          onClick={() => window.print()} // the print rules in the CSS keep only the card
+        >
           <Icon name="printer" size={20} />
           {t('adminQr.print')}
         </button>

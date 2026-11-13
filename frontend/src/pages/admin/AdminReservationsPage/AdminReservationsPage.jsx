@@ -8,7 +8,7 @@ import Pagination from '../../../components/Pagination/Pagination.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import useLanguage from '../../../hooks/useLanguage.js'
 import { formatDate, formatShortDate, formatWeekdayDate, isRealDate } from '../../../utils/calendar.js'
-import { romeNow } from '../../../utils/kitchenStatus.js'
+import { romeNow } from '../../../utils/restaurantClock.js'
 import styles from './AdminReservationsPage.module.css'
 
 const PAGE_SIZE = 20
@@ -43,10 +43,11 @@ const guestName = (reservation) => `${reservation.name} ${reservation.surname}`
 
 const hasStarted = (reservation, now) => `${reservation.date} ${reservation.time}` <= `${now.date} ${now.time}` // same rule as the server
 
-// What the admin can do with a row, as the server's transitions allow: a big group waits for Conferma/Rifiuta
+// What the admin can do with a row, as the server's transitions allow. A big group (pending) waits for Conferma/Rifiuta:
+// once its time has passed only Rifiuta is left, so it doesn't wait forever. A confirmed booking can be cancelled until it starts
 const actionsFor = (reservation, now) => {
   const started = hasStarted(reservation, now)
-  if (reservation.status === 'pending') return started ? ['rejected'] : ['confirmed', 'rejected'] // (only Rifiuta once its time has passed, so it doesn't wait forever), a confirmed booking can be cancelled until it starts
+  if (reservation.status === 'pending') return started ? ['rejected'] : ['confirmed', 'rejected']
   if (reservation.status === 'confirmed' && !started) return ['cancelled']
   return []
 }
@@ -303,9 +304,9 @@ const AdminReservationsPage = () => {
               <thead>
                 <tr>
                   <th scope="col" className={styles.colWhen}>{t('adminReservations.columns.when')}</th>
-                  <th scope="col" className={styles.colGuest}>{t('adminReservations.columns.guest')}</th>
+                  <th scope="col">{t('adminReservations.columns.guest')}</th>
                   <th scope="col" className={styles.colParty}>{t('adminReservations.columns.party')}</th>
-                  <th scope="col" className={styles.colNotes}>{t('adminReservations.columns.notes')}</th>
+                  <th scope="col">{t('adminReservations.columns.notes')}</th>
                   <th scope="col" className={styles.colStatus}>{t('adminReservations.columns.status')}</th>
                 </tr>
               </thead>
@@ -380,7 +381,7 @@ const AdminReservationsPage = () => {
 
   return (
     <div className={styles.page}>
-      <header className={styles.heading}>
+      <header>
         <p className={styles.kicker}>{t('adminReservations.kicker')}</p>
         <h1 className={styles.title}>{t('adminReservations.title')}</h1>
         <p className={styles.subtitle}>{t('adminReservations.subtitle')}</p>

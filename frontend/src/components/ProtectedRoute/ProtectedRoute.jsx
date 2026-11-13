@@ -4,9 +4,8 @@ import StaffShellSkeleton from '../StaffShellSkeleton/StaffShellSkeleton.jsx'
 import useAuth from '../../hooks/useAuth.js'
 import roleHome from '../../utils/roleHome.js'
 
-
 const ProtectedRoute = ({ roles }) => {
-  const { user, isChecking } = useAuth() // The UI check only the backend authorize() enforces the same roles anyway
+  const { user, isChecking } = useAuth() // UI check only: the backend's authorize() enforces the same roles anyway
   const location = useLocation()
 
   if (isChecking) return location.pathname.startsWith('/admin') ? <AdminShellSkeleton /> : <StaffShellSkeleton /> // the frame of the page that's coming

@@ -9,7 +9,8 @@ import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import useLanguage from '../../../hooks/useLanguage.js'
 import usePolling from '../../../hooks/usePolling.js'
-import { romeNow } from '../../../utils/kitchenStatus.js'
+import { formatWeekdayDate } from '../../../utils/calendar.js'
+import { romeNow } from '../../../utils/restaurantClock.js'
 import toastStyle from '../../../utils/toastStyle.js'
 import styles from './KitchenPage.module.css'
 
@@ -87,7 +88,7 @@ const KitchenPage = () => { // /staff/kitchen: tickets in 3 columns, refreshed e
       latestLoad.current++ // a poll that started before the PATCH would bring the old status back
       setOrders((current) => current?.map((order) => (order._id === data._id ? data : order)))
     } catch (err) {
-      toast.error(tErrorRef.current(err)) // es: 409 when the ticket changed meanwhile. The card moves back below
+      toast.error(tErrorRef.current(err)) // e.g. 409 when the ticket changed meanwhile. The card moves back below
       load()
     }
     dropPending(action)
@@ -152,14 +153,9 @@ const KitchenPage = () => { // /staff/kitchen: tickets in 3 columns, refreshed e
     load()
   }
 
-  const { time } = romeNow()
+  const { date, time } = romeNow()
   const service = time < '17:00' ? 'lunch' : 'dinner'
-  const today = new Intl.DateTimeFormat(lang === 'it' ? 'it-IT' : 'en-GB', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    timeZone: 'Europe/Rome',
-  }).format(new Date())
+  const today = formatWeekdayDate(date, lang)
 
   const columnOf = (order) => pending[order._id]?.status ?? order.status // a pending tap wins over polling
   const byColumn = Object.fromEntries(COLUMNS.map((status) => [status, (orders ?? []).filter((order) => columnOf(order) === status)]))
@@ -200,7 +196,7 @@ const KitchenPage = () => { // /staff/kitchen: tickets in 3 columns, refreshed e
               aria-pressed={activeColumn === status}
               onClick={() => setActiveColumn(status)}
             >
-              <span className={styles.tabLabel}>{t(`kitchen.summary.${status}`)}</span> {/* short labels: three fit on a 320px phone */}
+              <span>{t(`kitchen.summary.${status}`)}</span> {/* short labels: three fit on a 320px phone */}
               <span className={styles.tabCount}>{byColumn[status].length}</span> {/* shown above the label (column-reverse), read after it */}
             </button>
           ))}

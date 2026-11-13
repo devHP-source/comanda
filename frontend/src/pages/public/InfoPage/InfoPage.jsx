@@ -6,7 +6,7 @@ import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import useDocumentTitle from '../../../hooks/useDocumentTitle.js'
 import useLanguage from '../../../hooks/useLanguage.js'
 import { WEEK, formatDate, weekdayName } from '../../../utils/calendar.js'
-import kitchenStatus, { romeNow } from '../../../utils/kitchenStatus.js'
+import openStatus, { romeNow } from '../../../utils/restaurantClock.js'
 import restaurant, { mapUrl } from '../../../utils/restaurant.js'
 import styles from './InfoPage.module.css'
 
@@ -63,7 +63,7 @@ const InfoPage = () => {
 
     hours = (
       <>
-        <p className={styles.status}>{t(`menu.${kitchenStatus(settings)}`)}</p>
+        <p className={styles.status}>{t(`menu.${openStatus(settings)}`)}</p>
 
         <dl className={styles.week}>
           {WEEK.map((weekday) => {

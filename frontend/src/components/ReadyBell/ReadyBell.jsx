@@ -11,9 +11,9 @@ import styles from './ReadyBell.module.css'
 
 const POLL_MS = 5000
 
-/* 
+/*
 * "Pronto" badge in every staff header (waiter, kitchen, admin): count of ready tickets, tap --> the list.
-* Read only: "Segna servita" stays on the waiter screen (and the admin dashboard), behind its confirm modal 
+* Read only: "Segna servita" stays on the waiter screen (and the admin dashboard), behind its confirm modal
 */
 const ReadyBell = () => {
   const { t } = useLanguage()
@@ -38,7 +38,7 @@ const ReadyBell = () => {
   usePolling(load, POLL_MS)
 
   useEffect(() => { // Open list: Esc or a tap outside closes it
-    if (!isOpen) return undefined
+    if (!isOpen) return
 
     const handleKey = (event) => {
       if (event.key !== 'Escape') return

@@ -8,7 +8,7 @@ import AdminCategoriesPage from './pages/admin/AdminCategoriesPage/AdminCategori
 import AdminCategoryFormPage from './pages/admin/AdminCategoryFormPage/AdminCategoryFormPage.jsx'
 import AdminDashboardPage from './pages/admin/AdminDashboardPage/AdminDashboardPage.jsx'
 import AdminDishFormPage from './pages/admin/AdminDishFormPage/AdminDishFormPage.jsx'
-import AdminDishesPage from'./pages/admin/AdminDishesPage/AdminDishesPage.jsx'
+import AdminDishesPage from './pages/admin/AdminDishesPage/AdminDishesPage.jsx'
 import AdminQrPage from './pages/admin/AdminQrPage/AdminQrPage.jsx'
 import AdminReservationsPage from './pages/admin/AdminReservationsPage/AdminReservationsPage.jsx'
 import AdminSettingsPage from './pages/admin/AdminSettingsPage/AdminSettingsPage.jsx'

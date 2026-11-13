@@ -65,7 +65,7 @@ export const LanguageProvider = ({ children }) => {
   }, [])
 
   // Missing in the current language → Italian → the key itself (easy to spot on screen)
-  // Placeholders: t('waiter.table', { number: 12 }) with "Tavolo {number}"
+  // Placeholders: t('tables.tableNumber', { number: 12 }) with "Tavolo {number}"
   const t = useCallback((key, values) => translate(lang, key, values), [lang])
 
   // Translated fields from the API: { it: 'Riso', en: 'Rice' }

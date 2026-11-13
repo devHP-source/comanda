@@ -17,7 +17,7 @@ const FeaturedDishesSkeleton = () => (
           </div>
 
           <div className={realStyles.copy}>
-            <Skeleton width="1.8rem" height="1.55rem" radius="0.35rem" className={styles.code} />
+            <Skeleton width="1.8rem" height="1.55rem" radius="var(--radius-xs)" className={styles.code} />
             <div className={styles.name}>
               <Skeleton height="1rem" />
               <Skeleton width="60%" height="1rem" />

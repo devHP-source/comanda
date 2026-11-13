@@ -1,8 +1,7 @@
 import Icon from '../Icon/Icon.jsx'
 import useLanguage from '../../hooks/useLanguage.js'
+import { MAX_QTY } from '../../utils/ticketDraft.js'
 import styles from './QtyStepper.module.css'
-
-const MAX_QTY = 99 // same limit as the Order schema
 
 const QtyStepper = ({ qty, label, onChange }) => { // − qty + for one ticket line. Going below 1 removes the line (the parent decides). `label` names the dish for screen readers
   const { t } = useLanguage()

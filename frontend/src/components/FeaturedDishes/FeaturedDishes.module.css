@@ -75,7 +75,7 @@
   justify-self: start;
   place-items: center;
   padding: 0 0.35rem;
-  border-radius: 0.35rem;
+  border-radius: var(--radius-xs);
   color: var(--color-accent);
   background: var(--color-accent-soft);
   font-size: var(--text-xs);

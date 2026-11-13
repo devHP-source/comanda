@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import api from '../../api/client.js'
 import useLanguage from '../../hooks/useLanguage.js'
 import usePolling from '../../hooks/usePolling.js'
-import { romeNow } from '../../utils/kitchenStatus.js'
+import { romeNow } from '../../utils/restaurantClock.js'
 import LoadingState from '../LoadingState/LoadingState.jsx'
 import Skeleton from '../Skeleton/Skeleton.jsx'
 import styles from './TodayBookings.module.css'
@@ -96,7 +96,7 @@ const TodayBookings = () => {
   }
 
   return (
-    <section className={styles.section} aria-labelledby="today-bookings-title">
+    <section aria-labelledby="today-bookings-title">
       <div className={styles.heading}>
         <div>
           <p className={styles.kicker}>{t('todayBookings.kicker')}</p>

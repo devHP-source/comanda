@@ -94,7 +94,7 @@
   display: grid;
   justify-items: start;
   gap: var(--space-3);
-  padding: var(--space-5) var(--space-5) calc(var(--space-6) + env(safe-area-inset-bottom));
+  padding: var(--space-5) var(--space-5) var(--space-6);
 }
 
 .kicker {
@@ -115,7 +115,7 @@
   min-height: 1.55rem;
   place-items: center;
   padding: 0 0.4rem;
-  border-radius: 0.35rem;
+  border-radius: var(--radius-xs);
   color: var(--color-accent);
   background: var(--color-accent-soft);
   letter-spacing: 0.04em;
@@ -239,7 +239,7 @@
   display: grid;
   justify-items: start;
   gap: var(--space-3);
-  padding: 4.5rem var(--space-6) calc(var(--space-6) + env(safe-area-inset-bottom)); /* top room for the close button */
+  padding: 4.5rem var(--space-6) var(--space-6); /* top room for the close button */
 }
 
 .messageTitle {

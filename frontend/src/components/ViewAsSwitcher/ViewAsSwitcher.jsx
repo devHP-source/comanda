@@ -24,7 +24,7 @@ const ViewAsSwitcher = () => {
   const panelId = useId()
 
   useEffect(() => { // Loaded on every opening: an account may have been deactivated meanwhile
-    if (!isOpen) return undefined
+    if (!isOpen) return
     let ignore = false
 
     api.get('/users')
@@ -43,7 +43,7 @@ const ViewAsSwitcher = () => {
   }, [isOpen, attempt])
 
   useEffect(() => { // Open list: Esc or a tap outside closes it
-    if (!isOpen) return undefined
+    if (!isOpen) return
 
     const handleKey = (event) => {
       if (event.key !== 'Escape') return

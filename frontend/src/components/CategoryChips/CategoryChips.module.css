@@ -63,7 +63,7 @@
 }
 
 /* While the chips are sticky, scrolling back to the list and keyboard focus also stop below them (global.css covers the top bar alone) */
-@media (width < 1024px) and (height > 500px) {
+@media (max-width: 1023px) and (min-height: 501px) {
   :global(html):has(.bar) {
     scroll-padding-top: calc(var(--topbar-height) + var(--chips-height) + var(--space-3));
   }

@@ -73,7 +73,7 @@ const CategoryEditor = ({ categoryId }) => {
     )
   } else if (!loaded) {
     content = (
-      <LoadingState slowMessage="availability.slow">
+      <LoadingState slowMessage="loading.slowData">
         <div className={styles.skeletons}>
           <Skeleton height="16rem" radius="var(--radius-card)" />
           <Skeleton height="14rem" radius="var(--radius-card)" />

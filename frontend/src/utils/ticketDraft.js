@@ -1,12 +1,14 @@
-/* 
+/*
 * The ticket being written, kept per table in sessionStorage: it survives a reload or a trip back to the tables, not a closed tab,
 * sessionStorage can throw (private mode, blocked storage): then the draft lasts only while the page is open
 */
+export const MAX_QTY = 99 // same limit as the Order schema
+
 const draftKey = (tableNumber) => `comanda_draft_table_${tableNumber}`
 
 const isValidLine = (line) =>
   line && typeof line.key === 'string' && typeof line.dishId === 'string' &&
-  Number.isInteger(line.qty) && line.qty >= 1 && line.qty <= 99 && typeof line.notes === 'string'
+  Number.isInteger(line.qty) && line.qty >= 1 && line.qty <= MAX_QTY && typeof line.notes === 'string'
 
 export const readDraft = (tableNumber) => { // [{ key, dishId, qty, notes }], [] when missing or broken
   try {

@@ -52,7 +52,7 @@ export const clearAdminSession = () => {
   }
 }
 
-let unauthorizedHandler = clearToken // AuthContext registers what "logout" means (reset user, go to login); until then we only drop the token
+let unauthorizedHandler = clearToken // AuthProvider registers what "logout" means (reset user, go to login); until then we only drop the token
 
 export const setUnauthorizedHandler = (handler) => {
   unauthorizedHandler = handler
@@ -76,10 +76,10 @@ api.interceptors.response.use(
     return Promise.reject(error)
   },
 )
- 
+
 export const getErrorCode = (error) => { // Stable key for internationalization
-  if (error.response) return error.response.data?.code || 'UNKNOWN_ERROR' // NETWORK_ERROR when the server never answered (offline, Render waking up)
-  return 'NETWORK_ERROR'
+  if (error.response) return error.response.data?.code || 'UNKNOWN_ERROR'
+  return 'NETWORK_ERROR' // the server never answered (offline, Render waking up)
 }
 
 export const getErrorMessage = (error) => error.response?.data?.message || error.message // English fallback for the toast when a code has no translation yet

@@ -176,7 +176,7 @@
 .scroll {
   min-height: 0;
   flex: 1;
-  padding: var(--space-3) var(--space-4) calc(var(--space-5) + env(safe-area-inset-bottom));
+  padding: var(--space-3) var(--space-4) var(--space-5);
   overflow-y: auto;
   overscroll-behavior: contain; /* reaching the end doesn't scroll the screen behind */
 }
@@ -206,7 +206,7 @@
 .code {
   min-width: 2.75rem;
   padding: 0.2rem 0.4rem;
-  border-radius: 0.35rem;
+  border-radius: var(--radius-xs);
   color: var(--color-accent);
   background: var(--color-accent-soft);
   font-size: var(--text-sm);

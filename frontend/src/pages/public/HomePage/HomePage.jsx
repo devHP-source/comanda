@@ -10,7 +10,7 @@ import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import useDocumentTitle from '../../../hooks/useDocumentTitle.js'
 import useLanguage from '../../../hooks/useLanguage.js'
 import { WEEK, weekdayName } from '../../../utils/calendar.js'
-import kitchenStatus from '../../../utils/kitchenStatus.js'
+import openStatus from '../../../utils/restaurantClock.js'
 import styles from './HomePage.module.css'
 
 // "/": the page for people finding us online. Hours from the public settings, chef's picks from the menu
@@ -93,7 +93,7 @@ const HomePage = () => {
 
     hours = (
       <>
-        <p className={styles.status}>{t(`menu.${kitchenStatus(settings)}`)}</p>
+        <p className={styles.status}>{t(`menu.${openStatus(settings)}`)}</p>
         <dl className={styles.hoursList}>
           <div className={styles.hoursRow}>
             <dt>{t('home.hours')}</dt>

@@ -23,7 +23,8 @@
   },
   "loading": {
     "label": "Caricamento…",
-    "slow": "Ancora qualche secondo, ci stiamo collegando…"
+    "slow": "Ancora qualche secondo, ci stiamo collegando…",
+    "slowData": "Stiamo caricando i dati…"
   },
   "auth": {
     "checkingSlow": "Stiamo controllando la sessione, ancora qualche secondo…"
@@ -645,7 +646,6 @@
       "hint": "La foto che rappresenta la categoria nelle scorciatoie del menu.",
       "auto": "Automatica",
       "autoHint": "La foto del primo piatto della categoria.",
-      "dishAlt": "Foto di {code} · {name}",
       "noPhotos": "Nessun piatto pubblicato di questa categoria ha una foto: il menu mostra un segnaposto.",
       "newCategory": "Potrai scegliere la foto dopo aver aggiunto dei piatti a questa categoria."
     },

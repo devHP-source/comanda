@@ -15,7 +15,7 @@ import useLanguage from '../../../hooks/useLanguage.js'
 import usePolling from '../../../hooks/usePolling.js'
 import dishCount from '../../../utils/dishCount.js'
 import formatPrice from '../../../utils/formatPrice.js'
-import { romeNow } from '../../../utils/kitchenStatus.js'
+import { romeNow } from '../../../utils/restaurantClock.js'
 import styles from './WaiterPage.module.css'
 
 const POLL_MS = 5000
@@ -28,7 +28,7 @@ const matchesFilter = (table, filter) => {
   return true
 }
 
-const timeOfDay = () => { // Greeting and service from the restaurant's clock, ES: "Buongiorno" until 14:00, lunch service until 17:00
+const timeOfDay = () => { // Greeting and service from the restaurant's clock: "Buongiorno" until 14:00, lunch service until 17:00
   const { time } = romeNow()
   return {
     time,
@@ -52,7 +52,7 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
   const latestLoad = useRef(0)
 
   const load = useCallback(async () => {
-    const loadId = ++latestLoad.current // an older poll that answers late never overwrites newer data (es: right after "Segna servita")
+    const loadId = ++latestLoad.current // an older poll that answers late never overwrites newer data (e.g. right after "Segna servita")
     try {
       const [tablesRes, ordersRes] = await Promise.all([
         api.get('/tables'),
@@ -173,7 +173,7 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
         </section>
 
         <div className={styles.main}> {/* right column from tablet up: the room, then today's bookings */}
-          <section className={styles.tablesSection} aria-labelledby="tables-title">
+          <section aria-labelledby="tables-title">
             <div className={styles.heading}>
               <div>
                 <p className={`${styles.kicker} ${styles.muted}`}>{t('waiter.roomKicker')}</p>

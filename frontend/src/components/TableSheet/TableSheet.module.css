@@ -44,7 +44,7 @@
   min-height: 0;
   flex: 1 1 auto; /* a 0 basis collapses the sheet in WebKit: the dialog has only a max-height */
   gap: var(--space-5);
-  padding: var(--space-5) var(--space-4) calc(var(--space-5) + env(safe-area-inset-bottom));
+  padding: var(--space-5) var(--space-4);
   overflow-y: auto;
   overscroll-behavior: contain; /* reaching the end doesn't scroll the room behind */
 }
@@ -256,7 +256,7 @@
 
 .code {
   padding: 0 0.35rem;
-  border-radius: 0.35rem;
+  border-radius: var(--radius-xs);
   color: var(--color-accent);
   background: var(--color-accent-soft);
   font-size: var(--text-sm);

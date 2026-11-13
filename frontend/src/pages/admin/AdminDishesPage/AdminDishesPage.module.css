@@ -148,7 +148,7 @@
   display: inline-block;
   min-width: 2.75rem;
   padding: 0.2rem 0.4rem;
-  border-radius: 0.35rem;
+  border-radius: var(--radius-xs);
   color: var(--color-accent);
   background: var(--color-accent-soft);
   font-size: var(--text-sm);

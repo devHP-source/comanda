@@ -1,3 +1,5 @@
+// The restaurant's clock: today's date and time in Rome, and whether the restaurant is open right now
+
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] // index = closedDays number (0 = Sunday)
 
 const romeClock = new Intl.DateTimeFormat('en-CA', {
@@ -21,11 +23,11 @@ export const romeNow = (date = new Date()) => { // { date: "2026-11-03", time: "
 }
 
 // open | closedToday | closedNow, from the public settings. "HH:mm" strings compare correctly as text
-const kitchenStatus = (settings, date = new Date()) => {
+const openStatus = (settings, date = new Date()) => {
   const now = romeNow(date)
   if (settings.closedDays.includes(now.weekday) || settings.closedDates.includes(now.date)) return 'closedToday'
   if (now.time >= settings.openingTime && now.time < settings.closingTime) return 'open'
   return 'closedNow'
 }
 
-export default kitchenStatus
+export default openStatus

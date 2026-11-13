@@ -73,7 +73,7 @@ const AdminStaffPage = () => {
     )
   } else if (!staff) {
     content = (
-      <LoadingState slowMessage="availability.slow">
+      <LoadingState slowMessage="loading.slowData">
         <div className={styles.skeletons}>
           {Array.from({ length: SKELETON_ROWS }, (_, index) => (
             <Skeleton key={index} height="4.5rem" radius="var(--radius-md)" />

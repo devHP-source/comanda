@@ -12,7 +12,7 @@ import usePolling from '../../../hooks/usePolling.js'
 import dishCount from '../../../utils/dishCount.js'
 import formatPrice from '../../../utils/formatPrice.js'
 import formatTime from '../../../utils/formatTime.js'
-import { romeNow } from '../../../utils/kitchenStatus.js'
+import { romeNow } from '../../../utils/restaurantClock.js'
 import styles from './AdminDashboardPage.module.css'
 
 const POLL_MS = 5000 // room and tickets, same rhythm as the waiter screen
@@ -68,7 +68,7 @@ const AdminDashboardPage = () => {
   const latestLoad = useRef(0)
 
   const load = useCallback(async () => {
-    const loadId = ++latestLoad.current // an older poll that answers late never overwrites newer data (es: right after "Segna servita")
+    const loadId = ++latestLoad.current // an older poll that answers late never overwrites newer data (e.g. right after "Segna servita")
     try {
       const [tablesRes, ordersRes] = await Promise.all([
         api.get('/tables'),
@@ -132,7 +132,7 @@ const AdminDashboardPage = () => {
   }
 
   const title = (
-    <div className={styles.hero}>
+    <div>
       <p className={styles.kicker}>{t('adminDashboard.kicker')}</p>
       <h1 className={styles.title}>{t('adminDashboard.title')}</h1>
       <p className={styles.subtitle}>{t('adminDashboard.subtitle')}</p>

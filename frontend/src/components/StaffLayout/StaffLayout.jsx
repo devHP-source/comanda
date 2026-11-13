@@ -6,8 +6,7 @@ import useAuth from '../../hooks/useAuth.js'
 import useLanguage from '../../hooks/useLanguage.js'
 import styles from './StaffLayout.module.css'
 
-
-const StaffLayout = () => { // Slim bar shared by every staff screen whose logged in + logout
+const StaffLayout = () => { // Slim bar shared by every staff screen: who's logged in + logout
   const { t } = useLanguage()
   const { user, logout } = useAuth()
   const navigate = useNavigate()
@@ -18,7 +17,7 @@ const StaffLayout = () => { // Slim bar shared by every staff screen whose logge
   }
   const isViewingAs = Boolean(user.impersonatedBy) // set by the server on "View as" tokens
 
-// Each screen still draws its own header below it (waiter greeting, kitchen counters)
+  // Each screen still draws its own header below it (waiter greeting, kitchen counters)
   return (
     <div className={`${styles.shell} ${isViewingAs ? styles.viewingAs : ''}`}>
       {isViewingAs && <ViewAsBanner />}

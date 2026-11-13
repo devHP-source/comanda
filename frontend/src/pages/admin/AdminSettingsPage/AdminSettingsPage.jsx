@@ -44,7 +44,7 @@ const AdminSettingsPage = () => {
     )
   } else if (!settings) {
     content = (
-      <LoadingState slowMessage="availability.slow">
+      <LoadingState slowMessage="loading.slowData">
         <div className={styles.skeletons}>
           <Skeleton height="10rem" radius="var(--radius-card)" />
           <Skeleton height="16rem" radius="var(--radius-card)" />

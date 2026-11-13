@@ -4,7 +4,7 @@ import api, { getErrorCode } from '../../api/client.js'
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog.jsx'
 import useLanguage from '../../hooks/useLanguage.js'
 import { WEEK, formatDate, weekdayName } from '../../utils/calendar.js'
-import { romeNow } from '../../utils/kitchenStatus.js'
+import { romeNow } from '../../utils/restaurantClock.js'
 import styles from './SettingsForm.module.css'
 
 const TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/ // "HH:mm": such strings compare correctly as text

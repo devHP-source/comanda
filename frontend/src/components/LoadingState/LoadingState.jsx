@@ -9,7 +9,7 @@ const SLOW_AFTER_MS = 3000 // Render's free tier can take 30–60 s to wake up
 * Wraps a screen's skeletons while its data loads. `shell` (optional) draws a full-height page frame around them:
 * the slow line goes inside the frame, under the skeletons, not after the whole page
 * `quiet`: a second loading region on a screen that already has one. Same delay and aria-busy,
-* only the main region says "Caricamento.." and shows the slow line 
+* only the main region says "Caricamento…" and shows the slow line
 */
 const LoadingState = ({ children, slowMessage = 'loading.slow', shell, quiet = false }) => {
   const { t } = useLanguage()

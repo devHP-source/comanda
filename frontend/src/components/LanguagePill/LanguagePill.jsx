@@ -5,14 +5,14 @@ import styles from './LanguagePill.module.css'
 // Each language is named in its own language, no flags
 const LANGUAGE_NAMES = { it: 'Italiano', en: 'English' }
 
-const LanguagePill = ({ className = '' }) => {
+const LanguagePill = () => {
   const { lang, setLang, languages, t } = useLanguage()
   const next = languages[(languages.indexOf(lang) + 1) % languages.length]
 
   return (
     <button
       type="button"
-      className={`${styles.pill} ${className}`}
+      className={styles.pill}
       onClick={() => setLang(next)}
     >
       <Icon name="globe" size={17} />

@@ -18,7 +18,7 @@ import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import useDocumentTitle from '../../../hooks/useDocumentTitle.js'
 import useLanguage from '../../../hooks/useLanguage.js'
 import useList from '../../../hooks/useList.js'
-import kitchenStatus from '../../../utils/kitchenStatus.js'
+import openStatus from '../../../utils/restaurantClock.js'
 import normalizeText from '../../../utils/normalizeText.js'
 import styles from './MenuPage.module.css'
 
@@ -171,7 +171,7 @@ const MenuPage = () => {
   )
 
   const settings = menu?.settings
-  const status = settings && kitchenStatus(settings)
+  const status = settings && openStatus(settings)
   const hasFrozen = menu?.dishes.some((dish) => dish.isFrozen)
   const resultCount = searchSections.reduce((sum, { dishes }) => sum + dishes.length, 0)
 

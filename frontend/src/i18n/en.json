@@ -23,7 +23,8 @@
   },
   "loading": {
     "label": "Loading…",
-    "slow": "Just a few more seconds, we're connecting…"
+    "slow": "Just a few more seconds, we're connecting…",
+    "slowData": "Loading the data…"
   },
   "auth": {
     "checkingSlow": "Checking your session, just a few more seconds…"
@@ -402,7 +403,7 @@
     "tabDishes": "Dishes",
     "tabTicket": "Ticket ({count})",
     "searchLabel": "Find a dish by number or name",
-    "searchPlaceholder": "Number or name, es: 47",
+    "searchPlaceholder": "Number or name, e.g. 47",
     "add": "Add",
     "categoryLabel": "Filter by category",
     "allCategories": "All",
@@ -420,7 +421,7 @@
     "decrease": "Remove one {name}",
     "remove": "Remove {name} from the ticket",
     "notesFor": "Notes for {name}",
-    "notesPlaceholder": "Notes, es: no onion",
+    "notesPlaceholder": "Notes, e.g. no onion",
     "addVariant": "Add variant",
     "addVariantFor": "Add a variant of {name}",
     "onTicket": "{count} on the ticket",
@@ -645,7 +646,6 @@
       "hint": "The photo that stands for the category in the menu shortcuts.",
       "auto": "Automatic",
       "autoHint": "The photo of the category's first dish.",
-      "dishAlt": "Photo of {code} · {name}",
       "noPhotos": "No published dish in this category has a photo: the menu shows a placeholder.",
       "newCategory": "You can pick the photo once this category has some dishes."
     },
@@ -872,9 +872,9 @@
       "flags": "Status and features"
     },
     "code": "Menu number",
-    "codeHint": "Letters and numbers, no spaces (es: 47, 1a, P12).",
+    "codeHint": "Letters and numbers, no spaces (e.g. 47, 1a, P12).",
     "price": "Price",
-    "priceHint": "In euros, es: 5,60",
+    "priceHint": "In euros, e.g. 5,60",
     "category": "Category",
     "categoryPlaceholder": "Choose a category",
     "spiceLevel": "Spicy",
@@ -936,7 +936,7 @@
       "code": "Enter the dish number: letters and numbers only, no spaces.",
       "codeTaken": "A dish with this number already exists.",
       "category": "Choose a category.",
-      "price": "Enter a valid price, es: 5,60.",
+      "price": "Enter a valid price, e.g. 5,60.",
       "nameIt": "Enter the Italian name.",
       "spiceLevel": "Invalid spice level.",
       "allergens": "Invalid allergens.",

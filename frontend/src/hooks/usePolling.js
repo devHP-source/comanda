@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react'
 
-/* 
+/*
 * Runs `fn` now and then every `intervalMs` after it finishes (never two at once).
 * Pauses while the tab is hidden, runs again as soon as it's back, stops on unmount. `fn` handles its own errors
 */
-const usePolling = (fn, intervalMs = 5000) => {
+const usePolling = (fn, intervalMs) => {
   const fnRef = useRef(fn)
 
   useEffect(() => {

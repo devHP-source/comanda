@@ -11,7 +11,7 @@ import TicketSummary from '../../../components/TicketSummary/TicketSummary.jsx'
 import useLanguage from '../../../hooks/useLanguage.js'
 import formatPrice from '../../../utils/formatPrice.js'
 import normalizeText from '../../../utils/normalizeText.js'
-import { clearDraft, readDraft, saveDraft } from '../../../utils/ticketDraft.js'
+import { MAX_QTY, clearDraft, readDraft, saveDraft } from '../../../utils/ticketDraft.js'
 import styles from './NewTicketPage.module.css'
 
 const SKELETON_ROWS = 8
@@ -21,7 +21,9 @@ const STALE_DISH_CODES = ['DISH_UNAVAILABLE', 'INVALID_DISH'] // the dish list o
 const matchesSearch = (dish, search) => // code from its start ("4" --> 4, 47, 4a), Italian name anywhere
   normalizeText(dish.code).startsWith(search) || normalizeText(dish.name.it).includes(search)
 
-const toCents = (euros) => Math.round(euros * 100) // totals are summed in cents, like the server does
+// Totals are summed in cents, like the server does. API prices are always whole cents (5.6 → 560),
+// so the rounding only removes the float noise of * 100 (559.9999…): it never rounds a real price
+const toCents = (euros) => Math.round(euros * 100)
 
 // Each line needs its own React key: the same dish can be on several lines. No crypto.randomUUID(): it's missing on plain http (a phone on the LAN)
 const newLineKey = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`
@@ -29,7 +31,7 @@ const newLineKey = () => `${Date.now().toString(36)}-${Math.random().toString(36
 // "+" on a dish row: one more on the dish's first line without notes, or a new line if it has none
 const addToLines = (lines, dishId) => {
   const plain = lines.find((line) => line.dishId === dishId && !line.notes.trim())
-  if (plain) return lines.map((line) => (line === plain ? { ...line, qty: Math.min(line.qty + 1, 99) } : line))
+  if (plain) return lines.map((line) => (line === plain ? { ...line, qty: Math.min(line.qty + 1, MAX_QTY) } : line))
   return [...lines, { key: newLineKey(), dishId, qty: 1, notes: '' }]
 }
 

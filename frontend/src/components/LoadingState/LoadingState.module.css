@@ -4,10 +4,10 @@
   gap: var(--space-4);
 }
 
-.slow { 
+.slow {
   position: sticky;
   z-index: 35;
-  bottom: calc(var(--slow-line-clearance, 0px) + var(--space-3) + env(safe-area-inset-bottom));
+  bottom: calc(var(--slow-line-clearance, 0px) + var(--space-3));
   max-width: 100%;
   align-self: center;
   padding: var(--space-2) var(--space-4);

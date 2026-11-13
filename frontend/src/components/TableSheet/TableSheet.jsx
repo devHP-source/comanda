@@ -6,8 +6,6 @@ import formatPrice from '../../utils/formatPrice.js'
 import formatTime from '../../utils/formatTime.js'
 import styles from './TableSheet.module.css'
 
-
-
 const TableSheet = ({ table, tickets, notice, onClose, onServe, onCloseTable }) => { // The selected table: its open tickets, total and actions. Bottom sheet on phones, centered modal from tablet up.
   const { t } = useLanguage()
   const dialogRef = useRef(null)

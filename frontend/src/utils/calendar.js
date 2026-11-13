@@ -1,6 +1,6 @@
 export const WEEK = [1, 2, 3, 4, 5, 6, 0] // Monday first, as on an Italian calendar (0 = Sunday, like Date.getDay())
 
-const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1) // "lunedì" → "Lunedì"
+export const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1) // "lunedì" → "Lunedì"
 
 // 0 → "Sunday" / "domenica". 4 Jan 2026 was a Sunday, so day 4 + weekday is that weekday
 export const weekdayName = (weekday, lang) =>
