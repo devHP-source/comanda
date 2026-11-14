@@ -1,3 +1,4 @@
+import { useDeferredValue } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router'
 import AdminShellSkeleton from '../AdminShellSkeleton/AdminShellSkeleton.jsx'
 import StaffShellSkeleton from '../StaffShellSkeleton/StaffShellSkeleton.jsx'
@@ -5,7 +6,8 @@ import useAuth from '../../hooks/useAuth.js'
 import roleHome from '../../utils/roleHome.js'
 
 const ProtectedRoute = ({ roles }) => {
-  const { user, isChecking } = useAuth() // UI check only: the backend's authorize() enforces the same roles anyway
+  const { user, isChecking: checking } = useAuth() // UI check only: the backend's authorize() enforces the same roles anyway
+  const isChecking = useDeferredValue(checking) // after the check, this skeleton stays until the screen's code is in (no remount, no flash)
   const location = useLocation()
 
   if (isChecking) return location.pathname.startsWith('/admin') ? <AdminShellSkeleton /> : <StaffShellSkeleton /> // the frame of the page that's coming
