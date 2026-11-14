@@ -42,9 +42,12 @@ export const ListProvider = ({ children }) => {
     })
   }, [])
 
+  const clear = useCallback(() => setIds([]), [])
+  const restore = useCallback((savedIds) => setIds(savedIds), []) // undo of "Svuota lista"
+
   const value = useMemo(
-    () => ({ ids, count: ids.length, has, toggle, keepOnly }),
-    [ids, has, toggle, keepOnly],
+    () => ({ ids, count: ids.length, has, toggle, keepOnly, clear, restore }),
+    [ids, has, toggle, keepOnly, clear, restore],
   )
 
   return <ListContext value={value}>{children}</ListContext>

@@ -5,14 +5,16 @@
 
 /* Phone and tablet: the sidebar is a top block, brand + profile on one row, sections as a scrolling strip below */
 .sidebar {
+  --sidebar-pad-top: var(--space-3);
   display: grid;
   grid-template-areas:
     'brand profile'
     'nav nav';
   grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: var(--admin-brand-row) auto; /* a fixed height: the sticky offset below is exactly this much */
   align-items: center;
   gap: var(--space-3) var(--space-4);
-  padding: var(--space-3) var(--space-4) var(--space-2);
+  padding: var(--sidebar-pad-top) var(--space-4) var(--space-2);
   border-bottom: 1px solid var(--color-line);
   background: var(--color-surface);
 }
@@ -59,9 +61,16 @@
 }
 
 .nav {
+  position: relative; /* tabs measure their offsetLeft from here */
   display: flex;
   gap: var(--space-1);
   overflow-x: auto;
+  padding-right: var(--space-8); /* the last tab can scroll fully out of the fade */
+}
+
+.navFade { /* set from the JSX only while more tabs are hidden on the right */
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - var(--space-8)), transparent);
+  mask-image: linear-gradient(to right, black calc(100% - var(--space-8)), transparent);
 }
 
 .navItem {
@@ -184,7 +193,8 @@
 
 @media (min-width: 700px) {
   .sidebar {
-    padding: var(--space-4) 2.5rem var(--space-2);
+    --sidebar-pad-top: var(--space-4);
+    padding: var(--sidebar-pad-top) 2.5rem var(--space-2);
   }
 
   .header {
@@ -193,6 +203,43 @@
 
   .content {
     padding: var(--space-8) 2.5rem 3rem;
+  }
+}
+
+/* Phone and tablet: the tabs row stays at the top while the page scrolls. The negative top lets the brand row slide away first */
+@media (max-width: 1023px) and (min-height: 501px) {
+  .sidebar {
+    position: sticky;
+    z-index: 30; /* under the "Pronto" and View as panels (50) */
+    top: calc(-1 * (var(--sidebar-pad-top) + var(--admin-brand-row) + var(--space-3)));
+    background: var(--glass-bg-fallback);
+  }
+
+  @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .sidebar {
+      background: var(--glass-bg-strong); /* the tables scroll under it, as under the desktop header */
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .sidebar {
+      background: var(--glass-bg-fallback);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  /* Keyboard focus and in-page jumps stop below the tabs row (global.css counts the public top bar instead) */
+  :global(html):has(.sidebar) {
+    scroll-padding-top: calc(var(--tap-min) + var(--space-2) + var(--space-3));
+  }
+}
+
+@media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+  .nav {
+    scroll-behavior: smooth;
   }
 }
 
@@ -228,6 +275,7 @@
   .nav {
     display: grid;
     overflow: visible;
+    padding-right: 0;
   }
 
   .profile {

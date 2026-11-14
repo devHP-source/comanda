@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
+import { toast } from 'sonner'
 import api from '../../../api/client.js'
 import DishCard from '../../../components/DishCard/DishCard.jsx'
 import DishCardSkeleton from '../../../components/DishCardSkeleton/DishCardSkeleton.jsx'
@@ -12,12 +13,13 @@ import useList from '../../../hooks/useList.js'
 import styles from './ListPage.module.css'
 
 const MAX_SKELETON_CARDS = 4
+const UNDO_MS = 5000
 
 // /list: the dishes the guest bookmarked, in menu order. Not an order: the waiter still takes it
 const ListPage = () => {
   const { t, tError } = useLanguage()
   useDocumentTitle(t('nav.list'))
-  const { ids, keepOnly } = useList()
+  const { ids, keepOnly, clear, restore } = useList()
   const [dishes, setDishes] = useState(null) // the whole published menu: the list only stores ids
   const [error, setError] = useState(null)
   const [attempt, setAttempt] = useState(0)
@@ -44,6 +46,15 @@ const ListPage = () => {
   }, [dishes, keepOnly])
 
   const saved = useMemo(() => dishes?.filter((dish) => ids.includes(dish._id)) ?? [], [dishes, ids])
+
+  const handleClear = () => { // no confirm modal for the list (only bookmarks in this browser): an undo toast instead
+    const savedIds = ids
+    clear()
+    toast(t('list.cleared'), {
+      duration: UNDO_MS,
+      action: { label: t('list.undo'), onClick: () => restore(savedIds) },
+    })
+  }
 
   const handleRetry = () => {
     setError(null)
@@ -87,6 +98,9 @@ const ListPage = () => {
           <p className={styles.count}>
             {saved.length === 1 ? t('list.countOne') : t('list.count', { count: saved.length })}
           </p>
+          <button type="button" className={styles.clear} onClick={handleClear}>
+            {t('list.clear')}
+          </button>
           <button type="button" className={styles.button} onClick={() => setIsShowingWaiter(true)}>
             <Icon name="eye" size={18} />
             {t('list.showWaiter')}

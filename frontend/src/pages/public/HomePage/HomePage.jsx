@@ -9,8 +9,8 @@ import Reveal from '../../../components/Reveal/Reveal.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import useDocumentTitle from '../../../hooks/useDocumentTitle.js'
 import useLanguage from '../../../hooks/useLanguage.js'
+import useOpenStatus from '../../../hooks/useOpenStatus.js'
 import { WEEK, weekdayName } from '../../../utils/calendar.js'
-import openStatus from '../../../utils/restaurantClock.js'
 import styles from './HomePage.module.css'
 
 // "/": the page for people finding us online. Hours from the public settings, chef's picks from the menu
@@ -20,6 +20,7 @@ const HomePage = () => {
   const [settings, setSettings] = useState(null)
   const [settingsError, setSettingsError] = useState(null)
   const [settingsAttempt, setSettingsAttempt] = useState(0)
+  const status = useOpenStatus(settings)
   const [featured, setFeatured] = useState(null)
   const [featuredError, setFeaturedError] = useState(null)
   const [featuredAttempt, setFeaturedAttempt] = useState(0)
@@ -93,7 +94,7 @@ const HomePage = () => {
 
     hours = (
       <>
-        <p className={styles.status}>{t(`menu.${openStatus(settings)}`)}</p>
+        <p className={styles.status}>{t(`menu.${status}`)}</p>
         <dl className={styles.hoursList}>
           <div className={styles.hoursRow}>
             <dt>{t('home.hours')}</dt>

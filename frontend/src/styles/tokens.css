@@ -85,6 +85,7 @@
   --topbar-height: 4.5rem;
   --chips-height: 3.75rem; /* sticky category chips on the menu */
   --view-as-height: 3.5rem; /* "View as" banner above the staff bar */
+  --admin-brand-row: 3rem; /* admin, phone and tablet: the brand row above the tabs, which slides away while the tabs stay */
 }
 
 @media (min-width: 1024px) {

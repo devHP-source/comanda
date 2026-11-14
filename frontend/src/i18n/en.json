@@ -234,6 +234,9 @@
     "addDish": "Add {name} to my list",
     "removeDish": "Remove {name} from my list",
     "showWaiter": "Show to the waiter",
+    "clear": "Clear list",
+    "cleared": "List cleared",
+    "undo": "Undo",
     "emptyTitle": "Your list is empty",
     "emptyText": "Tap the bookmark on a dish to save it here, then show the list to your waiter.",
     "browseMenu": "Go to the menu",
@@ -354,6 +357,7 @@
   "waiter": {
     "greeting": {
       "morning": "Good morning, {name}",
+      "afternoon": "Good afternoon, {name}",
       "evening": "Good evening, {name}"
     },
     "service": {
@@ -508,6 +512,7 @@
     },
     "greeting": {
       "morning": "Good morning, {name}",
+      "afternoon": "Good afternoon, {name}",
       "evening": "Good evening, {name}"
     }
   },

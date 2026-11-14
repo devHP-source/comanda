@@ -310,6 +310,24 @@
   }
 }
 
+/* Short screens (phone in landscape) almost the whole height */
+@media (max-height: 500px) {
+  .dialog {
+    height: calc(100dvh - var(--space-4));
+  }
+
+  .top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding-top: var(--space-3);
+  }
+
+  .header,
+  .notice,
+  .noticeError {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .dialog[open] {
     animation: sheet-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1);

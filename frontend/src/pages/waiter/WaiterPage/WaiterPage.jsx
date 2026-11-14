@@ -15,6 +15,7 @@ import useLanguage from '../../../hooks/useLanguage.js'
 import usePolling from '../../../hooks/usePolling.js'
 import dishCount from '../../../utils/dishCount.js'
 import formatPrice from '../../../utils/formatPrice.js'
+import greetingKey from '../../../utils/greeting.js'
 import { romeNow } from '../../../utils/restaurantClock.js'
 import styles from './WaiterPage.module.css'
 
@@ -28,17 +29,17 @@ const matchesFilter = (table, filter) => {
   return true
 }
 
-const timeOfDay = () => { // Greeting and service from the restaurant's clock: "Buongiorno" until 14:00, lunch service until 17:00
+const timeOfDay = (lang) => { // Greeting and service from the restaurant's clock: lunch service until 17:00
   const { time } = romeNow()
   return {
     time,
-    greeting: time < '14:00' ? 'morning' : 'evening',
+    greeting: greetingKey(time, lang),
     service: time < '17:00' ? 'lunch' : 'dinner',
   }
 }
 
 const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room grid, both refreshed every 5s
-  const { t, tError } = useLanguage()
+  const { t, tError, lang } = useLanguage()
   const { user } = useAuth()
   const [tables, setTables] = useState(null) // null until the first answer
   const [orders, setOrders] = useState([]) // every open ticket: the ready strip and the table sheet both read from it
@@ -117,7 +118,7 @@ const WaiterPage = () => { // /staff/waiter: "Pronto da servire" strip + room gr
     ? orders.filter((ticket) => ticket.tableNumber === tableToClose.number && ticket.status !== 'served').length
     : 0
 
-  const { time, greeting, service } = timeOfDay()
+  const { time, greeting, service } = timeOfDay(lang)
   const firstName = user.name.split(' ')[0]
 
   let content

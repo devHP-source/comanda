@@ -103,28 +103,28 @@ function requireEnv(name) { // demo credentials come only from .env, never hardc
   return value
 }
 
-function getStaffData() {
+function getStaffData() { // person names, not role labels: the staff screens show the name next to the role
   return [
     {
-      name: "Admin",
+      name: "Giulia Conti",
       email: requireEnv("SEED_ADMIN_EMAIL"),
       password: requireEnv("SEED_ADMIN_PASSWORD"),
       role: "admin"
     },
     {
-      name: "Cameriere",
+      name: "Marco Rinaldi",
       email: requireEnv("SEED_WAITER_EMAIL"),
       password: requireEnv("SEED_WAITER_PASSWORD"),
       role: "waiter"
     },
     {
-      name: "Cucina",
+      name: "Wei Chen",
       email: requireEnv("SEED_KITCHEN_EMAIL"),
       password: requireEnv("SEED_KITCHEN_PASSWORD"),
       role: "kitchen"
     },
     {
-      name: "Titolare", // Google-only owner: no password
+      name: "Roberto Ferri", // Google-only owner: no password
       email: requireEnv("SEED_OWNER_GOOGLE_EMAIL"),
       role: "admin"
     },

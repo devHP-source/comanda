@@ -55,6 +55,17 @@ summary {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Autofilled fields keep the beige input colour: the browser's light blue ignores `background`, an inset shadow covers it */
+input:-webkit-autofill {
+  box-shadow: 0 0 0 100vmax var(--color-surface-muted) inset;
+  -webkit-text-fill-color: var(--color-ink);
+  caret-color: var(--color-ink);
+}
+
+input:-webkit-autofill:focus-visible {
+  box-shadow: 0 0 0 100vmax var(--color-surface) inset; /* the same white as a focused field */
+}
+
 button:active:not(:disabled) {
   transform: scale(0.97);
 }

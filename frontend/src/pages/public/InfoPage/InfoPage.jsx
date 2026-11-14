@@ -5,8 +5,9 @@ import LoadingState from '../../../components/LoadingState/LoadingState.jsx'
 import Skeleton from '../../../components/Skeleton/Skeleton.jsx'
 import useDocumentTitle from '../../../hooks/useDocumentTitle.js'
 import useLanguage from '../../../hooks/useLanguage.js'
+import useOpenStatus from '../../../hooks/useOpenStatus.js'
 import { WEEK, formatDate, weekdayName } from '../../../utils/calendar.js'
-import openStatus, { romeNow } from '../../../utils/restaurantClock.js'
+import { romeNow } from '../../../utils/restaurantClock.js'
 import restaurant, { mapUrl } from '../../../utils/restaurant.js'
 import styles from './InfoPage.module.css'
 
@@ -17,6 +18,7 @@ const InfoPage = () => {
   const [settings, setSettings] = useState(null)
   const [error, setError] = useState(null)
   const [attempt, setAttempt] = useState(0)
+  const status = useOpenStatus(settings)
 
   useEffect(() => {
     let ignore = false
@@ -63,7 +65,7 @@ const InfoPage = () => {
 
     hours = (
       <>
-        <p className={styles.status}>{t(`menu.${openStatus(settings)}`)}</p>
+        <p className={styles.status}>{t(`menu.${status}`)}</p>
 
         <dl className={styles.week}>
           {WEEK.map((weekday) => {

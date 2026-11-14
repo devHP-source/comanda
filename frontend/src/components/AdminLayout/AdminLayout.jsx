@@ -1,4 +1,5 @@
-import { NavLink, Outlet, useNavigate } from 'react-router'
+import { useEffect, useRef } from 'react'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import Icon from '../Icon/Icon.jsx'
 import LanguagePill from '../LanguagePill/LanguagePill.jsx'
 import ReadyBell from '../ReadyBell/ReadyBell.jsx'
@@ -6,6 +7,7 @@ import ViewAsSwitcher from '../ViewAsSwitcher/ViewAsSwitcher.jsx'
 import useAuth from '../../hooks/useAuth.js'
 import useLanguage from '../../hooks/useLanguage.js'
 import { capitalize, formatWeekdayDate } from '../../utils/calendar.js'
+import greetingKey from '../../utils/greeting.js'
 import initials from '../../utils/initials.js'
 import { romeNow } from '../../utils/restaurantClock.js'
 import styles from './AdminLayout.module.css'
@@ -24,6 +26,32 @@ const AdminLayout = () => { // Admin screens (desktop first): sidebar with the s
   const { t, lang } = useLanguage()
   const { user, logout } = useAuth()
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const stripRef = useRef(null)
+
+  useEffect(() => { // Phones and tablets: keeps the active tab centered in the strip (only the strip moves, never the page), as the menu's category chips
+    const strip = stripRef.current
+    const tab = strip.querySelector('[aria-current="page"]')
+    if (!tab) return
+    strip.scrollTo({ left: tab.offsetLeft - (strip.clientWidth - tab.offsetWidth) / 2 })
+  }, [pathname])
+
+  useEffect(() => { // Fade on the right edge only while more tabs are hidden there. Labels change width with the language
+    const strip = stripRef.current
+    const updateFade = () => {
+      const lastTab = strip.lastElementChild
+      const hasMore = lastTab.offsetLeft + lastTab.offsetWidth > strip.scrollLeft + strip.clientWidth + 1 // +1: rounding
+      strip.classList.toggle(styles.navFade, hasMore)
+    }
+
+    updateFade()
+    strip.addEventListener('scroll', updateFade, { passive: true })
+    window.addEventListener('resize', updateFade)
+    return () => {
+      strip.removeEventListener('scroll', updateFade)
+      window.removeEventListener('resize', updateFade)
+    }
+  }, [lang])
 
   const handleLogout = () => {
     logout()
@@ -31,7 +59,7 @@ const AdminLayout = () => { // Admin screens (desktop first): sidebar with the s
   }
 
   const now = romeNow()
-  const greeting = now.time < '14:00' ? 'morning' : 'evening' // same rule as the waiter screen
+  const greeting = greetingKey(now.time, lang) // same helper as the waiter screen
   const today = capitalize(formatWeekdayDate(now.date, lang)) // "Venerdì 6 novembre", on the restaurant's clock
 
   return (
@@ -46,7 +74,7 @@ const AdminLayout = () => { // Admin screens (desktop first): sidebar with the s
         </div>
 
         <nav className={styles.navWrap} aria-label={t('admin.navLabel')}>
-          <ul className={`${styles.nav} hide-scrollbar`}>
+          <ul ref={stripRef} className={`${styles.nav} hide-scrollbar`}>
             {NAV_ITEMS.map((item) => (
               <li key={item.to}>
                 <NavLink

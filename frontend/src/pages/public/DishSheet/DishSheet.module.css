@@ -299,6 +299,35 @@
   }
 }
 
+/* Short screens (phone in landscape)  photo on the left, name and price beside it without scrolling */
+@media (max-height: 500px) {
+  .dish,
+  .loading {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .media,
+  .mediaSkeleton {
+    aspect-ratio: 4 / 3;
+  }
+
+  .media {
+    position: sticky;
+    top: 0;
+  }
+
+  .body {
+    padding: var(--space-5) 4.5rem var(--space-5) var(--space-5); /* right: the close button's corner */
+  }
+}
+
+@media (min-width: 700px) and (max-height: 500px) {
+  .dialog {
+    width: min(100% - 4rem, 56rem);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .dialog[open] {
     animation: sheet-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
