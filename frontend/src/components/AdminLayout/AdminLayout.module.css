@@ -6,6 +6,7 @@
 /* Phone and tablet: the sidebar is a top block, brand + profile on one row, sections as a scrolling strip below */
 .sidebar {
   --sidebar-pad-top: var(--space-3);
+  --sidebar-pad-x: var(--space-4);
   display: grid;
   grid-template-areas:
     'brand profile'
@@ -13,8 +14,8 @@
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-rows: var(--admin-brand-row) auto; /* a fixed height: the sticky offset below is exactly this much */
   align-items: center;
-  gap: var(--space-3) var(--space-4);
-  padding: var(--sidebar-pad-top) var(--space-4) var(--space-2);
+  gap: 0 var(--space-4); /* the tabs strip has its own room above and below */
+  padding: var(--sidebar-pad-top) var(--sidebar-pad-x) 0;
   border-bottom: 1px solid var(--color-line);
   background: var(--color-surface);
 }
@@ -60,12 +61,15 @@
   min-width: 0;
 }
 
-.nav {
-  position: relative; /* tabs measure their offsetLeft from here */
+.nav { 
+  position: relative;
   display: flex;
-  gap: var(--space-1);
+  gap: var(--space-2);
+  margin-inline: calc(-1 * var(--sidebar-pad-x));
+  padding: var(--space-3) max(var(--sidebar-pad-x), var(--space-8)) var(--space-3) var(--sidebar-pad-x); /* end: the last tab can scroll fully out of the fade */
   overflow-x: auto;
-  padding-right: var(--space-8); /* the last tab can scroll fully out of the fade */
+  scroll-padding-inline: var(--sidebar-pad-x);
+  scroll-snap-type: x proximity;
 }
 
 .navFade { /* set from the JSX only while more tabs are hidden on the right */
@@ -79,7 +83,8 @@
   flex: 0 0 auto;
   align-items: center;
   gap: var(--space-3);
-  padding: 0 var(--space-3);
+  padding: 0 var(--space-4);
+  scroll-snap-align: center; /* a swipe stops with a tab in the middle, like the active one */
   border-radius: var(--radius-md);
   color: var(--color-ink-muted);
   font-size: var(--text-sm);
@@ -194,7 +199,8 @@
 @media (min-width: 700px) {
   .sidebar {
     --sidebar-pad-top: var(--space-4);
-    padding: var(--sidebar-pad-top) 2.5rem var(--space-2);
+    --sidebar-pad-x: 2.5rem;
+    padding: var(--sidebar-pad-top) var(--sidebar-pad-x) 0;
   }
 
   .header {
@@ -211,7 +217,7 @@
   .sidebar {
     position: sticky;
     z-index: 30; /* under the "Pronto" and View as panels (50) */
-    top: calc(-1 * (var(--sidebar-pad-top) + var(--admin-brand-row) + var(--space-3)));
+    top: calc(-1 * (var(--sidebar-pad-top) + var(--admin-brand-row)));
     background: var(--glass-bg-fallback);
   }
 
@@ -233,7 +239,7 @@
 
   /* Keyboard focus and in-page jumps stop below the tabs row (global.css counts the public top bar instead) */
   :global(html):has(.sidebar) {
-    scroll-padding-top: calc(var(--tap-min) + var(--space-2) + var(--space-3));
+    scroll-padding-top: calc(var(--tap-min) + 3 * var(--space-3)); /* the strip's padding above and below the tabs, plus a little room */
   }
 }
 
@@ -274,8 +280,14 @@
 
   .nav {
     display: grid;
+    gap: var(--space-1);
+    margin-inline: 0;
+    padding: 0;
     overflow: visible;
-    padding-right: 0;
+  }
+
+  .navItem {
+    padding: 0 var(--space-3);
   }
 
   .profile {
