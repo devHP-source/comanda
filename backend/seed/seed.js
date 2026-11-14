@@ -13,6 +13,7 @@ import Dish from "../models/Dish.js"
 import User from "../models/User.js"
 import Settings from "../models/Settings.js"
 import Order from "../models/Order.js"
+import Reservation from "../models/Reservation.js"
 import { uploadImage, DISH_IMAGES_FOLDER } from "../services/uploadImage.js"
 
 const PHOTO_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp"]
@@ -154,7 +155,8 @@ async function seed() {
   await Promise.all([Category.init(), Dish.init(), User.init()]) // wait for the unique indexes (code, name.it, email) before inserting
 
   const { deletedCount: deletedOrders } = await Order.deleteMany() // their items point to dish _ids that are about to change
-  console.log(`Deleted ${deletedOrders} orders`)
+  const { deletedCount: deletedReservations } = await Reservation.deleteMany() // test bookings never reach the demo
+  console.log(`Deleted ${deletedOrders} orders and ${deletedReservations} reservations`)
   await Dish.deleteMany()
   await Category.deleteMany()
   await deleteAllDishPhotos()

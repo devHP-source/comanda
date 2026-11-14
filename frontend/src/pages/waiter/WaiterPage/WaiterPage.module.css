@@ -27,8 +27,10 @@
   font-weight: 800;
 }
 
-.availability:hover {
-  background: var(--color-surface-muted);
+@media (hover: hover) { /* touch screens would keep it grey after the sheet closes */
+  .availability:hover {
+    background: var(--color-surface-muted);
+  }
 }
 
 .greeting {

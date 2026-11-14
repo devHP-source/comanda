@@ -260,7 +260,7 @@
 
   @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
     .header {
-      background: var(--glass-bg);
+      background: var(--glass-bg-strong); /* the tables scroll under it: the usual 88% let their text show behind the greeting */
       -webkit-backdrop-filter: var(--glass-blur);
       backdrop-filter: var(--glass-blur);
     }

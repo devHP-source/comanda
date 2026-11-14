@@ -16,6 +16,7 @@ const ConfirmDialog = ({ // `onConfirm` runs the request and toasts its own erro
 }) => {
   const { t } = useLanguage()
   const [isBusy, setIsBusy] = useState(false)
+  const busyRef = useRef(false) // set at once, before React re-renders the disabled button
   const dialogRef = useRef(null)
   const cancelRef = useRef(null)
   const confirmRef = useRef(null)
@@ -34,10 +35,13 @@ const ConfirmDialog = ({ // `onConfirm` runs the request and toasts its own erro
   }, [open, destructive])
 
   const handleConfirm = async () => {
-    setIsBusy(true) // disables the buttons at once: a double tap can't send twice
+    if (busyRef.current) return // a second click in the same instant: the request is already on its way
+    busyRef.current = true
+    setIsBusy(true) // disables the buttons: a double tap can't send twice
     try {
       await onConfirm()
     } finally {
+      busyRef.current = false
       setIsBusy(false)
       dialogRef.current?.close()
     }

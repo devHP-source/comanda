@@ -15,6 +15,8 @@
   letter-spacing: 0.03em;
 }
 
-.pill:hover {
-  background: var(--color-surface);
+@media (hover: hover) { /* touch screens keep :hover after a tap */
+  .pill:hover {
+    background: var(--color-surface);
+  }
 }

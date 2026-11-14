@@ -16,8 +16,10 @@
   background: var(--color-surface);
 }
 
-.bell:hover {
-  background: var(--color-surface-muted);
+@media (hover: hover) { /* touch screens keep :hover after a tap */
+  .bell:hover {
+    background: var(--color-surface-muted);
+  }
 }
 
 .hasReady {

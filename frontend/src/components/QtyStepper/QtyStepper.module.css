@@ -17,8 +17,10 @@
   background: transparent;
 }
 
-.step:hover:not(:disabled) {
-  background: var(--color-surface-muted);
+@media (hover: hover) { /* touch screens keep :hover on the last tapped − or + */
+  .step:hover:not(:disabled) {
+    background: var(--color-surface-muted);
+  }
 }
 
 .step:disabled {

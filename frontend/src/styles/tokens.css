@@ -76,6 +76,7 @@
   --shadow-accent: 0 7px 18px rgb(143 31 38 / 28%);
 
   --glass-bg: rgb(255 253 249 / 88%);
+  --glass-bg-strong: rgb(255 253 249 / 95%); /* over busy content (admin tables): still glass, text behind stays quiet */
   --glass-bg-fallback: var(--color-surface);
   --glass-blur: blur(18px);
   --backdrop: rgb(36 28 24 / 45%);

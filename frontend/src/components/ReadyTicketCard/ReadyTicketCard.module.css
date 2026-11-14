@@ -58,8 +58,10 @@
   font-weight: 800;
 }
 
-.serve:hover {
-  background: var(--color-accent-soft);
+@media (hover: hover) { /* touch screens would keep it tinted after "Annulla" in the dialog */
+  .serve:hover {
+    background: var(--color-accent-soft);
+  }
 }
 
 .serve:focus-visible {

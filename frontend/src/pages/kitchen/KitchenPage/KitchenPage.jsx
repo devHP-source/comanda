@@ -16,6 +16,7 @@ import styles from './KitchenPage.module.css'
 
 const POLL_MS = 5000
 const UNDO_MS = 5000 // the PATCH leaves only when the "Annulla" toast closes
+const TAP_GUARD_MS = 400 // a tapped card leaves its place and the next one slides in: a quick second tap must not move that one too
 const COLUMNS = ['sent', 'preparing', 'ready']
 const SKELETON_TICKETS = 2
 const TOASTER_ID = 'kitchen' // undo toasts go to the board's own Toaster, the app's one keeps its look
@@ -45,6 +46,7 @@ const KitchenPage = () => { // /staff/kitchen: tickets in 3 columns, refreshed e
   const pendingRef = useRef(new Map()) // the same actions for the toast callbacks: whoever takes an action out of here (undo or send) wins
   const latestLoad = useRef(0)
   const nextKey = useRef(0)
+  const lastTapAt = useRef(0)
   const tErrorRef = useRef(tError)
 
   useEffect(() => {
@@ -101,6 +103,10 @@ const KitchenPage = () => { // /staff/kitchen: tickets in 3 columns, refreshed e
   }
 
   const advance = (ticket, status) => {
+    const now = Date.now()
+    if (now - lastTapAt.current < TAP_GUARD_MS) return // double tap: only the first one counts
+    lastTapAt.current = now
+
     const previous = pendingRef.current.get(ticket._id)
     if (previous) { // second tap on the same card within 5s (sent --> preparing --> ready): send the first step now, in order
       sendAction(previous)

@@ -248,8 +248,10 @@
   font-weight: 800;
 }
 
-.toggle:hover {
-  background: var(--color-accent-soft);
+@media (hover: hover) { /* touch screens keep :hover on the last tapped row */
+  .toggle:hover {
+    background: var(--color-accent-soft);
+  }
 }
 
 .toggleRestore {
@@ -258,9 +260,11 @@
   background: var(--color-ink);
 }
 
-.toggleRestore:hover {
-  background: var(--color-ink);
-  opacity: 0.9;
+@media (hover: hover) {
+  .toggleRestore:hover {
+    background: var(--color-ink);
+    opacity: 0.9;
+  }
 }
 
 .empty {

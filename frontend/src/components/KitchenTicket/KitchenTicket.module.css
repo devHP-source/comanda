@@ -136,8 +136,10 @@
   text-underline-offset: 0.2em;
 }
 
-.reopen:hover:not(:disabled) {
-  background: var(--color-surface-muted);
+@media (hover: hover) { /* the kitchen tablet would keep it grey after the dialog closes */
+  .reopen:hover:not(:disabled) {
+    background: var(--color-surface-muted);
+  }
 }
 
 .reopen:disabled {

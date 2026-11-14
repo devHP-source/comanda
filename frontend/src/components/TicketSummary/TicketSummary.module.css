@@ -97,9 +97,11 @@
   font-weight: 700;
 }
 
-.variant:hover {
-  border-color: var(--color-ink-muted);
-  background: var(--color-surface-muted);
+@media (hover: hover) { /* touch screens keep :hover after a tap */
+  .variant:hover {
+    border-color: var(--color-ink-muted);
+    background: var(--color-surface-muted);
+  }
 }
 
 .notesInput::placeholder {

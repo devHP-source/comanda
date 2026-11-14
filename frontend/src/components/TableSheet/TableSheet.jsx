@@ -9,11 +9,13 @@ import styles from './TableSheet.module.css'
 const TableSheet = ({ table, tickets, notice, onClose, onServe, onCloseTable }) => { // The selected table: its open tickets, total and actions. Bottom sheet on phones, centered modal from tablet up.
   const { t } = useLanguage()
   const dialogRef = useRef(null)
+  const titleRef = useRef(null)
   const titleId = useId()
 
   useEffect(() => { // The parent unmounts it to close it; `onServe` and `onCloseTable` open the parent's confirm modals (they stack on top)
     const dialog = dialogRef.current
     if (!dialog.open) dialog.showModal()
+    titleRef.current.focus() // focus starts on the title, not on the ✕ (its ring looked like an error); Tab goes on from there
   }, [])
 
   const handleBackdropClick = (event) => { // the content fills the dialog, so a click on the dialog itself is on the backdrop
@@ -34,7 +36,7 @@ const TableSheet = ({ table, tickets, notice, onClose, onServe, onCloseTable }) 
         <header className={styles.header}>
           <div>
             <p className={styles.kicker}>{t('tableSheet.kicker')}</p>
-            <h2 id={titleId} className={styles.title}>{t('tables.tableNumber', { number: table.number })}</h2>
+            <h2 ref={titleRef} id={titleId} className={styles.title} tabIndex={-1}>{t('tables.tableNumber', { number: table.number })}</h2>
             <p className={notice?.type === 'error' ? styles.noticeError : styles.notice} role="status">
               {notice?.text}
             </p>

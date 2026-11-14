@@ -70,6 +70,10 @@
   font-weight: 700;
 }
 
+.title:focus-visible {
+  outline: none;
+}
+
 /* Result of "Segna servita" / "Libera tavolo": a toast would sit under the sheet's backdrop. Always rendered (live region), empty = no height */
 .notice,
 .noticeError {
@@ -319,8 +323,10 @@
   font-weight: 800;
 }
 
-.closeTable:hover {
-  background: var(--color-accent-soft);
+@media (hover: hover) { /* touch screens would keep it tinted after "Annulla" in the dialog */
+  .closeTable:hover {
+    background: var(--color-accent-soft);
+  }
 }
 
 /* Tablet and up: centered modal */
