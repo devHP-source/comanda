@@ -3,89 +3,89 @@
     "name": {
       "it": "Antipasti",
       "en": "Appetizers"
-    }, "order": 1 },
+    }, "order": 1, "coverDish": "5" },
 
   {
     "name": {
       "it": "Omelette",
       "en": "Omelettes"
-    }, "order": 2 },
+    }, "order": 2, "coverDish": "97" },
 
   {
     "name": {
       "it": "Zuppe",
       "en": "Soups"
-    }, "order": 3 },
+    }, "order": 3, "coverDish": "17" },
 
   {
     "name": {
       "it": "Primi Piatti",
       "en": "Rice & Noodles"
-    }, "order": 4 },
+    }, "order": 4, "coverDish": "108" },
 
   {
     "name": {
       "it": "Tofu",
       "en": "Tofu"
-    }, "order": 5 },
+    }, "order": 5, "coverDish": "91" },
 
   {
     "name": {
       "it": "Verdure",
       "en": "Vegetables"
-    }, "order": 6 },
+    }, "order": 6, "coverDish": "102" },
 
   {
     "name": {
       "it": "Anatra",
       "en": "Duck"
-    }, "order": 7 },
+    }, "order": 7, "coverDish": "46" },
 
   {
     "name": {
       "it": "Maiale",
       "en": "Pork"
-    }, "order": 8 },
+    }, "order": 8, "coverDish": "49" },
 
   {
     "name": {
       "it": "Manzo",
       "en": "Beef"
-    }, "order": 9 },
+    }, "order": 9, "coverDish": "61" },
 
   {
     "name": {
       "it": "Vitello",
       "en": "Veal"
-    }, "order": 10 },
+    }, "order": 10, "coverDish": "70" },
 
   {
     "name": {
       "it": "Pollo",
       "en": "Chicken"
-    }, "order": 11 },
+    }, "order": 11, "coverDish": "28" },
 
   {
     "name": {
       "it": "Pesce",
       "en": "Seafood"
-    }, "order": 12 },
+    }, "order": 12, "coverDish": "81" },
 
   {
     "name": {
       "it": "Pizza",
       "en": "Pizza"
-    }, "order": 13 },
+    }, "order": 13, "coverDish": "P14" },
 
   {
     "name": {
       "it": "Dolci",
       "en": "Desserts"
-    }, "order": 14 },
+    }, "order": 14, "coverDish": "D10" },
 
   {
     "name": {
       "it": "Bevande",
       "en": "Drinks"
-    }, "order": 15, "isCompact": true }
+    }, "order": 15, "isCompact": true, "coverDish": "B31" }
 ]

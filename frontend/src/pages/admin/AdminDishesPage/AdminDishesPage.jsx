@@ -35,9 +35,10 @@ const toSearchParams = ({ q, category, page }) => { // empty values stay out of 
   return params
 }
 
-const DishPhoto = ({ dish, transform }) => (
+// isCompact (Bevande): the placeholder, like everywhere else. Its photo only previews the category
+const DishPhoto = ({ dish, transform, isCompact }) => (
   <span className={styles.photo}>
-    {dish.image?.url ? (
+    {dish.image?.url && !isCompact ? (
       <img src={thumbnailUrl(dish.image.url, transform)} alt="" loading="lazy" width="64" height="48" />
     ) : (
       <DishVisual seed={dish.code} />
@@ -161,6 +162,10 @@ const AdminDishesPage = () => {
     () => new Map(categories.map((item) => [item._id, pick(item.name)])),
     [categories, pick],
   )
+  const compactIds = useMemo(
+    () => new Set(categories.filter((item) => item.isCompact).map((item) => item._id)),
+    [categories],
+  )
 
   const reload = () => setAttempt((current) => current + 1)
 
@@ -279,7 +284,7 @@ const AdminDishesPage = () => {
               <tbody>
                 {result.data.map((dish) => (
                   <tr key={dish._id} className={dish.isAvailable ? '' : styles.soldOut}>
-                    <td className={styles.photoCell}><DishPhoto dish={dish} transform={ROW_THUMBNAIL} /></td>
+                    <td className={styles.photoCell}><DishPhoto dish={dish} transform={ROW_THUMBNAIL} isCompact={compactIds.has(dish.category)} /></td>
                     <td><span className={styles.code}>{dish.code}</span></td>
                     <th scope="row" className={styles.name}>
                       {editLink(dish, styles.nameLink)}
@@ -303,7 +308,7 @@ const AdminDishesPage = () => {
           <ul className={styles.cards} aria-label={t('adminDishes.tableLabel')}>
             {result.data.map((dish) => (
               <li key={dish._id} className={`${styles.card} ${dish.isAvailable ? '' : styles.soldOut}`}>
-                <DishPhoto dish={dish} transform={CARD_THUMBNAIL} />
+                <DishPhoto dish={dish} transform={CARD_THUMBNAIL} isCompact={compactIds.has(dish.category)} />
                 <div className={styles.cardBody}>
                   <p className={styles.cardMeta}>
                     <span className={styles.code}>{dish.code}</span>

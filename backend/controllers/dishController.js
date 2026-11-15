@@ -71,16 +71,26 @@ const findDishPage = async (filter, query) => { // .sort().skip().limit() + coun
   }
 }
 
+// Compact categories (Bevande) look the same everywhere: no dish photo. A photo there only serves as the category preview,
+// which categoryController reads from the DB. The admin routes keep it, so the admin can still manage it
+const getCompactCategoryIds = async () => new Set((await Category.distinct("_id", { isCompact: true })).map(String))
+
+const withoutCompactPhoto = (dish, compactIds) =>
+  compactIds.has(String(dish.category)) ? { ...dish.toJSON(), image: { url: "", publicId: "" } } : dish
+
 export const getDishes = async (req, res) => { // GET /api/dishes (public): the whole menu, no pagination
-  const dishes = await Dish.find(publishedOnly).sort({ code: 1 }).collation(byCode)
-  res.json(dishes)
+  const [dishes, compactIds] = await Promise.all([
+    Dish.find(publishedOnly).sort({ code: 1 }).collation(byCode),
+    getCompactCategoryIds(),
+  ])
+  res.json(dishes.map((dish) => withoutCompactPhoto(dish, compactIds)))
 }
 
 export const getDishById = async (req, res) => { // GET /api/dishes/:id (public). Bad id --> CastError --> 400 in errorHandler, unpublished --> 404
   const dish = await Dish.findOne({ _id: req.params.id, ...publishedOnly })
   if (!dish) throw dishNotFound(req.params.id)
 
-  res.json(dish)
+  res.json(withoutCompactPhoto(dish, await getCompactCategoryIds()))
 }
 
 const MAX_SEARCH_LENGTH = 50
