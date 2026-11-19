@@ -6,6 +6,8 @@ A fullstack MERN web application for a Chinese cuisine and pizza restaurant. It 
 
 **Live demo:** https://comandafrontend.vercel.app/
 
+**Staff area:** https://comandafrontend.vercel.app/staff/login (demo credentials are shared with the EPICODE submission)
+
 ---
 
 ## The idea: how it started
@@ -36,6 +38,29 @@ A three-column board (**Da iniziare**, **In preparazione**, **Pronto**) with lar
 
 ### Owner / Admin (desktop)
 A management dashboard with live service stats, a dining room overview, full CRUD for dishes and categories (including Cloudinary photo uploads), booking approvals for large groups, and restaurant settings (opening hours, closed days, table capacity). It also includes a **"View as"** switcher that lets the admin temporarily step into a waiter or kitchen account for 30 minutes to test permissions or help during a rush.
+
+---
+
+## Pages
+
+| Route | Who | What it shows |
+|---|---|---|
+| `/` | Guest | Home page with the restaurant, the menu and booking links |
+| `/menu` | Guest | The menu, one category at a time, with search |
+| `/menu/dish/:id` | Guest | Dish details in a bottom sheet over the menu |
+| `/list` | Guest | "La mia lista": saved dishes to show the waiter |
+| `/book` | Guest | Booking form with the free time slots |
+| `/book/confirm/:token` | Guest | Booking confirmation (opened from the email links) |
+| `/book/cancel/:token` | Guest | Booking cancellation (opened from the email links) |
+| `/info` | Guest | About us, opening hours and contacts |
+| `/staff/login` | Waiter, kitchen, admin | Staff login with email and password |
+| `/staff/waiter` | Waiter | Table grid, "Pronto" list, open tickets and "Libera tavolo" |
+| `/staff/waiter/tables/:number/new` | Waiter | New ticket for a table, dishes picked by code |
+| `/staff/kitchen` | Kitchen | Ticket board: Da iniziare, In preparazione, Pronto |
+| `/admin` | Admin | Dashboard: service stats and dining room overview |
+| `/admin/dishes`, `/admin/dishes/new`, `/admin/dishes/:id/edit`, `/admin/categories`, `/admin/categories/new`, `/admin/categories/:id/edit` | Admin | Dish and category lists, create and edit forms |
+| `/admin/reservations`, `/admin/qr`, `/admin/staff`, `/admin/settings` | Admin | Bookings, printable menu QR code, staff accounts with role and status, restaurant settings |
+| any other path | Everyone | "Page not found" |
 
 ---
 

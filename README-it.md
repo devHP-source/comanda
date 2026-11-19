@@ -6,6 +6,8 @@ Un'applicazione web fullstack (MERN) per un ristorante di cucina cinese e pizzer
 
 **Demo live:** https://comandafrontend.vercel.app/
 
+**Area staff:** https://comandafrontend.vercel.app/staff/login (le credenziali demo sono condivise nella consegna EPICODE)
+
 ---
 
 ## L'idea: com'è nata
@@ -36,6 +38,29 @@ Una bacheca a tre colonne (**Da iniziare**, **In preparazione**, **Pronto**) con
 
 ### Titolare / Admin (desktop)
 Una dashboard di gestione con statistiche del servizio in corso, panoramica della sala, gestione completa (CRUD) di piatti e categorie (con upload delle foto su Cloudinary), approvazione delle prenotazioni per gruppi numerosi e impostazioni del locale (orari, giorni di chiusura, capienza tavoli). Include anche la funzione **"Visualizza come"**, che permette all'admin di entrare temporaneamente nei panni di un cameriere o della cucina per 30 minuti per testare i permessi o dare una mano durante il servizio.
+
+---
+
+## Pagine
+
+| Percorso | Chi | Cosa mostra |
+|---|---|---|
+| `/` | Cliente | Home page con il ristorante e i link a menu e prenotazione |
+| `/menu` | Cliente | Il menu, una categoria alla volta, con ricerca |
+| `/menu/dish/:id` | Cliente | Dettaglio del piatto in un pannello sopra il menu |
+| `/list` | Cliente | "La mia lista": i piatti salvati da mostrare al cameriere |
+| `/book` | Cliente | Modulo di prenotazione con gli orari liberi |
+| `/book/confirm/:token` | Cliente | Conferma della prenotazione (aperta dai link nelle email) |
+| `/book/cancel/:token` | Cliente | Annullamento della prenotazione (aperta dai link nelle email) |
+| `/info` | Cliente | Chi siamo, orari e contatti |
+| `/staff/login` | Cameriere, cucina, admin | Accesso staff con email e password |
+| `/staff/waiter` | Cameriere | Griglia dei tavoli, lista "Pronto", comande aperte e "Libera tavolo" |
+| `/staff/waiter/tables/:number/new` | Cameriere | Nuova comanda per un tavolo, piatti scelti per codice |
+| `/staff/kitchen` | Cucina | Bacheca delle comande: Da iniziare, In preparazione, Pronto |
+| `/admin` | Admin | Dashboard: statistiche del servizio e panoramica della sala |
+| `/admin/dishes`, `/admin/dishes/new`, `/admin/dishes/:id/edit`, `/admin/categories`, `/admin/categories/new`, `/admin/categories/:id/edit` | Admin | Elenchi di piatti e categorie, moduli di creazione e modifica |
+| `/admin/reservations`, `/admin/qr`, `/admin/staff`, `/admin/settings` | Admin | Prenotazioni, QR code del menu da stampare, account dello staff con ruolo e stato, impostazioni del locale |
+| qualsiasi altro percorso | Tutti | "Pagina non trovata" |
 
 ---
 
